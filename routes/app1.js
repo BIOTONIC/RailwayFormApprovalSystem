@@ -38,6 +38,9 @@ router.get('/', isLogin, function (req, res, next) {
                 res.locals.techplan = '';
                 res.locals.secureplan = '';
                 res.locals.workshopmgr = '';
+                // workshopmgrtime will be add in workshopmgr
+                // no need to render separately
+                //res.locals.workshopmgrtime = '';
                 res.locals.techdepart = '';
                 res.locals.pfstarttime = '';
                 res.locals.pfendtime = '';
@@ -103,6 +106,7 @@ router.post('/', isLogin, function (req, res, next) {
     var app1 = {};
 
     if (person == '1') {
+        // normal worker
         if (nextperson == '1') {
             // create a new application
             confService.getCount().then((counts) => {
@@ -177,7 +181,7 @@ router.post('/', isLogin, function (req, res, next) {
             }).catch((error) => {
                 req.flash('error', '提交失败');
                 return res.redirect('/app1');
-            })
+            });
         } else if (nextperson in ['2', '3', '4', '5']) {
             // can not post under check
             req.flash('error', '审核中 不能更新');
@@ -195,10 +199,35 @@ router.post('/', isLogin, function (req, res, next) {
             }).catch((error) => {
                 req.flash('error', '提交失败');
                 return res.redirect('/app1');
-            })
+            });
         } else if (nextperson == '7') {
             // the application is closed
             req.flash('error', '填写完毕 不能更新');
+            return res.redirect('/app1');
+        } else {
+            // no other state for nextperson
+            req.flash('error', '表格状态错误');
+            return res.redirect('/app1');
+        }
+    } else if (person == '2') {
+        //workshop manager
+        if (nextperson in ['2', '3']) {
+            // update the application before tech depart check
+            // TODO current workshopmgttime is in workshopmgr
+            app1.workshopmgr = req.body.workshopmgr;
+            app1.nextperson = '3';
+            app1.formId = req.body.applyid;
+
+            app1Service.updateWorkshopMgr(app1).then((result) => {
+                req.flash('success', '审批完成');
+                return res.redirect('/app1');
+            }).catch((error)=>{
+                req.flash('error','提交失败');
+                return res.redirect('/aap1');
+            });
+        } else if (nextperson in ['4', '5', '6', '7']) {
+            // can not update
+            req.flash('error', '审批结束 不能更新');
             return res.redirect('/app1');
         } else {
             // no other state for nextperson

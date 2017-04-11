@@ -42,13 +42,16 @@ module.exports = {
                 }
             });
     },
-    updateWorkshopMgr: function updateWorkshopMgr(mgr) {
+    updateWorkshopMgr: function updateWorkshopMgr(app1) {
         return App1.update({
-            // 下一个填写表格的是技术科
-            nextperson: '3',
-            workshopmgr: mgr.workshopmgr,
-            workshopmgrtime: mgr.workshopmgrtime
-        });
+                workshopmgr: app1.workshopmgr,
+                nextperson: app1.nextperson
+            },
+            {
+                where: {
+                    id: app1.formId
+                }
+            });
     },
     updateTech: function updateTech(tech) {
         return App1.update({
