@@ -56,7 +56,8 @@ module.exports = {
     updateTech: function updateTech(app1) {
         return App1.update({
                 techdepart: app1.techdepart,
-                techtime: app1.techtime,
+                pfstarttime: app1.pfendtime,
+                pfendtime: app1.pfendtime,
                 nextperson: app1.nextperson
             },
             {
@@ -65,13 +66,16 @@ module.exports = {
                 }
             });
     },
-    updateSecure: function updateSecure(secure) {
+    updateSecure: function updateSecure(app1) {
         return App1.update({
-            // 下一个填写表格的是主管段长
-            nextperson: '5',
-            securedepart: secure.techdepart,
-            securetime: secure.securetime
-        });
+                securedepart: app1.securedepart,
+                nextperson: app1.nextperson
+            },
+            {
+                where: {
+                    id: app1.formId
+                }
+            });
     },
     updateManager: function updateManager(mgr) {
         return App1.update({

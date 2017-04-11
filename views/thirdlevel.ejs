@@ -79,11 +79,11 @@
         </tr>
         <tr>
             <td colspan="3">起始时间：
-                <input class="cj" id="sqstarttime" name="sqstarttime" value=<%= sqstarttime %> readonly
-                       type="datetime-local">
+                <input class="cj time" id="sqstarttime" name="sqstarttime" value=<%= sqstarttime %> readonly
+                       type="text">
             </td>
             <td colspan="3">截止时间：
-                <input class="cj" id="sqendtime" value=<%= sqendtime %> name="sqendtime" readonly type="datetime-local">
+                <input class="cj" id="sqendtime time" value=<%= sqendtime %> name="sqendtime" readonly type="text">
             </td>
         </tr>
         <tr>
@@ -182,7 +182,6 @@
         }
     }
     function submitform() {
-        alert("!");
         var id = getcookie();
         switch (id[0]) {
             case "1":
@@ -222,7 +221,6 @@
                     }
                 } else if(part[i].tagName.toLowerCase() == "textarea"){
                     if(isIE()){
-                        alert("!");
                         if(part[i].innerText == "" || part[i].value == ""){
                             part[i].innerText = "此项不能为空！";
                             part[i].value = "此项不能为空！";
@@ -230,7 +228,6 @@
                             return false;
                         }
                     } else{
-                        alert("?");
                         if(part[i].innerHTML == "" || part[i].value == ""){
                             part[i].innerHTML = "此项不能为空！";
                             part[i].value = "此项不能为空！";
