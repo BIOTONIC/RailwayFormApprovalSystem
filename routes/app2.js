@@ -5,6 +5,7 @@ var isLogin = require('../others/auth').isLogin;
 var getDate = require('../others/util').getDate;
 var getTime = require('../others/util').getTime;
 var getFixNumber = require('../others/util').getFixNumber;
+var getFormatTime =require('../others/util').getFormatTime;
 var app2Service = require('../services/app2Service');
 var workshopService = require('../services/workshopService');
 var confService = require('../services/confService');
@@ -16,7 +17,7 @@ router.get('/', isLogin, function (req, res, next) {
     workshopService.findNameById(workshopId).then((results) => {
         if (results.length == 0) {
             req.flash('error', '车间不存在');
-            return res.redirect('／home');
+            return res.redirect('home');
         } else {
             if (typeof req.session.formId === 'undefined' && person == '1') {
                 // if there is no request form id and the person is 1
@@ -51,7 +52,7 @@ router.get('/', isLogin, function (req, res, next) {
                 app2Service.find3(query).then((results) => {
                     if (typeof results === 'undefined') {
                         req.flash('error', '申请表不存在');
-                        return res.redirect('/home');
+                        return res.redirect('home');
                     } else {
                         //先一股脑返回所有查询数据
                         res.locals.workshop = results[0].workshop;
@@ -123,7 +124,7 @@ router.post('/', isLogin, function (req, res, next) {
             app2Service.createApp2(app2).then((result) => {
                 req.flash('success', '提交成功');
                 console.log('success');
-                return res.redirect('/home');
+                return res.redirect('home');
             }).catch((error) => {
                 req.flash('error', '提交失败');
                 return res.redirect('back');

@@ -15,11 +15,11 @@ router.post('/', notLogin, function (req, res, next) {
         userService.findUserByName(name).then((results) => {
             if (results.length == 0) {
                 req.flash('error', '用户名不存在');
-                return res.redirect('/login');
+                return res.redirect('login');
             }
             else if (results[0].password != password) {
                 req.flash('error', '用户名或密码错误');
-                return res.redirect('/login');
+                return res.redirect('login');
             }
             else {
                 req.flash('success', '登录成功');
@@ -27,7 +27,7 @@ router.post('/', notLogin, function (req, res, next) {
                 // can not use req.session.id because it is a reserved word
                 req.session.userId = results[0].id;
                 res.cookie('id', req.session.userId);
-                return res.redirect('/home');
+                return res.redirect('home');
             }
         });
     }

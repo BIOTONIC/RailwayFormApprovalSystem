@@ -27,5 +27,8 @@ module.exports = {
             str = str + noticedepart[noticedepart.length - 1];
             return str;
         }
+    },
+    getFormatTime: function getFormatTime(origin) {
+        return origin.replace(/[^0-9]/g,'');
     }
 }

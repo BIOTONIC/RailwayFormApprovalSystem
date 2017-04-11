@@ -12,6 +12,10 @@ router.get('/', isLogin, function (req, res, next) {
 
 router.get('/apply', isLogin, function (req, res, next) {
     var type = req.query.type;
+    // NOTICE
+    // redirect
+    // app1 就跳转到home/app1
+    // /app1 就跳转到app1
     if (type == 'first') {
         res.redirect('/app1');
     } else if (type == 'second') {
