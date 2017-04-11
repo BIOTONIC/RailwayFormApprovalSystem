@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>登录</title>
+        <style>
+            body{
+            }
+            .container{
+                margin: 80px auto 0 auto;
+                text-align: center;
+            }
+            .login{
+                border : 1px solid #000;
+                margin: 60px auto 0 auto;
+                width: 550px;
+                height: 350px;
+            }
+            .hint {
+                width: 270px;
+                height: 42px;
+                margin-top: 25px;
+                padding: 0 15px;
+            }
+            .submit{
+                width: 350px;
+                height: 42px;
+                margin-top: 25px;
+                padding: 0 15px;
+            }
+        </style>
+    </head>
+    <body>
+    <%- include('notif')%>
+    <div class="container">
+        <div class="login">
+            <h1>用户登录</h1>
+            <form action="./login" method="post">
+                <div><span>用户名：</span><input class="hint" type="text" name="username"></div>
+                <div><span>密&nbsp;&nbsp;&nbsp;&nbsp;码：</span><input class="hint" type="password" name="password"></div>
+                <div><input class="submit" type="submit" value="登录"></div>
+            </form>
+        </div>
+    </div>
+    </body>
+</html>

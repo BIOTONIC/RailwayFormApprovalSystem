@@ -1,0 +1,296 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            width: 980px;
+            margin: 50px auto;
+        }
+
+        table, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        td {
+            padding: 5px;
+        }
+
+        input {
+            border: none;
+        }
+
+        textarea {
+            border: none;
+            height: 50px;
+            width: 100%;
+        }
+
+        .full {
+            width: 100%;
+        }
+
+        .ta1 {
+            height: 200px;
+        }
+    </style>
+    <title>三级（段）通信线路及设备停机要点审批表</title>
+
+    <link rel="stylesheet" href="/stylesheets/cxcalendar.css">
+    <script src="/javascripts/jquery-1.9.1.js"></script>
+    <script src="/javascripts/calendar.js"></script>
+	
+</head>
+<body onload="controldisplay()">
+<%- include('notif')%>
+<form action="/app3" method="post">
+    <table>
+        <caption>三级（段）通信线路及设备停机要点审批表</caption>
+        <tbody>
+        <tr>
+            <td colspan="1"><span>申请车间(盖章)</span></td>
+            <td colspan="1"><input name="workshop" type="text" readonly value=<%= workshop %>></td>
+            <td colspan="1"><span>联系电话</span></td>
+            <td colspan="1"><input class="full cj" id="telephone" readonly name="telephone" type="text"
+                                   value=<%= telephone %>></td>
+            <td colspan="1"><span>传真</span></td>
+            <td colspan="1"><input class="full cj" id="fax" readonly name="fax" type="text" value=<%= fax %>></td>
+        </tr>
+        <tr>
+            <td colspan="1"><span>申请编号</span></td>
+            <td colspan="1"><input name="applyid" type="text" readonly value=<%= applyid %>></td>
+            <td colspan="1"><span>批复编号</span></td>
+            <td colspan="3"><input name="approveid" type="text" readonly value=<%= approveid %>></td>
+        </tr>
+        <tr>
+            <td colspan="3">线路或区段名称</td>
+            <td colspan="3">停机原因</td>
+        </tr>
+        <tr>
+            <td colspan="3"><input class="full cj" id="section" name="section" readonly type="text"></td>
+            <td colspan="3"><input class="full cj" id="reason" name="reason" readonly type="text"></td>
+        </tr>
+        <tr>
+            <td colspan="6" align="center">申请要点时间</td>
+        </tr>
+        <tr>
+            <td colspan="3">起始时间：
+                <input class="cj" id="sqstarttime" name="sqstarttime" value=<%= sqstarttime %> readonly
+                       type="datetime-local">
+            </td>
+            <td colspan="3">截止时间：
+                <input class="cj" id="sqendtime" value=<%= sqendtime %> name="sqendtime" readonly type="datetime-local">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" align="center">建议通知班组</td>
+        </tr>
+        <tr>
+            <td colspan="6" align="center"><input class="cj" name="noticedepart" readonly type="checkbox" value="A">A部门
+                <input class="cj" name="noticedepart" type="checkbox" readonly value="B">B部门
+                <br>
+                <label>已选部门：<%= noticedepart %></label>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" align="center">施工负责人及施工配合人</td>
+        </tr>
+        <tr>
+            <td colspan="6" align="center"><textarea class="cj" readonly name="shigongfang"
+                                                     id="shigongfang"><%= shigongfang %></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" align="center">影响范围及停机施工方案(可另附页)</td>
+        </tr>
+        <tr>
+            <td colspan="6" align="center"><textarea class="cj" id="plan" readonly name="plan"><%= plan %></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" align="center">电路或设备倒代措施</td>
+        </tr>
+        <tr>
+            <td colspan="6" align="center"><textarea class="ta1 cj" id="techplan" readonly
+                                                     name="techplan"><%= techplan %></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" align="center">施工安全组织措施</td>
+        </tr>
+        <tr>
+            <td colspan="6" align="center"><textarea class="ta1 cj" id="secureplan" readonly
+                                                     name="secureplan"><%= secureplan %></textarea></td>
+        </tr>
+        <tr>
+            <td colspan="6" align="center">工长(安全员)审批</td>
+        </tr>
+        <tr>
+            <td colspan="6" align="center"><textarea class="cjzr" id="workshopmgr" readonly
+                                                     name="workshopmgr"><%= workshopmgr %></textarea></td>
+        </tr>
+        <tr>
+            <td colspan="1"><span>完成及销点情况(销点人签字)</span></td>
+            <td colspan="5"><input class="full cj2" id="result" readonly name="result" value=<%= result %>></td>
+        </tr>
+        <tr>
+            <td colspan="6" align="right">申请上报日期：<input name="applydate" type="text" readonly value=<%= applytime %>>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" align="center"><input type="submit" onclick="return submitform()" value="确认提交"></td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+
+        <script>
+            $('.time').each(function(){
+                var a = new Calendar({
+                    targetCls: $(this),
+                    type: 'yyyy-mm-dd HH:MM:SS',
+                    wday:2
+                },function(val){
+                    console.log(val);
+                });
+            });
+        </script>
+
+<script>
+    function isIE() {
+            return "ActiveXObject" in window || window.ActiveXObject?true:false;
+        }
+    function getpart(name) {
+        switch (name) {
+            case "cj":
+                return document.getElementsByClassName("cj");
+            case "cjzr":
+                return document.getElementsByClassName("cjzr");
+            case "jsk":
+                return document.getElementsByClassName("jsk");
+            case "aqk":
+                return document.getElementsByClassName("aqk");
+            case "zgdz":
+                return document.getElementsByClassName("zgdz");
+            case "cj2":
+                return document.getElementsByClassName("cj2");
+        }
+    }
+    function submitform() {
+        alert("!");
+        var id = getcookie();
+        switch (id[0]) {
+            case "1":
+                var flag = checkpart("cj");
+                if (document.getElementById("workshopmgr").innerHTML == "") {
+                    return checkpart("cj");
+                } else {
+                    return checkpart("cj2");
+                }
+                break;
+            case "2":
+                return checkpart("cjzr");
+                break;
+            case "3":
+                return checkpart("jsk");
+                break;
+            case "4":
+                return checkpart("aqk");
+                break;
+            case "5":
+                return checkpart("zgdz");
+                break;
+        }
+    }
+
+            function checkpart(name) {
+            var part = getpart(name);
+
+            for(var i = 0; i < part.length; i ++){
+                if(part[i].tagName.toLowerCase() == "input" && part[i].type != "checkbox"){
+                    if(part[i].value == ""){
+                        if(part[i].type != "datetime-local"){
+                            part[i].value = "此项不能为空！";
+                        }
+                        window.location = "#" + part[i].id;
+                        return false;
+                    }
+                } else if(part[i].tagName.toLowerCase() == "textarea"){
+                    if(isIE()){
+                        alert("!");
+                        if(part[i].innerText == "" || part[i].value == ""){
+                            part[i].innerText = "此项不能为空！";
+                            part[i].value = "此项不能为空！";
+                            window.location = "#" + part[i].id;
+                            return false;
+                        }
+                    } else{
+                        alert("?");
+                        if(part[i].innerHTML == "" || part[i].value == ""){
+                            part[i].innerHTML = "此项不能为空！";
+                            part[i].value = "此项不能为空！";
+                            window.location = "#" + part[i].id;
+                            return false;
+                        }
+                    }
+
+                }
+            }
+            return true;
+        }
+
+    function removeReadOnly(element) {
+        for (var i = 0; i < element.length; i++) {
+            element[i].readOnly = false;
+        }
+    }
+    function getcookie() {
+        var cookies = document.cookie.split(";");
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].split("=");
+            if (cookie[0] == "id") {
+                return cookie[1];
+            }
+        }
+    }
+    function controldisplay() {
+        var id = getcookie();
+        switch (id[0]) {
+            case "1":
+                    var mgrelement = document.getElementById("workshopmgr");
+                    if(isIE()){
+                        if(mgrelement.innerText == ""){
+                            removeReadOnly(getpart("cj"));
+                        }else {
+                            removeReadOnly(getpart("cj2"));
+                        }
+                    } else {
+                        if(mgrelement.innerHTML == "" && mgrelement.value == ""){
+                            removeReadOnly(getpart("cj"));
+                        }else {
+                            removeReadOnly(getpart("cj2"));
+                        }
+                    }
+                    break;
+            case "2":
+                removeReadOnly(getpart("cjzr"));
+                break;
+            case "3":
+                removeReadOnly(getpart("jsk"));
+                break;
+            case "4":
+                removeReadOnly(getpart("aqk"));
+                break;
+            case "5":
+                removeReadOnly(getpart("zgdz"));
+                break;
+        }
+    }
+</script>
+</body>
+</html>
