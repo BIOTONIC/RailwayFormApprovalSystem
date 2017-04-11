@@ -53,15 +53,17 @@ module.exports = {
                 }
             });
     },
-    updateTech: function updateTech(tech) {
+    updateTech: function updateTech(app1) {
         return App1.update({
-            // 下一个填写表格的是安全科
-            nextperson: '4',
-            techdepart: tech.techdepart,
-            techtime: tech.techtime,
-            pfstarttime: tech.pfstarttime,
-            pfendtime: tech.pfendtime
-        });
+                techdepart: app1.techdepart,
+                techtime: app1.techtime,
+                nextperson: app1.nextperson
+            },
+            {
+                where: {
+                    id: app1.formId
+                }
+            });
     },
     updateSecure: function updateSecure(secure) {
         return App1.update({

@@ -221,11 +221,36 @@ router.post('/', isLogin, function (req, res, next) {
             app1Service.updateWorkshopMgr(app1).then((result) => {
                 req.flash('success', '审批完成');
                 return res.redirect('/app1');
-            }).catch((error)=>{
-                req.flash('error','提交失败');
+            }).catch((error) => {
+                req.flash('error', '提交失败');
                 return res.redirect('/aap1');
             });
         } else if (nextperson in ['4', '5', '6', '7']) {
+            // can not update
+            req.flash('error', '审批结束 不能更新');
+            return res.redirect('/app1');
+        } else {
+            // no other state for nextperson
+            req.flash('error', '表格状态错误');
+            return res.redirect('/app1');
+        }
+    } else if (person == '3') {
+        // tech depart
+        if (nextperson in ['3', '4']) {
+            // update the application before secure depart check
+            app1.techdepart = req.body.techdepart;
+            app1.techtime = req.body.techtime;
+            app1.nextperson = '4';
+            app1.formId = req.body.applyid;
+
+            app1Service.updateTech(app1).then((result) => {
+                req.flash('success', '审批完成');
+                return res.redirect('/app1');
+            }).catch((error) => {
+                req.flash('error', '提交失败');
+                return res.redirect('/aap1');
+            });
+        } else if (nextperson in ['5', '6', '7']) {
             // can not update
             req.flash('error', '审批结束 不能更新');
             return res.redirect('/app1');
