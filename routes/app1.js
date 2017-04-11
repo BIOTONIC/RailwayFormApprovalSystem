@@ -39,7 +39,7 @@ router.get('/', isLogin, function (req, res, next) {
                 res.locals.secureplan = '';
                 res.locals.workshopmgr = '';
                 res.locals.techdepart = '';
-                res.locals.pfstarttime ='';
+                res.locals.pfstarttime = '';
                 res.locals.pfendtime = '';
                 res.locals.securedepart = '';
                 res.locals.manager = '';
@@ -102,8 +102,8 @@ router.post('/', isLogin, function (req, res, next) {
 
     var app1 = {};
 
-    if (person == '1'){
-        if(nextperson == '1'){
+    if (person == '1') {
+        if (nextperson == '1') {
             // create a new application
             confService.getCount().then((counts) => {
                 if (counts.length == 0) {
@@ -152,17 +152,14 @@ router.post('/', isLogin, function (req, res, next) {
                     });
                 }
             });
-        }else if(nextperson == '2'){
+        } else if (nextperson == '2') {
             // update the application before workshop manager check
-
-            //play a small trick here because applyid equals to form id
-            var formId = req.body.applyid;
             app1.telephone = req.body.telephone;
             app1.fax = req.body.fax;
             app1.section = req.body.section;
             app1.reason = req.body.reason;
             app1.sqstarttime = req.body.sqstarttime;
-            app1.endtime = req.body.endtime;
+            app1.sqendtime = req.body.sqendtime;
             app1.noticedepart = getNoticedepart(req.body.noticedepart);
             app1.shigongfang = req.body.shigongfang;
             app1.plan = req.body.plan;
@@ -171,22 +168,42 @@ router.post('/', isLogin, function (req, res, next) {
             // nextperson will not change
             app1.nextperson = '2';
 
-            app1Service.updateApp1(app1).then((result)=>{
-                req.flash('success','更新成功');
+            //play a small trick here because applyid equals to form id
+            app1.formId = req.body.applyid;
+
+            app1Service.updateApp1(app1).then((result) => {
+                req.flash('success', '更新成功');
                 return res.redirect('/app1');
-            }).catch((error)=>{
-                req.flash('error','更新失败');
+            }).catch((error) => {
+                req.flash('error', '提交失败');
                 return res.redirect('/app1');
-                // TODO
             })
-        }else if (nextperson in ['2','3','4','5']){
+        } else if (nextperson in ['2', '3', '4', '5']) {
             // can not post under check
-        }else if (nextperson == '6'){
+            req.flash('error', '审核中 不能更新');
+            return res.redirect('/app1');
+        } else if (nextperson == '6') {
             // finish the result
-        }else if (nextperson == '7'){
+            app1.result = req.body.result;
+            // nextperson change to 7, means finish
+            app1.nextperson = '7';
+            app1.formId = req.body.applyid;
+
+            app1Service.updateResult(app1).then((result) => {
+                req.flash('success', '销点完成');
+                return res.redirect('/app1');
+            }).catch((error) => {
+                req.flash('error', '提交失败');
+                return res.redirect('/app1');
+            })
+        } else if (nextperson == '7') {
             // the application is closed
-        }else{
+            req.flash('error', '填写完毕 不能更新');
+            return res.redirect('/app1');
+        } else {
             // no other state for nextperson
+            req.flash('error', '表格状态错误');
+            return res.redirect('/app1');
         }
     }
 
