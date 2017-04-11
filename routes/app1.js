@@ -265,6 +265,7 @@ router.post('/', isLogin, function (req, res, next) {
         // secure depart
         if (nextperson in ['4', '5']) {
             // update the application before manager check
+            // TODO no securetime
             app1.securedepart = req.body.securedepart;
             app1.nextperson = '5';
             app1.formId = req.body.applyid;
@@ -275,7 +276,7 @@ router.post('/', isLogin, function (req, res, next) {
             }).catch((error) => {
                 req.flash('error', '提交失败');
                 return res.redirect('/aap1');
-            })
+            });
         } else if (nextperson in ['6', '7']) {
             // can not update
             req.flash('error', '审批结束 不能更新');
@@ -285,9 +286,36 @@ router.post('/', isLogin, function (req, res, next) {
             req.flash('error', '表格状态错误');
             return res.redirect('/app1');
         }
+    } else if (person == '5') {
+        // manager
+        if (nextperson in ['5', '6']) {
+            // update the application before result
+            // TODO no managertime
+            app1.manager = req.body.manager;
+            app1.nextperson = '6';
+            app1.formId = req.body.applyid;
+
+            app1Service.updateManager(app1).then((result) => {
+                req.flash('success', '审批完成');
+                return res.redirect('/app1');
+            }).catch((error) => {
+                req.flash('error', '提交失败');
+                return res.redirect('/app1');
+            });
+        } else if (nextperson == '7') {
+            // can not update
+            req.flash('error', '审批结束 不能更新');
+            return res.redirect('/app1');
+        } else {
+            // no other state for nextperson
+            req.flash('error', '表格状态错误');
+            return res.redirect('/app1');
+        }
+    } else {
+        // person wrong
+        req.flash('error', '账号角色错误');
+        return res.redirect('/app1');
     }
-
-
 });
 
 module.exports = router;

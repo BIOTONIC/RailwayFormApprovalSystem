@@ -77,13 +77,16 @@ module.exports = {
                 }
             });
     },
-    updateManager: function updateManager(mgr) {
+    updateManager: function updateManager(app1) {
         return App1.update({
-            // 下一个填写表格的是销表人员
-            nextperson: '6',
-            manager: mgr.manager,
-            managertime: mgr.managertime
-        });
+                manager: app1.manager,
+                nextperson: app1.nextperson
+            },
+            {
+                where: {
+                    id: app1.formId
+                }
+            });
     },
     updateResult: function updateResult(app1) {
         return App1.update(
