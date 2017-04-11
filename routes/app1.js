@@ -259,6 +259,8 @@ router.post('/', isLogin, function (req, res, next) {
             req.flash('error', '表格状态错误');
             return res.redirect('/app1');
         }
+    } else if (person == '4'){
+
     }
 
 
