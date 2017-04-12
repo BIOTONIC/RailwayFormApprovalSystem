@@ -79,6 +79,7 @@ module.exports = {
     },
     updateManager: function updateManager(app1) {
         return App1.update({
+                approveid: app1.approveid,
                 manager: app1.manager,
                 nextperson: app1.nextperson
             },

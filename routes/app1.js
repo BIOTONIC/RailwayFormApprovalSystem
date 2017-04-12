@@ -302,7 +302,7 @@ router.post('/', isLogin, function (req, res, next) {
             // TODO no managertime
             confService.getApproveCount().then((counts) => {
                 if (typeof counts === 'undefined' || counts.length == 0) {
-                    req.flash('error', 'ApplyCount未存储');
+                    req.flash('error', 'ApproveCount未存储');
                     return res.redirect('/app1');
                 } else {
                     var date = getDate();

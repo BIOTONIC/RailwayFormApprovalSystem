@@ -10,7 +10,7 @@ module.exports = {
     notLogin: function notLogin(req, res, next) {
         if (req.session.userId) {
             req.flash('error', "已经登录");
-            return res.redirect('back');
+            return res.redirect('/home');
         }
         next();
     }

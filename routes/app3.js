@@ -44,7 +44,8 @@ router.get('/', isLogin, function (req, res, next) {
                 //res.locals.workshopmgrtime = '';
                 res.locals.result = '';
                 res.locals.applytime = '系统自行分配';
-                res.render('secondlevel');
+                req.session.nextperson = '1';
+                res.render('thirdlevel');
             } else {
                 // if there is a request form id
                 // open a already exist application
@@ -74,6 +75,7 @@ router.get('/', isLogin, function (req, res, next) {
                         res.locals.workshopmgr = results[0].workshopmgr;
                         res.locals.workshopmgrtime = results[0].workshopmgrtime;
                         res.locals.result = results[0].result;
+                        req.session.nextperson = results[0].nextperson;
                         res.render('thirdlevel');
                     }
                 });
@@ -83,55 +85,142 @@ router.get('/', isLogin, function (req, res, next) {
 });
 
 router.post('/', isLogin, function (req, res, next) {
+    var person = req.session.userId.slice(0, 1);
+    var nextperson = req.session.nextperson;
+
     var app3 = {};
 
-    confService.getCount().then((counts) => {
-        if (counts.length == 0) {
-            req.flash('error', 'Count未存储');
-            return res.redirect('back');
-        } else {
-            var date = getDate();
-            var count = counts[0].count + 1;
-            var fixCount = getFixNumber(count, 3);
-            var applyid = date + fixCount;
+    if (person == '1') {
+        //normal worker
+        if (nextperson == '1') {
+            //create a new application
+            confService.getApplyCount().then((counts) => {
+                if (typeof counts === 'undefined' || counts.length == 0) {
+                    req.flash('error', 'ApplyCount未存储');
+                    return res.redirect('/app3');
+                } else {
+                    var date = getDate();
+                    var count = counts[0].applycount + 1;
+                    var fixCount = getFixNumber(count, 3);
+                    var applyid = date + fixCount;
 
-            app3.id = applyid;
-            app3.workshop = req.session.userId.slice(1);
+                    //id is the same with applyid
+                    app3.id = applyid;
+                    app3.workshop = req.session.userId.slice(1);
+                    app3.telephone = req.body.telephone;
+                    app3.fax = req.body.fax;
+                    app3.applyid = applyid;
+                    app3.section = req.body.section;
+                    app3.reason = req.body.reason;
+                    app3.sqstarttime = getFormatTime(req.body.sqstarttime);
+                    app3.sqendtime = getFormatTime(req.body.sqendtime);
+                    app3.noticedepart = getNoticedepart(req.body.noticedepart);
+                    app3.shigongfang = req.body.shigongfang;
+                    app3.plan = req.body.plan;
+                    app3.techplan = req.body.techplan;
+                    app3.secureplan = req.body.secureplan;
+                    app3.applytime = getTime();
+                    app3.nextperson = '2';
+
+                    app3Service.createApp3(app3).then((result) => {
+                        req.flash('success', '提交成功');
+                        console.log('success');
+                        return res.redirect('home');
+                    }).catch((error) => {
+                        req.flash('error', '提交失败');
+                        return res.redirect('/app3');
+                    });
+                }
+            });
+        } else if (nextperson == '2') {
+            // update the application before workshop manager check
             app3.telephone = req.body.telephone;
             app3.fax = req.body.fax;
-            app3.applyid = applyid;
             app3.section = req.body.section;
             app3.reason = req.body.reason;
-            app3.sqstarttime = req.body.sqstarttime;
-            app3.sqendtime = req.body.sqendtime;
-            var noticedepart = req.body.noticedepart;
-            if (typeof noticedepart === 'undefined' || noticedepart.length == 0) {
-                app3.noticedepart = '';
-            } else {
-                var str = '';
-                for (var i = 0; i < noticedepart.length - 1; i++) {
-                    str = str + noticedepart[i] + '&';
-                }
-                str = str + noticedepart[noticedepart.length - 1];
-                app3.noticedepart = str;
-            }
+            app3.sqstarttime = getFormatTime(req.body.sqstarttime);
+            app3.sqendtime = getFormatTime(req.body.sqendtime);
+            app3.noticedepart = getNoticedepart(req.body.noticedepart);
             app3.shigongfang = req.body.shigongfang;
             app3.plan = req.body.plan;
             app3.techplan = req.body.techplan;
             app3.secureplan = req.body.secureplan;
-            app3.applytime = getTime();
             app3.nextperson = '2';
+            app3.formId = req.body.applyid;
 
-            app3Service.createApp3(app3).then((result) => {
-                req.flash('success', '提交成功');
-                console.log('success');
-                return res.redirect('home');
+            app3Service.updateApp3(app3).then((result) => {
+                req.flash('success', '更新成功');
+                return res.redirect('/app3');
             }).catch((error) => {
                 req.flash('error', '提交失败');
-                return res.redirect('back');
+                return res.redirect('/app3');
             });
+        } else if (nextperson == '6') {
+            // finish the result
+            app3.result = req.body.result;
+            app3.nextperson = '7';
+            app3.formId = req.body.applyid;
+
+            app3Service.updateResult(app3).then((result) => {
+                req.flash('success', '销点完成');
+                return res.redirect('/app3');
+            }).catch((error) => {
+                req.flash('error', '提交失败');
+                return res.redirect('/app3');
+            });
+        } else if (nextperson == '7') {
+            // the application is closed
+            req.flash('error', '填写完毕 不能更新');
+            return res.redirect('/app3');
+        } else {
+            // no other state for nextperson
+            req.flash('error', '表格状态错误');
+            return res.redirect('/app3');
         }
-    });
+    } else if (person == '2') {
+        // workshop manager
+        if (nextperson == '2') {
+            // update the application before result
+            // TODO no workshopmgrtime
+            confService.getApproveCount().then((counts) => {
+                if (typeof counts === 'undefined' || counts.length == 0) {
+                    req.flash('error', 'ApproveCount未存储');
+                    return res.redirect('/app3');
+                } else {
+                    var date = getDate();
+                    var count = counts[0].approvecount + 1;
+                    var fixCount = getFixNumber(count, 3);
+                    var approveid = date + fixCount;
+
+                    app3.approveid = approveid;
+                    app3.workshopmgr = req.body.workshopmgr;
+                    app3.nextperson = '6';
+                    app3.formId = req.body.applyid;
+
+
+                    app3Service.updateWorkshopMgr(app3).then((result) => {
+                        req.flash('success', '审批完成');
+                        return res.redirect('/app3');
+                    }).catch((error) => {
+                        req.flash('error', '提交失败');
+                        return res.redirect('/app3');
+                    });
+                }
+            });
+        } else if (nextperson == '6' || nextperson == '7') {
+            // can not update
+            req.flash('error', '审批结束 不能更新');
+            return res.redirect('/app3');
+        } else {
+            // no other state for nextperson
+            req.flash('error', '表格状态错误');
+            return res.redirect('/app3');
+        }
+    } else {
+        // person wrong
+        req.flash('error', '账号角色错误');
+        return res.redirect('/app3');
+    }
 });
 
 module.exports = router;

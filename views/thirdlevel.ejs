@@ -47,6 +47,7 @@
 </head>
 <body onload="controldisplay()">
 <%- include('notif')%>
+<h2><a style="text-decoration:none;color:black" href="/home">首页</a></h2>
 <form action="/app3" method="post">
     <table>
         <caption>三级（段）通信线路及设备停机要点审批表</caption>
@@ -71,19 +72,19 @@
             <td colspan="3">停机原因</td>
         </tr>
         <tr>
-            <td colspan="3"><input class="full cj" id="section" name="section" readonly type="text"></td>
-            <td colspan="3"><input class="full cj" id="reason" name="reason" readonly type="text"></td>
+            <td colspan="3"><input class="full cj" id="section" name="section" readonly type="text" value=<%= section %>></td>
+            <td colspan="3"><input class="full cj" id="reason" name="reason" readonly type="text"  value=<%= reason %>></td>
         </tr>
         <tr>
             <td colspan="6" align="center">申请要点时间</td>
         </tr>
         <tr>
             <td colspan="3">起始时间：
-                <input class="cj time" id="sqstarttime" name="sqstarttime" value=<%= sqstarttime %> readonly
-                       type="text">
+                <input class="cj time" id="sqstarttime" name="sqstarttime"  readonly
+                       type="text" value=<%= sqstarttime %>>
             </td>
             <td colspan="3">截止时间：
-                <input class="cj" id="sqendtime time" value=<%= sqendtime %> name="sqendtime" readonly type="text">
+                <input class="cj time" id="sqendtime" name="sqendtime" readonly type="text" value=<%= sqendtime %>>
             </td>
         </tr>
         <tr>
@@ -131,7 +132,7 @@
         </tr>
         <tr>
             <td colspan="6" align="center"><textarea class="cjzr" id="workshopmgr" readonly
-                                                     name="workshopmgr" value =<%= workshopmgr %>><%= workshopmgr %></textarea></td>
+                                                     name="workshopmgr" value=<%= workshopmgr %>><%= workshopmgr %></textarea></td>
         </tr>
         <tr>
             <td colspan="1"><span>完成及销点情况(销点人签字)</span></td>

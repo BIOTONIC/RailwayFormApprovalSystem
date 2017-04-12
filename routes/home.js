@@ -77,7 +77,7 @@ router.get('/queryall', isLogin, function (req, res, next) {
         if (app3Results != null && app3Results.length > 0) {
             for (var i = 0; i < app3Results.length; i++) {
                 var result = {};
-                result.level = '1';
+                result.level = '3';
                 result.id = app3Results[i].id;
                 result.workshop = app3Results[i].workshop;
                 result.nextperson = app3Results[i].nextperson;

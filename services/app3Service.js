@@ -21,16 +21,50 @@ module.exports = {
             nextperson:app3.nextperson,
         });
     },
-    updateWorkshopMgr: function updateWorkshopMgr(mgr) {
+    updateApp3: function updateApp3(app3) {
         return App3.update({
-            workshopmgr: mgr.workshopmgr,
-            workshopmgrtime: mgr.workshopmgrtime
-        });
+                telephone: app3.telephone,
+                fax: app3.fax,
+                section: app3.section,
+                reason: app3.reason,
+                sqstarttime: app3.sqstarttime,
+                sqendtime: app3.sqendtime,
+                noticedepart: app3.noticedepart,
+                shigongfang: app3.shigongfang,
+                plan: app3.plan,
+                techplan: app3.techplan,
+                secureplan: app3.secureplan,
+                nextperson: app3.nextperson
+            },
+            {
+                where: {
+                    id: app3.formId
+                }
+            });
     },
-    updateResult: function updateResult(text) {
+    updateWorkshopMgr: function updateWorkshopMgr(app3) {
         return App3.update({
-            result: text
-        });
+                approveid: app3.approveid,
+                workshopmgr: app3.workshopmgr,
+                nextperson: app3.nextperson
+            },
+            {
+                where: {
+                    id: app3.formId
+                }
+            });
+    },
+    updateResult: function updateResult(app3) {
+        return App3.update(
+            {
+                result: app3.result,
+                nextperson: app3.nextperson
+            },
+            {
+                where: {
+                    id: app3.formId
+                }
+            });
     },
     find: function find(need, query) {
         return App3.findAll({

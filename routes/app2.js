@@ -44,6 +44,7 @@ router.get('/', isLogin, function (req, res, next) {
                 //res.locals.workshopmgrtime = '';
                 res.locals.result = '';
                 res.locals.applytime = '系统自行分配';
+                req.session.nextperson = '1';
                 res.render('secondlevel');
             } else {
                 // if there is a request form id
@@ -132,16 +133,93 @@ router.post('/', isLogin, function (req, res, next) {
                 }
             });
         } else if (nextperson == '2') {
+            // update the application before workshop manager check
+            app2.telephone = req.body.telephone;
+            app2.fax = req.body.fax;
+            app2.section = req.body.section;
+            app2.reason = req.body.reason;
+            app2.sqstarttime = getFormatTime(req.body.sqstarttime);
+            app2.sqendtime = getFormatTime(req.body.sqendtime);
+            app2.noticedepart = getNoticedepart(req.body.noticedepart);
+            app2.shigongfang = req.body.shigongfang;
+            app2.plan = req.body.plan;
+            app2.techplan = req.body.techplan;
+            app2.secureplan = req.body.secureplan;
+            app2.nextperson = '2';
+            app2.formId = req.body.applyid;
 
+            app2Service.updateApp2(app2).then((result) => {
+                req.flash('success', '更新成功');
+                return res.redirect('/app2');
+            }).catch((error) => {
+                req.flash('error', '提交失败');
+                return res.redirect('/app2');
+            });
         } else if (nextperson == '6') {
+            // finish the result
+            app2.result = req.body.result;
+            app2.nextperson = '7';
+            app2.formId = req.body.applyid;
 
+            app2Service.updateResult(app2).then((result) => {
+                req.flash('success', '销点完成');
+                return res.redirect('/app2');
+            }).catch((error) => {
+                req.flash('error', '提交失败');
+                return res.redirect('/app2');
+            });
         } else if (nextperson == '7') {
-
+            // the application is closed
+            req.flash('error', '填写完毕 不能更新');
+            return res.redirect('/app2');
         } else {
-
+            // no other state for nextperson
+            req.flash('error', '表格状态错误');
+            return res.redirect('/app2');
         }
     } else if (person == '2') {
+        // workshop manager
+        if (nextperson == '2') {
+            // update the application before result
+            // TODO no workshopmgrtime
+            confService.getApproveCount().then((counts) => {
+                if (typeof counts === 'undefined' || counts.length == 0) {
+                    req.flash('error', 'ApproveCount未存储');
+                    return res.redirect('/app2');
+                } else {
+                    var date = getDate();
+                    var count = counts[0].approvecount + 1;
+                    var fixCount = getFixNumber(count, 3);
+                    var approveid = date + fixCount;
 
+                    app2.approveid = approveid;
+                    app2.workshopmgr = req.body.workshopmgr;
+                    app2.nextperson = '6';
+                    app2.formId = req.body.applyid;
+
+
+                    app2Service.updateWorkshopMgr(app2).then((result) => {
+                        req.flash('success', '审批完成');
+                        return res.redirect('/app2');
+                    }).catch((error) => {
+                        req.flash('error', '提交失败');
+                        return res.redirect('/app2');
+                    });
+                }
+            });
+        } else if (nextperson == '6' || nextperson == '7') {
+            // can not update
+            req.flash('error', '审批结束 不能更新');
+            return res.redirect('/app2');
+        } else {
+            // no other state for nextperson
+            req.flash('error', '表格状态错误');
+            return res.redirect('/app2');
+        }
+    } else {
+        // person wrong
+        req.flash('error', '账号角色错误');
+        return res.redirect('/app2');
     }
 });
 
