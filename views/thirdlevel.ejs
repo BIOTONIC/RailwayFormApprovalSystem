@@ -53,7 +53,7 @@
         <tbody>
         <tr>
             <td colspan="1"><span>申请车间(盖章)</span></td>
-            <td colspan="1"><input name="workshop" type="text" readonly value=<%= workshop %>></td>
+            <td colspan="1"><input id="workshop" name="workshop" type="text" readonly value=<%= workshop %>></td>
             <td colspan="1"><span>联系电话</span></td>
             <td colspan="1"><input class="full cj" id="telephone" readonly name="telephone" type="text"
                                    value=<%= telephone %>></td>
@@ -101,14 +101,14 @@
         </tr>
         <tr>
             <td colspan="6" align="center"><textarea class="cj" readonly name="shigongfang"
-                                                     id="shigongfang"><%= shigongfang %></textarea>
+                                                     id="shigongfang" value=<%= shigongfang %>><%= shigongfang %></textarea>
             </td>
         </tr>
         <tr>
             <td colspan="6" align="center">影响范围及停机施工方案(可另附页)</td>
         </tr>
         <tr>
-            <td colspan="6" align="center"><textarea class="cj" id="plan" readonly name="plan"><%= plan %></textarea>
+            <td colspan="6" align="center"><textarea class="cj" id="plan" readonly name="plan" value=<%= plan %>><%= plan %></textarea>
             </td>
         </tr>
         <tr>
@@ -116,7 +116,7 @@
         </tr>
         <tr>
             <td colspan="6" align="center"><textarea class="ta1 cj" id="techplan" readonly
-                                                     name="techplan"><%= techplan %></textarea>
+                                                     name="techplan" value=<%= techplan %>><%= techplan %></textarea>
             </td>
         </tr>
         <tr>
@@ -124,14 +124,14 @@
         </tr>
         <tr>
             <td colspan="6" align="center"><textarea class="ta1 cj" id="secureplan" readonly
-                                                     name="secureplan"><%= secureplan %></textarea></td>
+                                                     name="secureplan" value=<%= secureplan %>><%= secureplan %></textarea></td>
         </tr>
         <tr>
             <td colspan="6" align="center">工长(安全员)审批</td>
         </tr>
         <tr>
             <td colspan="6" align="center"><textarea class="cjzr" id="workshopmgr" readonly
-                                                     name="workshopmgr"><%= workshopmgr %></textarea></td>
+                                                     name="workshopmgr" value =<%= workshopmgr %>><%= workshopmgr %></textarea></td>
         </tr>
         <tr>
             <td colspan="1"><span>完成及销点情况(销点人签字)</span></td>
@@ -142,7 +142,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="6" align="center"><input type="submit" onclick="return submitform()" value="确认提交"></td>
+            <td colspan="6" align="center"><input id="subbtn" type="submit" onclick="return submitform()" value="确认提交"></td>
         </tr>
         </tbody>
     </table>
@@ -159,6 +159,8 @@
                     console.log(val);
                 });
             });
+			
+			
         </script>
 
 <script>
@@ -257,6 +259,7 @@
     }
     function controldisplay() {
         var id = getcookie();
+		
         switch (id[0]) {
             case "1":
                     var mgrelement = document.getElementById("workshopmgr");
@@ -276,6 +279,9 @@
                     break;
             case "2":
                 removeReadOnly(getpart("cjzr"));
+				if(id.substring(1) != document.getElementById("workshop").substring(2)){
+					document.getElementById("subbtn").disabled="disabled";
+				}
                 break;
             case "3":
                 removeReadOnly(getpart("jsk"));

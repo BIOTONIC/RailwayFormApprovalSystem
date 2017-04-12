@@ -1,9 +1,16 @@
 var Conf = require('../models/conf');
 
 module.exports = {
-    getCount: function getCount() {
+    getApplyCount: function getApplyCount() {
         return Conf.findAll({
-            attributes:['count']
+            attributes: ['applycount'],
+            where: {id: 0}
+        });
+    },
+    getApproveCount: function getApproveCount() {
+        return Conf.findAll({
+            attributes: ['approvecount'],
+            where: {id: 0}
         });
     }
 }

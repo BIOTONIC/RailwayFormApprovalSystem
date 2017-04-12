@@ -6,7 +6,7 @@ var getDate = require('../others/util').getDate;
 var getTime = require('../others/util').getTime;
 var getFixNumber = require('../others/util').getFixNumber;
 var getNoticedepart = require('../others/util').getNoticedepart;
-var getFormatTime =require('../others/util').getFormatTime;
+var getFormatTime = require('../others/util').getFormatTime;
 var app1Service = require('../services/app1Service');
 var workshopService = require('../services/workshopService');
 var confService = require('../services/confService');
@@ -110,13 +110,13 @@ router.post('/', isLogin, function (req, res, next) {
         // normal worker
         if (nextperson == '1') {
             // create a new application
-            confService.getCount().then((counts) => {
-                if (counts.length == 0) {
-                    req.flash('error', 'Count未存储');
+            confService.getApplyCount().then((counts) => {
+                if (typeof counts === 'undefined' || counts.length == 0) {
+                    req.flash('error', 'ApplyCount未存储');
                     return res.redirect('/app1');
                 } else {
                     var date = getDate();
-                    var count = counts[0].count + 1;
+                    var count = counts[0].applycount + 1;
                     var fixCount = getFixNumber(count, 3);
                     var applyid = date + fixCount;
 
@@ -183,7 +183,7 @@ router.post('/', isLogin, function (req, res, next) {
                 req.flash('error', '提交失败');
                 return res.redirect('/app1');
             });
-        } else if (nextperson in ['2', '3', '4', '5']) {
+        } else if (nextperson == '3' || nextperson == '4' || nextperson == '5') {
             // can not post under check
             req.flash('error', '审核中 不能更新');
             return res.redirect('/app1');
@@ -212,7 +212,14 @@ router.post('/', isLogin, function (req, res, next) {
         }
     } else if (person == '2') {
         //workshop manager
-        if (nextperson in ['2', '3']) {
+        var workshopId = req.session.userId.slice(1);
+        var actualworkshopId = req.body.workshop;
+        if (workshopId != actualworkshopId) {
+            // only the exact workshop manager can check the application
+            req.flash('error', '无权审批其他车间');
+            return res.redirect('/app1');
+        }
+        else if (nextperson == '2' || nextperson == '3') {
             // update the application before tech depart check
             // TODO current workshopmgttime is in workshopmgr
             app1.workshopmgr = req.body.workshopmgr;
@@ -226,7 +233,7 @@ router.post('/', isLogin, function (req, res, next) {
                 req.flash('error', '提交失败');
                 return res.redirect('/aap1');
             });
-        } else if (nextperson in ['4', '5', '6', '7']) {
+        } else if (nextperson == '4' || nextperson == '5' || nextperson == '6' || nextperson == '7') {
             // can not update
             req.flash('error', '审批结束 不能更新');
             return res.redirect('/app1');
@@ -237,7 +244,7 @@ router.post('/', isLogin, function (req, res, next) {
         }
     } else if (person == '3') {
         // tech depart
-        if (nextperson in ['3', '4']) {
+        if (nextperson == '3' || nextperson == '4') {
             // update the application before secure depart check
             // TODO no techtime & no change for pfstarttime pfendtime
             app1.techdepart = req.body.techdepart;
@@ -253,18 +260,19 @@ router.post('/', isLogin, function (req, res, next) {
                 req.flash('error', '提交失败');
                 return res.redirect('/aap1');
             });
-        } else if (nextperson in ['5', '6', '7']) {
+        } else if (nextperson == '5' || nextperson == '6' || nextperson == '7') {
             // can not update
             req.flash('error', '审批结束 不能更新');
             return res.redirect('/app1');
-        } else {
+        }
+        else {
             // no other state for nextperson
             req.flash('error', '表格状态错误');
             return res.redirect('/app1');
         }
     } else if (person == '4') {
         // secure depart
-        if (nextperson in ['4', '5']) {
+        if (nextperson == '4' || nextperson == '5') {
             // update the application before manager check
             // TODO no securetime
             app1.securedepart = req.body.securedepart;
@@ -278,7 +286,7 @@ router.post('/', isLogin, function (req, res, next) {
                 req.flash('error', '提交失败');
                 return res.redirect('/aap1');
             });
-        } else if (nextperson in ['6', '7']) {
+        } else if (nextperson == '6' || nextperson == '7') {
             // can not update
             req.flash('error', '审批结束 不能更新');
             return res.redirect('/app1');
@@ -289,21 +297,34 @@ router.post('/', isLogin, function (req, res, next) {
         }
     } else if (person == '5') {
         // manager
-        if (nextperson in ['5', '6']) {
+        if (nextperson == '5') {
             // update the application before result
             // TODO no managertime
-            app1.manager = req.body.manager;
-            app1.nextperson = '6';
-            app1.formId = req.body.applyid;
+            confService.getApproveCount().then((counts) => {
+                if (typeof counts === 'undefined' || counts.length == 0) {
+                    req.flash('error', 'ApplyCount未存储');
+                    return res.redirect('/app1');
+                } else {
+                    var date = getDate();
+                    var count = counts[0].approvecount + 1;
+                    var fixCount = getFixNumber(count, 3);
+                    var approveid = date + fixCount;
 
-            app1Service.updateManager(app1).then((result) => {
-                req.flash('success', '审批完成');
-                return res.redirect('/app1');
-            }).catch((error) => {
-                req.flash('error', '提交失败');
-                return res.redirect('/app1');
+                    app1.approveid = approveid;
+                    app1.manager = req.body.manager;
+                    app1.nextperson = '6';
+                    app1.formId = req.body.applyid;
+
+                    app1Service.updateManager(app1).then((result) => {
+                        req.flash('success', '审批完成');
+                        return res.redirect('/app1');
+                    }).catch((error) => {
+                        req.flash('error', '提交失败');
+                        return res.redirect('/app1');
+                    });
+                }
             });
-        } else if (nextperson == '7') {
+        } else if (nextperson == '6' || nextperson == '7') {
             // can not update
             req.flash('error', '审批结束 不能更新');
             return res.redirect('/app1');

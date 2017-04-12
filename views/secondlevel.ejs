@@ -105,7 +105,7 @@
         </tr>
         <tr>
             <td colspan="6" align="center"><textarea class="cj" name="shigongfang" readonly
-                                                     id="shigongfang"><%= shigongfang %></textarea>
+                                                     id="shigongfang" value=<%= shigongfang %>><%= shigongfang %></textarea>
             </td>
         </tr>
         <tr>
@@ -113,7 +113,7 @@
         </tr>
         <tr>
             <td colspan="6" align="center"><textarea class="cj" name="plan" readonly id="plan"
-                                                     name="plan"><%= plan %></textarea>
+                                                     name="plan" value=<%= plan %>><%= plan %></textarea>
             </td>
         </tr>
         <tr>
@@ -121,7 +121,7 @@
         </tr>
         <tr>
             <td colspan="6" align="center"><textarea class="ta1 cj" id="techplan" readonly
-                                                     name="techplan"><%= techplan %></textarea>
+                                                     name="techplan" value=<%= techplan %>><%= techplan %></textarea>
             </td>
         </tr>
         <tr>
@@ -129,14 +129,14 @@
         </tr>
         <tr>
             <td colspan="6" align="center"><textarea class="ta1 cj" id="secureplan" readonly
-                                                     name="secureplan"><%= secureplan %></textarea></td>
+                                                     name="secureplan" value=<%= secureplan %>><%= secureplan %></textarea></td>
         </tr>
         <tr>
             <td colspan="6" align="center">车间主任审批</td>
         </tr>
         <tr>
             <td colspan="6" align="center"><textarea class="cjzr" id="workshopmgr" readonly
-                                                     name="workshopmgr"><%= workshopmgr %></textarea></td>
+                                                     name="workshopmgr" value=<%= workshopmgr %>><%= workshopmgr %></textarea></td>
         </tr>
         <tr>
             <td colspan="1"><span>完成及销点情况(销点人签字)</span></td>
@@ -234,6 +234,9 @@
                 break;
             case "2":
                 return checkpart("cjzr");
+				if(id.substring(1) != document.getElementById("workshop").substring(2)){
+					document.getElementById("subbtn").disabled="disabled";
+				}
                 break;
             case "3":
                 return checkpart("jsk");
