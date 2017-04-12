@@ -6,7 +6,7 @@ var getDate = require('../others/util').getDate;
 var getTime = require('../others/util').getTime;
 var getFixNumber = require('../others/util').getFixNumber;
 var getNoticedepart = require('../others/util').getNoticedepart;
-var getFormatTime =require('../others/util').getFormatTime;
+var getFormatTime = require('../others/util').getFormatTime;
 var app2Service = require('../services/app2Service');
 var workshopService = require('../services/workshopService');
 var confService = require('../services/confService');
@@ -89,15 +89,15 @@ router.post('/', isLogin, function (req, res, next) {
 
     var app2 = {};
 
-    if(person == '1'){
+    if (person == '1') {
         //normal worker
-        if(nextperson == '1'){
+        if (nextperson == '1') {
             //create a new application
-            confService.getApplyCount().then((counts)=> {
+            confService.getApplyCount().then((counts) => {
                 if (typeof counts === 'undefined' || counts.length == 0) {
                     req.flash('error', 'ApplyCount未存储');
                     return res.redirect('/app2');
-                } else{
+                } else {
                     var date = getDate();
                     var count = counts[0].applycount + 1;
                     var fixCount = getFixNumber(count, 3);
@@ -114,9 +114,34 @@ router.post('/', isLogin, function (req, res, next) {
                     app2.sqstarttime = getFormatTime(req.body.sqstarttime);
                     app2.sqendtime = getFormatTime(req.body.sqendtime);
                     app2.noticedepart = getNoticedepart(req.body.noticedepart);
+                    app2.shigongfang = req.body.shigongfang;
+                    app2.plan = req.body.plan;
+                    app2.techplan = req.body.techplan;
+                    app2.secureplan = req.body.secureplan;
+                    app2.applytime = getTime();
+                    app2.nextperson = '2';
+
+                    app2Service.createApp2(app2).then((result) => {
+                        req.flash('success', '提交成功');
+                        console.log('success');
+                        return res.redirect('home');
+                    }).catch((error) => {
+                        req.flash('error', '提交失败');
+                        return res.redirect('/app2');
+                    });
                 }
             });
+        } else if (nextperson == '2') {
+
+        } else if (nextperson == '6') {
+
+        } else if (nextperson == '7') {
+
+        } else {
+
         }
+    } else if (person == '2') {
+
     }
 });
 
