@@ -5,6 +5,7 @@ var isLogin = require('../others/auth').isLogin;
 var getDate = require('../others/util').getDate;
 var getTime = require('../others/util').getTime;
 var getFixNumber = require('../others/util').getFixNumber;
+var getNoticedepart = require('../others/util').getNoticedepart;
 var getFormatTime =require('../others/util').getFormatTime;
 var app3Service = require('../services/app3Service');
 var workshopService = require('../services/workshopService');

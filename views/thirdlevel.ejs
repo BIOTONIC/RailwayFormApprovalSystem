@@ -223,14 +223,14 @@
                     }
                 } else if(part[i].tagName.toLowerCase() == "textarea"){
                     if(isIE()){
-                        if(part[i].innerText == "" || part[i].value == ""){
+                        if(part[i].innerText == "" && part[i].value == ""){
                             part[i].innerText = "此项不能为空！";
                             part[i].value = "此项不能为空！";
                             window.location = "#" + part[i].id;
                             return false;
                         }
                     } else{
-                        if(part[i].innerHTML == "" || part[i].value == ""){
+                        if(part[i].innerHTML == "" && part[i].value == ""){
                             part[i].innerHTML = "此项不能为空！";
                             part[i].value = "此项不能为空！";
                             window.location = "#" + part[i].id;

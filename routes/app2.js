@@ -5,6 +5,7 @@ var isLogin = require('../others/auth').isLogin;
 var getDate = require('../others/util').getDate;
 var getTime = require('../others/util').getTime;
 var getFixNumber = require('../others/util').getFixNumber;
+var getNoticedepart = require('../others/util').getNoticedepart;
 var getFormatTime =require('../others/util').getFormatTime;
 var app2Service = require('../services/app2Service');
 var workshopService = require('../services/workshopService');
@@ -54,7 +55,7 @@ router.get('/', isLogin, function (req, res, next) {
                         req.flash('error', '申请表不存在');
                         return res.redirect('home');
                     } else {
-                        //先一股脑返回所有查询数据
+                        // return all data seems easy
                         res.locals.workshop = results[0].workshop;
                         res.locals.telephone = results[0].telephone;
                         res.locals.fax = results[0].fax;
@@ -73,6 +74,7 @@ router.get('/', isLogin, function (req, res, next) {
                         res.locals.workshopmgr = results[0].workshopmgr;
                         res.locals.workshopmgrtime = results[0].workshopmgrtime;
                         res.locals.result = results[0].result;
+                        req.session.nextperson = results[0].nextperson;
                         res.render('secondlevel');
                     }
                 });
@@ -82,55 +84,40 @@ router.get('/', isLogin, function (req, res, next) {
 });
 
 router.post('/', isLogin, function (req, res, next) {
+    var person = req.session.userId.slice(0, 1);
+    var nextperson = req.session.nextperson;
+
     var app2 = {};
 
-    confService.getCount().then((counts) => {
-        if (counts.length == 0) {
-            req.flash('error', 'Count未存储');
-            return res.redirect('back');
-        } else {
-            var date = getDate();
-            var count = counts[0].count + 1;
-            var fixCount = getFixNumber(count, 3);
-            var applyid = date + fixCount;
+    if(person == '1'){
+        //normal worker
+        if(nextperson == '1'){
+            //create a new application
+            confService.getApplyCount().then((counts)=> {
+                if (typeof counts === 'undefined' || counts.length == 0) {
+                    req.flash('error', 'ApplyCount未存储');
+                    return res.redirect('/app2');
+                } else{
+                    var date = getDate();
+                    var count = counts[0].applycount + 1;
+                    var fixCount = getFixNumber(count, 3);
+                    var applyid = date + fixCount;
 
-            app2.id = applyid;
-            app2.workshop = req.session.userId.slice(1);
-            app2.telephone = req.body.telephone;
-            app2.fax = req.body.fax;
-            app2.applyid = applyid;
-            app2.section = req.body.section;
-            app2.reason = req.body.reason;
-            app2.sqstarttime = req.body.sqstarttime;
-            app2.sqendtime = req.body.sqendtime;
-            var noticedepart = req.body.noticedepart;
-            if (typeof noticedepart === 'undefined' || noticedepart.length == 0) {
-                app2.noticedepart = '';
-            } else {
-                var str = '';
-                for (var i = 0; i < noticedepart.length - 1; i++) {
-                    str = str + noticedepart[i] + '&';
+                    //id is the same with applyid
+                    app2.id = applyid;
+                    app2.workshop = req.session.userId.slice(1);
+                    app2.telephone = req.body.telephone;
+                    app2.fax = req.body.fax;
+                    app2.applyid = applyid;
+                    app2.section = req.body.section;
+                    app2.reason = req.body.reason;
+                    app2.sqstarttime = getFormatTime(req.body.sqstarttime);
+                    app2.sqendtime = getFormatTime(req.body.sqendtime);
+                    app2.noticedepart = getNoticedepart(req.body.noticedepart);
                 }
-                str = str + noticedepart[noticedepart.length - 1];
-                app2.noticedepart = str;
-            }
-            app2.shigongfang = req.body.shigongfang;
-            app2.plan = req.body.plan;
-            app2.techplan = req.body.techplan;
-            app2.secureplan = req.body.secureplan;
-            app2.applytime = getTime();
-            app2.nextperson = '2';
-
-            app2Service.createApp2(app2).then((result) => {
-                req.flash('success', '提交成功');
-                console.log('success');
-                return res.redirect('home');
-            }).catch((error) => {
-                req.flash('error', '提交失败');
-                return res.redirect('back');
             });
         }
-    });
+    }
 });
 
 module.exports = router;

@@ -64,7 +64,7 @@ router.get('/', isLogin, function (req, res, next) {
                         req.flash('error', '申请表不存在');
                         return res.redirect('home');
                     } else {
-                        //先一股脑返回所有查询数据
+                        // return all data seems easy
                         res.locals.workshop = results[0].workshop;
                         res.locals.telephone = results[0].telephone;
                         res.locals.fax = results[0].fax;
