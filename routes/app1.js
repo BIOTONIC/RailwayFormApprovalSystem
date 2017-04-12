@@ -149,7 +149,6 @@ router.post('/', isLogin, function (req, res, next) {
 
                     app1Service.createApp1(app1).then((result) => {
                         req.flash('success', '提交成功');
-                        console.log('success');
                         return res.redirect('home');
                     }).catch((error) => {
                         req.flash('error', '提交失败');
@@ -231,7 +230,7 @@ router.post('/', isLogin, function (req, res, next) {
                 return res.redirect('/app1');
             }).catch((error) => {
                 req.flash('error', '提交失败');
-                return res.redirect('/aap1');
+                return res.redirect('/app1');
             });
         } else if (nextperson == '4' || nextperson == '5' || nextperson == '6' || nextperson == '7') {
             // can not update
@@ -258,7 +257,7 @@ router.post('/', isLogin, function (req, res, next) {
                 return res.redirect('/app1');
             }).catch((error) => {
                 req.flash('error', '提交失败');
-                return res.redirect('/aap1');
+                return res.redirect('/app1');
             });
         } else if (nextperson == '5' || nextperson == '6' || nextperson == '7') {
             // can not update
@@ -284,7 +283,7 @@ router.post('/', isLogin, function (req, res, next) {
                 return res.redirect('/app1');
             }).catch((error) => {
                 req.flash('error', '提交失败');
-                return res.redirect('/aap1');
+                return res.redirect('/app1');
             });
         } else if (nextperson == '6' || nextperson == '7') {
             // can not update

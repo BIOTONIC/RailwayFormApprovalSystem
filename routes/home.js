@@ -7,6 +7,9 @@ var app2Service = require('../services/app2Service');
 var app3Service = require('../services/app3Service');
 
 router.get('/', isLogin, function (req, res, next) {
+    if (typeof req.session.formId != 'undefined') {
+        delete req.session.formId;
+    }
     res.render('home');
 });
 
