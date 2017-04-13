@@ -96,8 +96,7 @@ DELIMITER ;;
 	after update on application1
 	for each row
 	begin
-	if (New.approveid != Old.approveid)
-	then
+	if old.approveid  IS NULL then
 	update conf set approvecount = approvecount + 1 where id = 0;
 	end if;
 	end */;;
@@ -180,8 +179,7 @@ DELIMITER ;;
 	after update on application2
 	for each row
 	begin
-	if (New.approveid != Old.approveid)
-	then
+	if old.approveid IS NULL then
 	update conf set approvecount = approvecount + 1 where id = 0;
 	end if;
 	end */;;
@@ -264,8 +262,7 @@ DELIMITER ;;
 	after update on application3
 	for each row
 	begin
-	if (New.approveid != Old.approveid)
-	then
+	if old.approveid IS NULL then
 	update conf set approvecount = approvecount + 1 where id = 0;
 	end if;
 	end */;;
@@ -360,4 +357,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-12 16:25:16
+-- Dump completed on 2017-04-13 16:43:01
