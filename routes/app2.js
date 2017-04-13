@@ -8,80 +8,75 @@ var getFixNumber = require('../others/util').getFixNumber;
 var getNoticedepart = require('../others/util').getNoticedepart;
 var getFormatTime = require('../others/util').getFormatTime;
 var app2Service = require('../services/app2Service');
-var workshopService = require('../services/workshopService');
 var confService = require('../services/confService');
 
 router.get('/', isLogin, function (req, res, next) {
-    // for example: userId is 101, so workshopId is 01
+    // for example: userId is 101, so workshop is 01
     var person = req.session.userId.slice(0, 1);
-    var workshopId = req.session.userId.slice(1);
-    workshopService.findNameById(workshopId).then((results) => {
-        if (results.length == 0) {
-            req.flash('error', '车间不存在');
-            return res.redirect('home');
-        } else {
-            if (typeof req.session.formId === 'undefined' && person == '1') {
-                // if there is no request form id and the person is 1
-                // create a new application
-                res.locals.workshopId = workshopId;
-                res.locals.workshop = results[0].name;
-                res.locals.telephone = '';
-                res.locals.fax = '';
-                res.locals.applyid = '系统自行分配';
-                res.locals.approveid = '系统自行分配';
-                res.locals.section = '';
-                res.locals.reason = '';
-                res.locals.sqstarttime = '';
-                res.locals.sqendtime = '';
-                res.locals.noticedepart = '';
-                res.locals.shigongfang = '';
-                res.locals.plan = '';
-                res.locals.techplan = '';
-                res.locals.secureplan = '';
-                res.locals.workshopmgr = '';
-                // workshopmgrtime will be add in workshopmgr
-                // no need to render separately
-                //res.locals.workshopmgrtime = '';
-                res.locals.result = '';
-                res.locals.applytime = '系统自行分配';
-                req.session.nextperson = '1';
-                res.render('secondlevel');
+    var workshop = req.session.userId.slice(1);
+
+    if (typeof req.session.formId === 'undefined' && person == '1') {
+        // if there is no request form id and the person is 1
+        // create a new application
+        res.locals.workshop = workshop;
+        res.locals.telephone = '';
+        res.locals.fax = '';
+        res.locals.applyid = '系统自行分配';
+        res.locals.approveid = '系统自行分配';
+        res.locals.section = '';
+        res.locals.reason = '';
+        res.locals.sqstarttime = '';
+        res.locals.sqendtime = '';
+        res.locals.noticedepart = '';
+        res.locals.shigongfang = '';
+        res.locals.plan = '';
+        res.locals.techplan = '';
+        res.locals.secureplan = '';
+        res.locals.workshopmgr = '';
+        // workshopmgrtime will be add in workshopmgr
+        // no need to render separately
+        //res.locals.workshopmgrtime = '';
+        res.locals.result = '';
+        res.locals.applytime = '系统自行分配';
+        req.session.nextperson = '1';
+        res.render('secondlevel');
+    } else {
+        // if there is a request form id
+        // open a already exist application
+        var query = {};
+        query.id = req.session.formId;
+        app2Service.find3(query).then((results) => {
+            if (typeof results === 'undefined') {
+                req.flash('error', '申请表不存在');
+                return res.redirect('home');
+            } else if (typeof results[0].workshop === 'undefined') {
+                delete formId;
+                return res.redirect('home');
             } else {
-                // if there is a request form id
-                // open a already exist application
-                var query = {};
-                query.id = req.session.formId;
-                app2Service.find3(query).then((results) => {
-                    if (typeof results === 'undefined') {
-                        req.flash('error', '申请表不存在');
-                        return res.redirect('home');
-                    } else {
-                        // return all data seems easy
-                        res.locals.workshop = results[0].workshop;
-                        res.locals.telephone = results[0].telephone;
-                        res.locals.fax = results[0].fax;
-                        res.locals.applyid = results[0].applyid;
-                        res.locals.approveid = results[0].approveid;
-                        res.locals.section = results[0].section;
-                        res.locals.reason = results[0].reason;
-                        res.locals.sqstarttime = results[0].sqstarttime;
-                        res.locals.sqendtime = results[0].sqendtime;
-                        res.locals.noticedepart = results[0].noticedepart;
-                        res.locals.shigongfang = results[0].shigongfang;
-                        res.locals.plan = results[0].plan;
-                        res.locals.techplan = results[0].techplan;
-                        res.locals.secureplan = results[0].secureplan;
-                        res.locals.applytime = results[0].applytime;
-                        res.locals.workshopmgr = results[0].workshopmgr;
-                        res.locals.workshopmgrtime = results[0].workshopmgrtime;
-                        res.locals.result = results[0].result;
-                        req.session.nextperson = results[0].nextperson;
-                        res.render('secondlevel');
-                    }
-                });
+                // return all data seems easy
+                res.locals.workshop = results[0].workshop;
+                res.locals.telephone = results[0].telephone;
+                res.locals.fax = results[0].fax;
+                res.locals.applyid = results[0].applyid;
+                res.locals.approveid = results[0].approveid;
+                res.locals.section = results[0].section;
+                res.locals.reason = results[0].reason;
+                res.locals.sqstarttime = results[0].sqstarttime;
+                res.locals.sqendtime = results[0].sqendtime;
+                res.locals.noticedepart = results[0].noticedepart;
+                res.locals.shigongfang = results[0].shigongfang;
+                res.locals.plan = results[0].plan;
+                res.locals.techplan = results[0].techplan;
+                res.locals.secureplan = results[0].secureplan;
+                res.locals.applytime = results[0].applytime;
+                res.locals.workshopmgr = results[0].workshopmgr;
+                res.locals.workshopmgrtime = results[0].workshopmgrtime;
+                res.locals.result = results[0].result;
+                req.session.nextperson = results[0].nextperson;
+                res.render('secondlevel');
             }
-        }
-    });
+        });
+    }
 });
 
 router.post('/', isLogin, function (req, res, next) {
