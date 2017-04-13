@@ -20,11 +20,11 @@ router.get('/apply', isLogin, function (req, res, next) {
     // app1 就跳转到home/app1
     // /app1 就跳转到app1
     if (type == 'first') {
-        res.redirect('/app1');
+        res.redirect('/app1/create');
     } else if (type == 'second') {
-        res.redirect('/app2');
+        res.redirect('/app2/create');
     } else if (type == 'third') {
-        res.redirect('/app3');
+        res.redirect('/app3/create');
     } else {
         res.render('error');
     }
