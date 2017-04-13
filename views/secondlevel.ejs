@@ -44,10 +44,10 @@
     <link rel="stylesheet" href="/stylesheets/cxcalendar.css">
     <script src="/javascripts/jquery-1.9.1.js"></script>
     <script src="/javascripts/calendar.js"></script>
-	
+
 </head>
 <body onload="controldisplay()">
-<%- include('notif')%>
+<%- include('notif') %>
 <h2><a style="text-decoration:none;color:black" href="/home">首页</a></h2>
 <form action="/app2" method="post">
     <table>
@@ -106,7 +106,8 @@
         </tr>
         <tr>
             <td colspan="6" align="center"><textarea class="cj" name="shigongfang" readonly
-                                                     id="shigongfang" value=<%= shigongfang %>><%= shigongfang %></textarea>
+                                                     id="shigongfang"
+                                                     value=<%= shigongfang %>><%= shigongfang %></textarea>
             </td>
         </tr>
         <tr>
@@ -130,14 +131,16 @@
         </tr>
         <tr>
             <td colspan="6" align="center"><textarea class="ta1 cj" id="secureplan" readonly
-                                                     name="secureplan" value=<%= secureplan %>><%= secureplan %></textarea></td>
+                                                     name="secureplan"
+                                                     value=<%= secureplan %>><%= secureplan %></textarea></td>
         </tr>
         <tr>
             <td colspan="6" align="center">车间主任审批</td>
         </tr>
         <tr>
             <td colspan="6" align="center"><textarea class="cjzr" id="workshopmgr" readonly
-                                                     name="workshopmgr" value=<%= workshopmgr %>><%= workshopmgr %></textarea></td>
+                                                     name="workshopmgr"
+                                                     value=<%= workshopmgr %>><%= workshopmgr %></textarea></td>
         </tr>
         <tr>
             <td colspan="1"><span>完成及销点情况(销点人签字)</span></td>
@@ -153,25 +156,26 @@
         </tbody>
     </table>
 </form>
+<br>
+<br>
 
-
-        <script>
-            $('.time').each(function(){
-                var a = new Calendar({
-                    targetCls: $(this),
-                    type: 'yyyy-mm-dd HH:MM:SS',
-                    wday:2
-                },function(val){
-                    console.log(val);
-                });
-            });
-        </script>
+<script>
+    $('.time').each(function () {
+        var a = new Calendar({
+            targetCls: $(this),
+            type: 'yyyy-mm-dd HH:MM:SS',
+            wday: 2
+        }, function (val) {
+            console.log(val);
+        });
+    });
+</script>
 
 
 <script>
     function isIE() {
-            return "ActiveXObject" in window || window.ActiveXObject?true:false;
-        }
+        return "ActiveXObject" in window || window.ActiveXObject ? true : false;
+    }
     function getpart(name) {
         switch (name) {
             case "cj":
@@ -189,39 +193,39 @@
         }
     }
 
-            function checkpart(name) {
-            var part = getpart(name);
+    function checkpart(name) {
+        var part = getpart(name);
 
-            for(var i = 0; i < part.length; i ++){
-                if(part[i].tagName.toLowerCase() == "input" && part[i].type != "checkbox"){
-                    if(part[i].value == ""){
-                        if(part[i].type != "datetime-local"){
-                            part[i].value = "此项不能为空！";
-                        }
+        for (var i = 0; i < part.length; i++) {
+            if (part[i].tagName.toLowerCase() == "input" && part[i].type != "checkbox") {
+                if (part[i].value == "") {
+                    if (part[i].type != "datetime-local") {
+                        part[i].value = "此项不能为空！";
+                    }
+                    window.location = "#" + part[i].id;
+                    return false;
+                }
+            } else if (part[i].tagName.toLowerCase() == "textarea") {
+                if (isIE()) {
+                    if (part[i].innerText == "" && part[i].value == "") {
+                        part[i].innerText = "此项不能为空！";
+                        part[i].value = "此项不能为空！";
                         window.location = "#" + part[i].id;
                         return false;
                     }
-                } else if(part[i].tagName.toLowerCase() == "textarea"){
-                    if(isIE()){
-                        if(part[i].innerText == "" && part[i].value == ""){
-                            part[i].innerText = "此项不能为空！";
-                            part[i].value = "此项不能为空！";
-                            window.location = "#" + part[i].id;
-                            return false;
-                        }
-                    } else{
-                        if(part[i].innerHTML == "" && part[i].value == ""){
-                            part[i].innerHTML = "此项不能为空！";
-                            part[i].value = "此项不能为空！";
-                            window.location = "#" + part[i].id;
-                            return false;
-                        }
+                } else {
+                    if (part[i].innerHTML == "" && part[i].value == "") {
+                        part[i].innerHTML = "此项不能为空！";
+                        part[i].value = "此项不能为空！";
+                        window.location = "#" + part[i].id;
+                        return false;
                     }
-
                 }
+
             }
-            return true;
         }
+        return true;
+    }
 
     function submitform() {
         var id = getcookie();
@@ -235,9 +239,9 @@
                 break;
             case "2":
                 return checkpart("cjzr");
-				if(id.substring(1) != document.getElementById("workshop").substring(2)){
-					document.getElementById("subbtn").disabled="disabled";
-				}
+                if (id.substring(1) != document.getElementById("workshop").substring(2)) {
+                    document.getElementById("subbtn").disabled = "disabled";
+                }
                 break;
             case "3":
                 return checkpart("jsk");
@@ -271,21 +275,21 @@
         var id = getcookie();
         switch (id[0]) {
             case "1":
-                    var mgrelement = document.getElementById("workshopmgr");
-                    if(isIE()){
-                        if(mgrelement.innerText == ""){
-                            removeReadOnly(getpart("cj"));
-                        }else {
-                            removeReadOnly(getpart("cj2"));
-                        }
+                var mgrelement = document.getElementById("workshopmgr");
+                if (isIE()) {
+                    if (mgrelement.innerText == "") {
+                        removeReadOnly(getpart("cj"));
                     } else {
-                        if(mgrelement.innerHTML == "" && mgrelement.value == ""){
-                            removeReadOnly(getpart("cj"));
-                        }else {
-                            removeReadOnly(getpart("cj2"));
-                        }
+                        removeReadOnly(getpart("cj2"));
                     }
-                    break;
+                } else {
+                    if (mgrelement.innerHTML == "" && mgrelement.value == "") {
+                        removeReadOnly(getpart("cj"));
+                    } else {
+                        removeReadOnly(getpart("cj2"));
+                    }
+                }
+                break;
             case "2":
                 removeReadOnly(getpart("cjzr"));
                 break;

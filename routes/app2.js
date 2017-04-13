@@ -80,6 +80,8 @@ router.post('/', isLogin, function (req, res, next) {
 
     if (person == '1') {
         //normal worker
+        var workshop = req.session.userId.slice(1);
+        var actualworkshop = req.body.workshop;
         if (nextperson == '1') {
             //create a new application
             confService.getApplyCount().then((counts) => {
@@ -120,6 +122,10 @@ router.post('/', isLogin, function (req, res, next) {
                     });
                 }
             });
+        } else if (workshop != actualworkshop) {
+            // only the exact workshop manager can check the application
+            req.flash('error', '无权查看其他车间');
+            return res.redirect('/app2');
         } else if (nextperson == '2') {
             // update the application before workshop manager check
             app2.telephone = req.body.telephone;

@@ -43,10 +43,10 @@
     <link rel="stylesheet" href="/stylesheets/cxcalendar.css">
     <script src="/javascripts/jquery-1.9.1.js"></script>
     <script src="/javascripts/calendar.js"></script>
-	
+
 </head>
 <body onload="controldisplay()">
-<%- include('notif')%>
+<%- include('notif') %>
 <h2><a style="text-decoration:none;color:black" href="/home">首页</a></h2>
 <form action="/app3" method="post">
     <table>
@@ -72,15 +72,17 @@
             <td colspan="3">停机原因</td>
         </tr>
         <tr>
-            <td colspan="3"><input class="full cj" id="section" name="section" readonly type="text" value=<%= section %>></td>
-            <td colspan="3"><input class="full cj" id="reason" name="reason" readonly type="text"  value=<%= reason %>></td>
+            <td colspan="3"><input class="full cj" id="section" name="section" readonly type="text"
+                                   value=<%= section %>></td>
+            <td colspan="3"><input class="full cj" id="reason" name="reason" readonly type="text" value=<%= reason %>>
+            </td>
         </tr>
         <tr>
             <td colspan="6" align="center">申请要点时间</td>
         </tr>
         <tr>
             <td colspan="3">起始时间：
-                <input class="cj time" id="sqstarttime" name="sqstarttime"  readonly
+                <input class="cj time" id="sqstarttime" name="sqstarttime" readonly
                        type="text" value=<%= sqstarttime %>>
             </td>
             <td colspan="3">截止时间：
@@ -102,14 +104,16 @@
         </tr>
         <tr>
             <td colspan="6" align="center"><textarea class="cj" readonly name="shigongfang"
-                                                     id="shigongfang" value=<%= shigongfang %>><%= shigongfang %></textarea>
+                                                     id="shigongfang"
+                                                     value=<%= shigongfang %>><%= shigongfang %></textarea>
             </td>
         </tr>
         <tr>
             <td colspan="6" align="center">影响范围及停机施工方案(可另附页)</td>
         </tr>
         <tr>
-            <td colspan="6" align="center"><textarea class="cj" id="plan" readonly name="plan" value=<%= plan %>><%= plan %></textarea>
+            <td colspan="6" align="center"><textarea class="cj" id="plan" readonly name="plan"
+                                                     value=<%= plan %>><%= plan %></textarea>
             </td>
         </tr>
         <tr>
@@ -125,14 +129,16 @@
         </tr>
         <tr>
             <td colspan="6" align="center"><textarea class="ta1 cj" id="secureplan" readonly
-                                                     name="secureplan" value=<%= secureplan %>><%= secureplan %></textarea></td>
+                                                     name="secureplan"
+                                                     value=<%= secureplan %>><%= secureplan %></textarea></td>
         </tr>
         <tr>
             <td colspan="6" align="center">工长(安全员)审批</td>
         </tr>
         <tr>
             <td colspan="6" align="center"><textarea class="cjzr" id="workshopmgr" readonly
-                                                     name="workshopmgr" value=<%= workshopmgr %>><%= workshopmgr %></textarea></td>
+                                                     name="workshopmgr"
+                                                     value=<%= workshopmgr %>><%= workshopmgr %></textarea></td>
         </tr>
         <tr>
             <td colspan="1"><span>完成及销点情况(销点人签字)</span></td>
@@ -143,31 +149,33 @@
             </td>
         </tr>
         <tr>
-            <td colspan="6" align="center"><input id="subbtn" type="submit" onclick="return submitform()" value="确认提交"></td>
+            <td colspan="6" align="center"><input id="subbtn" type="submit" onclick="return submitform()" value="确认提交">
+            </td>
         </tr>
         </tbody>
     </table>
 </form>
+<br>
+<br>
+
+<script>
+    $('.time').each(function () {
+        var a = new Calendar({
+            targetCls: $(this),
+            type: 'yyyy-mm-dd HH:MM:SS',
+            wday: 2
+        }, function (val) {
+            console.log(val);
+        });
+    });
 
 
-        <script>
-            $('.time').each(function(){
-                var a = new Calendar({
-                    targetCls: $(this),
-                    type: 'yyyy-mm-dd HH:MM:SS',
-                    wday:2
-                },function(val){
-                    console.log(val);
-                });
-            });
-			
-			
-        </script>
+</script>
 
 <script>
     function isIE() {
-            return "ActiveXObject" in window || window.ActiveXObject?true:false;
-        }
+        return "ActiveXObject" in window || window.ActiveXObject ? true : false;
+    }
     function getpart(name) {
         switch (name) {
             case "cj":
@@ -210,39 +218,39 @@
         }
     }
 
-            function checkpart(name) {
-            var part = getpart(name);
+    function checkpart(name) {
+        var part = getpart(name);
 
-            for(var i = 0; i < part.length; i ++){
-                if(part[i].tagName.toLowerCase() == "input" && part[i].type != "checkbox"){
-                    if(part[i].value == ""){
-                        if(part[i].type != "datetime-local"){
-                            part[i].value = "此项不能为空！";
-                        }
+        for (var i = 0; i < part.length; i++) {
+            if (part[i].tagName.toLowerCase() == "input" && part[i].type != "checkbox") {
+                if (part[i].value == "") {
+                    if (part[i].type != "datetime-local") {
+                        part[i].value = "此项不能为空！";
+                    }
+                    window.location = "#" + part[i].id;
+                    return false;
+                }
+            } else if (part[i].tagName.toLowerCase() == "textarea") {
+                if (isIE()) {
+                    if (part[i].innerText == "" && part[i].value == "") {
+                        part[i].innerText = "此项不能为空！";
+                        part[i].value = "此项不能为空！";
                         window.location = "#" + part[i].id;
                         return false;
                     }
-                } else if(part[i].tagName.toLowerCase() == "textarea"){
-                    if(isIE()){
-                        if(part[i].innerText == "" && part[i].value == ""){
-                            part[i].innerText = "此项不能为空！";
-                            part[i].value = "此项不能为空！";
-                            window.location = "#" + part[i].id;
-                            return false;
-                        }
-                    } else{
-                        if(part[i].innerHTML == "" && part[i].value == ""){
-                            part[i].innerHTML = "此项不能为空！";
-                            part[i].value = "此项不能为空！";
-                            window.location = "#" + part[i].id;
-                            return false;
-                        }
+                } else {
+                    if (part[i].innerHTML == "" && part[i].value == "") {
+                        part[i].innerHTML = "此项不能为空！";
+                        part[i].value = "此项不能为空！";
+                        window.location = "#" + part[i].id;
+                        return false;
                     }
-
                 }
+
             }
-            return true;
         }
+        return true;
+    }
 
     function removeReadOnly(element) {
         for (var i = 0; i < element.length; i++) {
@@ -260,29 +268,29 @@
     }
     function controldisplay() {
         var id = getcookie();
-		
+
         switch (id[0]) {
             case "1":
-                    var mgrelement = document.getElementById("workshopmgr");
-                    if(isIE()){
-                        if(mgrelement.innerText == ""){
-                            removeReadOnly(getpart("cj"));
-                        }else {
-                            removeReadOnly(getpart("cj2"));
-                        }
+                var mgrelement = document.getElementById("workshopmgr");
+                if (isIE()) {
+                    if (mgrelement.innerText == "") {
+                        removeReadOnly(getpart("cj"));
                     } else {
-                        if(mgrelement.innerHTML == "" && mgrelement.value == ""){
-                            removeReadOnly(getpart("cj"));
-                        }else {
-                            removeReadOnly(getpart("cj2"));
-                        }
+                        removeReadOnly(getpart("cj2"));
                     }
-                    break;
+                } else {
+                    if (mgrelement.innerHTML == "" && mgrelement.value == "") {
+                        removeReadOnly(getpart("cj"));
+                    } else {
+                        removeReadOnly(getpart("cj2"));
+                    }
+                }
+                break;
             case "2":
                 removeReadOnly(getpart("cjzr"));
-				if(id.substring(1) != document.getElementById("workshop").substring(2)){
-					document.getElementById("subbtn").disabled="disabled";
-				}
+                if (id.substring(1) != document.getElementById("workshop").substring(2)) {
+                    document.getElementById("subbtn").disabled = "disabled";
+                }
                 break;
             case "3":
                 removeReadOnly(getpart("jsk"));

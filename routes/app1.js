@@ -94,6 +94,8 @@ router.post('/', isLogin, function (req, res, next) {
 
     if (person == '1') {
         // normal worker
+        var workshop = req.session.userId.slice(1);
+        var actualworkshop = req.body.workshop;
         if (nextperson == '1') {
             // create a new application
             confService.getApplyCount().then((counts) => {
@@ -142,8 +144,15 @@ router.post('/', isLogin, function (req, res, next) {
                     });
                 }
             });
-        } else if (nextperson == '2') {
+        } else if (workshop != actualworkshop) {
+            // only the exact workshop manager can check the application
+            req.flash('error', '无权查看其他车间');
+            return res.redirect('/app1');
+        }
+        else if (nextperson == '2') {
             // update the application before workshop manager check
+
+
             app1.telephone = req.body.telephone;
             app1.fax = req.body.fax;
             app1.section = req.body.section;
@@ -195,7 +204,8 @@ router.post('/', isLogin, function (req, res, next) {
             req.flash('error', '表格状态错误');
             return res.redirect('/app1');
         }
-    } else if (person == '2') {
+    }
+    else if (person == '2') {
         //workshop manager
         var workshop = req.session.userId.slice(1);
         var actualworkshop = req.body.workshop;
@@ -323,6 +333,7 @@ router.post('/', isLogin, function (req, res, next) {
         req.flash('error', '账号角色错误');
         return res.redirect('/app1');
     }
-});
+})
+;
 
 module.exports = router;
