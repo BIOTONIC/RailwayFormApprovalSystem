@@ -62,7 +62,7 @@ create trigger trigger_add_approve_count_when_app1
 	after update on application1
 	for each row
 	begin
-	if (New.approveid != Old.approveid)
+	if new.approveid != old.approveid
 	then
 	update conf set approvecount = approvecount + 1 where id = 0;
 	end if;
@@ -75,7 +75,7 @@ create trigger trigger_add_approve_count_when_app2
 	after update on application2
 	for each row
 	begin
-	if (New.approveid != Old.approveid)
+	if new.approveid != old.approveid
 	then
 	update conf set approvecount = approvecount + 1 where id = 0;
 	end if;
@@ -88,7 +88,7 @@ create trigger trigger_add_approve_count_when_app3
 	after update on application3
 	for each row
 	begin
-	if (New.approveid != Old.approveid)
+	if new.approveid != old.approveid
 	then
 	update conf set approvecount = approvecount + 1 where id = 0;
 	end if;
