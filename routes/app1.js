@@ -28,17 +28,15 @@ router.get('/create', isLogin, function (req, res, next) {
     res.locals.techplan = '';
     res.locals.secureplan = '';
     res.locals.workshopmgr = '';
-    // workshopmgrtime will be add in workshopmgr
-    // no need to render separately
-    //res.locals.workshopmgrtime = '';
+    res.locals.workshopmgrtime = '';
     res.locals.techdepart = '';
+    res.locals.techtime = '';
     res.locals.pfstarttime = '';
     res.locals.pfendtime = '';
     res.locals.securedepart = '';
+    res.locals.securetime = '';
     res.locals.manager = '';
-    // managertime will be add in manager
-    // no need to render separately
-    //res.locals.managertime = '';
+    res.locals.managertime = '';
     res.locals.result = '';
     res.locals.applytime = '系统自行分配';
     req.session.nextperson = '1';
@@ -216,8 +214,8 @@ router.post('/', isLogin, function (req, res, next) {
         }
         else if (nextperson == '2' || nextperson == '3') {
             // update the application before tech depart check
-            // TODO current workshopmgttime is in workshopmgr
             app1.workshopmgr = req.body.workshopmgr;
+            app1.workshopmgrtime = getTime();
             app1.nextperson = '3';
             app1.formId = req.body.applyid;
 
@@ -241,8 +239,8 @@ router.post('/', isLogin, function (req, res, next) {
         // tech depart
         if (nextperson == '3' || nextperson == '4') {
             // update the application before secure depart check
-            // TODO no techtime & no change for pfstarttime pfendtime
             app1.techdepart = req.body.techdepart;
+            app1.techtime = getTime();
             app1.pfstarttime = getFormatTime(req.body.pfstarttime);
             app1.pfendtime = getFormatTime(req.body.pfendtime);
             app1.nextperson = '4';
@@ -269,8 +267,8 @@ router.post('/', isLogin, function (req, res, next) {
         // secure depart
         if (nextperson == '4' || nextperson == '5') {
             // update the application before manager check
-            // TODO no securetime
             app1.securedepart = req.body.securedepart;
+            app1.securetime = getTime();
             app1.nextperson = '5';
             app1.formId = req.body.applyid;
 
@@ -294,7 +292,6 @@ router.post('/', isLogin, function (req, res, next) {
         // manager
         if (nextperson == '5') {
             // update the application before result
-            // TODO no managertime
             confService.getApproveCount().then((counts) => {
                 if (typeof counts === 'undefined' || counts.length == 0) {
                     req.flash('error', 'ApproveCount未存储');
@@ -307,6 +304,7 @@ router.post('/', isLogin, function (req, res, next) {
 
                     app1.approveid = approveid;
                     app1.manager = req.body.manager;
+                    app1.managertime = getTime();
                     app1.nextperson = '6';
                     app1.formId = req.body.applyid;
 

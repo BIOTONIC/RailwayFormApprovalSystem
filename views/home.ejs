@@ -7,22 +7,18 @@
             width: 980px;
             margin: auto;
         }
-
         h1 {
             text-align: center;
         }
-
         .apply {
             border: 1px solid;
             width: 80%;
             margin: auto;
             text-align: center;
         }
-
         .applybtn {
             width: 32%;
         }
-
         .container {
             margin: 40px auto 150px auto;
         }
@@ -43,7 +39,6 @@
                 }
             }
         }
-
         function createLinks(father, type, id, level, workshop) {
             var li = document.createElement('li');
             var a = document.createElement('a');
@@ -61,225 +56,7 @@
     </script>
 </head>
 <body onload="controldisplay()">
+<%- include('head')%>
 <%- include('notif') %>
-<div class="container">
-    <h1>通信线路及设备停机要点审批</h1>
-    <h3 class="hidden">填写审批表</h3>
-    <div class="apply hidden"><br>
-        <form action="./home/apply" method="get">
-            <div><input type="radio" name="type" value="first"><span>一级（段）通信线路及设备停机要点审批表</span></div>
-            <div><input type="radio" name="type" value="second"><span>二级（段）通信线路及设备停机要点审批表</span></div>
-            <div><input type="radio" name="type" value="third"><span>三级（段）通信线路及设备停机要点审批表</span></div>
-            <input class="applybtn" type="submit" value="确认">
-        </form>
-    </div>
-    <hr class="hidden">
-    <div class="cjzr">
-        <h3>待车间主任审批</h3>
-        <ul id="cjzr">
-            <!-- 这是模板，ajax请求到的数据会在这里显示，样式如下 -->
-            <!-- 用户点击后会发出新的请求，路由是query，参数有3个type表明他是待谁审核，eg:待车间主任审核，那么就是cjzr
-                 id是审核表的id，level表明他是几级审批表，可以告诉你查数据库里的哪个表-->
-        </ul>
-    </div>
-    <hr>
-    <div class="jsk">
-        <h3>待技术科审批</h3>
-        <ul id="jsk">
-        </ul>
-    </div>
-    <hr>
-    <div class="aqk">
-        <h3>待安全科审批</h3>
-        <ul id="aqk">
-        </ul>
-    </div>
-    <hr>
-    <div class="zgdz">
-        <h3>待主管段长审批</h3>
-        <ul id="zgdz">
-        </ul>
-    </div>
-    <hr>
-    <div class="dxd">
-        <h3>待销点</h3>
-        <ul id="dxd">
-        </ul>
-    </div>
-    <hr>
-    <div class="yxd">
-        <h3>已销点</h3>
-        <ul id="yxd">
-        </ul>
-    </div>
-</div>
-<script>
-    var xmlhttp;
-    xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            var allapplys = JSON.parse(xmlhttp.responseText);
-            var cjzr, jsk, aqk, zgdz, yxd;
-            cjzr = document.getElementById("cjzr");
-            jsk = document.getElementById("jsk");
-            aqk = document.getElementById("aqk");
-            zgdz = document.getElementById("zgdz");
-            yxd = document.getElementById("yxd");
-            dxd = document.getElementById("dxd");
-            for (var i = 0; i < allapplys.length; i++) {
-                var nextperson = allapplys[i].nextperson;
-                var level = allapplys[i].level;
-                var id = allapplys[i].id;
-                var workshop = allapplys[i].workshop;
-                switch (nextperson) {
-                    case "2":
-                        createLinks(cjzr, nextperson, id, level, workshop);
-                        break;
-                    case "3":
-                        createLinks(jsk, nextperson, id, level, workshop);
-                        break;
-                    case "4":
-                        createLinks(aqk, nextperson, id, level, workshop);
-                        break;
-                    case "5":
-                        createLinks(zgdz, nextperson, id, level, workshop);
-                        break;
-                    case "6":
-                        createLinks(dxd, nextperson, id, level, workshop);
-                        break;
-                    case "7":
-                        createLinks(yxd, nextperson, id, level, workshop);
-                        break;
-                }
-            }
-        }
-    }
-    xmlhttp.open("GET", "home/queryall", true);
-    xmlhttp.send();
-    /*
-     var xmlhttp;
-     xmlhttp = new XMLHttpRequest();
-     xmlhttp.onreadystatechange=function(){
-     if(xmlhttp.readyState==4 && xmlhttp.status==200){
-     var allapplys = JSON.parse(xmlhttp.responseText);
-     var cjzrres,jskres,aqkres,zgdzres,yxdres;
-     var cjzr,jsk,aqk,zgdz,yxd;
-     cjzrres = allapplys.cjzr;
-     jskres = allapplys.jsk;
-     aqkres = allapplys.aqk;
-     zgdzres = allapplys.zgdz;
-     yxdres = allapplys.yxd;
-     dxdres = allapplys.dxd;
-
-     cjzr = document.getElementById("cjzr");
-     jsk = document.getElementById("jsk");
-     aqk = document.getElementById("aqk");
-     zgdz = document.getElementById("zgdz");
-     yxd = document.getElementById("yxd");
-     dxd = document.getElementById("dxd");
-
-     if(cjzrres != null)
-     for(var i=0; i < cjzrres.length; i++){
-     var li = document.createElement('li');
-     var a = document.createElement('a');
-     a.setAttribute('href', "home/query?id=" + cjzrres[i].id +"&level="+cjzrres[i].level);
-     if(cjzrres[i].level == 1){
-     a.innerHTML = "一级（段）通信线路及设备停机要点审批表(车间:" + cjzrres[i].workshop + ")";
-     } else if(cjzrres[i].level == 2){
-     a.innerHTML = "二级（段）通信线路及设备停机要点审批表(车间:" + cjzrres[i].workshop + ")";
-     } else {
-     a.innerHTML = "三级（段）通信线路及设备停机要点审批表(车间:" + cjzrres[i].workshop + ")";
-     }
-     li.appendChild(a);
-     cjzr.appendChild(li);
-     }
-
-     if(jskres != null)
-     for(var i=0; i < jskres.length; i++){
-     var li = document.createElement('li');
-     var a = document.createElement('a');
-     a.setAttribute('href', "home/query?id=" + jskres[i].id +"&level="+jskres[i].level);
-     if(jskres[i].level == 1){
-     a.innerHTML = "一级（段）通信线路及设备停机要点审批表(车间:" + jskres[i].workshop + ")";
-     } else if(jskres[i].level == 2){
-     a.innerHTML = "二级（段）通信线路及设备停机要点审批表(车间:" + jskres[i].workshop + ")";
-     } else {
-     a.innerHTML = "三级（段）通信线路及设备停机要点审批表(车间:" + jskres[i].workshop + ")";
-     }
-     li.appendChild(a);
-     jsk.appendChild(li);
-     }
-
-     if(aqkres != null)
-     for(var i=0; i < aqkres.length; i++){
-     var li = document.createElement('li');
-     var a = document.createElement('a');
-     a.setAttribute('href', "home/query?id=" + aqkres[i].id +"&level="+aqkres[i].level);
-     if(aqkres[i].level == 1){
-     a.innerHTML = "一级（段）通信线路及设备停机要点审批表(车间:" + aqkres[i].workshop + ")";
-     } else if(aqkres[i].level == 2){
-     a.innerHTML = "二级（段）通信线路及设备停机要点审批表(车间:" + aqkres[i].workshop + ")";
-     } else {
-     a.innerHTML = "三级（段）通信线路及设备停机要点审批表(车间:" + aqkres[i].workshop + ")";
-     }
-     li.appendChild(a);
-     aqk.appendChild(li);
-     }
-
-     if(zgdzres != null)
-     for(var i=0; i < zgdzres.length; i++){
-     var li = document.createElement('li');
-     var a = document.createElement('a');
-     a.setAttribute('href', "home/query?id=" + zgdzres[i].id +"&level="+zgdzres[i].level);
-     if(zgdzres[i].level == 1){
-     a.innerHTML = "一级（段）通信线路及设备停机要点审批表(车间:" + zgdzres[i].workshop + ")";
-     } else if(zgdzres[i].level == 2){
-     a.innerHTML = "二级（段）通信线路及设备停机要点审批表(车间:" + zgdzres[i].workshop + ")";
-     } else {
-     a.innerHTML = "三级（段）通信线路及设备停机要点审批表(车间:" + zgdzres[i].workshop + ")";
-     }
-     li.appendChild(a);
-     zgdz.appendChild(li);
-     }
-
-     if(dxdres != null)
-     for(var i=0; i < dxdres.length; i++){
-     var li = document.createElement('li');
-     var a = document.createElement('a');
-     a.setAttribute('href', "home/query?id=" + dxdres[i].id +"&level="+dxdres[i].level);
-     if(dxdres[i].level == 1){
-     a.innerHTML = "一级（段）通信线路及设备停机要点审批表(车间:" + dxdres[i].workshop + ")";
-     } else if(dxdres[i].level == 2){
-     a.innerHTML = "二级（段）通信线路及设备停机要点审批表(车间:" + dxdres[i].workshop + ")";
-     } else {
-     a.innerHTML = "三级（段）通信线路及设备停机要点审批表(车间:" + dxdres[i].workshop + ")";
-     }
-     li.appendChild(a);
-     dxd.appendChild(li);
-     }
-
-     if(yxdres != null)
-     for(var i=0; i < yxdres.length; i++){
-     var li = document.createElement('li');
-     var a = document.createElement('a');
-     a.setAttribute('href', "home/query?id=" + yxdres[i].id +"&level="+yxdres[i].level);
-     if(yxdres[i].level == 1){
-     a.innerHTML = "一级（段）通信线路及设备停机要点审批表(车间:" + yxdres[i].workshop + ")";
-     } else if(yxdres[i].level == 2){
-     a.innerHTML = "二级（段）通信线路及设备停机要点审批表(车间:" + yxdres[i].workshop + ")";
-     } else {
-     a.innerHTML = "三级（段）通信线路及设备停机要点审批表(车间:" + yxdres[i].workshop + ")";
-     }
-     li.appendChild(a);
-     yxd.appendChild(li);
-     }
-
-     }
-     }
-     xmlhttp.open("GET","home/queryall",true);
-     xmlhttp.send();
-
-     */
-</script>
 </body>
 </html>

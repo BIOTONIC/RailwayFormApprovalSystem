@@ -46,6 +46,7 @@ module.exports = {
         return App2.update({
                 approveid: app2.approveid,
                 workshopmgr: app2.workshopmgr,
+                workshopmgrtime: app2.workshopmgrtime,
                 nextperson: app2.nextperson
             },
             {

@@ -1,0 +1,178 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+		<style type="text/css">
+            body{
+                margin: auto;
+				background:#fff;
+				font:normal 12px/22px 宋体;
+            }
+            h1{
+                text-align: center;
+            }
+            .apply{
+                border: 1px solid;
+                width: 80%;
+                margin:auto;
+                text-align: center;
+            }
+            .applybtn{
+                width: 32%;
+            }
+            .container{
+                margin: auto;
+				margin-top: 50px;
+            }	
+		.topNav,.tnLeft,dl,dd,dd h3,dd h3 a,dd ul,dd ul li,dd ul li a,dd a {
+			margin:0;
+			padding:0;
+			list-style:none;
+		}
+		img {
+			border:0;
+		}
+		a {
+			text-decoration:none;
+			color:#333;
+		}
+		a:hover {
+			color:#FF8400;
+		}
+		.clearfix:after {
+			content:".";
+			display:block;
+			height:0;
+			clear:both;
+			visibility:hidden;
+		}
+		.topNav {
+			position:relative;
+			z-index:1;
+			height:40px;
+			line-height:40px;
+			border-top:3px solid #ff8500;
+			border-bottom:1px solid #EDEEF0;
+			background-color:#FCFCFC;
+			font-family:"Microsoft YaHei",SimSun;
+			font-size:12px;
+		}
+		.topNav-width {
+			width:1000px;
+			margin:0 auto;
+		}
+		.topNav h3 {
+			font-weight:normal;
+			font-size:100%;
+		}
+		.topNav dl {
+			zoom:1;
+		}
+		.topNav .tnLeft {
+			float:left;
+		}
+		.topNav .tnRight {
+			float:right;
+		}
+		.topNav dd {
+			float:left;
+			position:relative;
+		}
+		.topNav dd h3 {
+			float:left;
+		}
+		.topNav dd h3 a {
+			display:inline-block;
+			*display:inline;
+			zoom:1;
+			height:14px;
+			line-height:14px;
+			padding:13px 20px;
+		}
+		.topNav dd h3 a i {
+			display:inline-block;
+			width:8px;
+			height:5px;
+			margin:0 0 0 5px;
+			overflow:hidden;
+			vertical-align:middle;
+			font-size:12px;
+			line-height:13px;
+			background:url(/images/icon.png) 0 -61px no-repeat;
+		}
+		.topNav dd h3 a:hover,.topNav dd.on h3 a {
+			background:#EDEEF0;
+			color:#FF8400;
+		}
+		.topNav .welcome {
+			padding-right:15px;
+			color:#FF8400;
+		}
+		.topNav .welcome a {
+			color:#FF8400;
+		}
+		.topNav dd ul {
+			display:none;
+			position:absolute;
+			width:270px;
+			top:40px;
+			left:0;
+			border:1px solid #FECC5B;
+			border-top:0;
+			background:#fff;
+			-moz-box-shadow:3px 3px 3px rgba(0,0,0,.1);
+			-webkit-box-shadow:3px 3px 3px rgba(0,0,0,.1);
+			box-shadow:3px 3px 3px rgba(0,0,0,.1);
+		}
+		.topNav dd ul li {
+			line-height:31px;
+			border-bottom:1px solid #FECC5B;
+		}
+		.topNav dd ul li a {
+			display:block;
+			color:#333;
+			padding:0 15px;
+		}
+		.topNav dd ul li a:hover {
+			background:#FFF5DA;
+			color:#E67902;
+		}
+		.topNav dd ul li a span {
+			color:#FF8400;
+			margin-left:5px;
+		}
+		</style>
+
+		<script type="text/javascript" src="/javascripts/jquery-1.9.1.js"></script>
+		<script type="text/javascript" src="/javascripts/jquery.SuperSlide.2.1.js"></script>
+    </head>
+    <body onload="controldisplay()">
+        <div class="container">
+            <h1>通信线路及设备停机要点审批</h1><br>
+			
+			<div class="topNav">
+			  <div class="topNav-width clearfix">
+				<dl class="tnLeft">
+				  <dd>
+					<h3><a href="/home">首页</a></h3>
+				  </dd>
+				  <dd>
+					<h3><a href="#" onclick="return false">要点申请<i></i></a></h3>
+					<ul>
+					  <li><a href="/home/apply?type=first">一级（段）通信线路及设备停机要点审批表</a></li>
+					  <li><a href="/home/apply?type=second">二级（段）通信线路及设备停机要点审批表</a></li>
+					  <li><a href="/home/apply?type=third">三级（段）通信线路及设备停机要点审批表</a></li>
+					</ul>
+				  </dd>
+				  <dd>
+					<h3><a href="/query">要点审批</a></h3>
+				  </dd>
+				  <dd>
+					<h3><a href="#" onclick="">要点查询</a></h3>
+				  </dd>
+				</dl>
+			  </div>
+			</div>
+			<script type="text/javascript">jQuery(".topNav").slide({ type:"menu",  titCell:"dd", targetCell:"ul", delayTime:0,defaultPlay:false,returnDefault:true  });	</script>
+		</div>
+    </body>
+</html>

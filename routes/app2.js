@@ -114,7 +114,6 @@ router.post('/', isLogin, function (req, res, next) {
 
                     app2Service.createApp2(app2).then((result) => {
                         req.flash('success', '提交成功');
-                        console.log('success');
                         return res.redirect('home');
                     }).catch((error) => {
                         req.flash('error', '提交失败');
@@ -175,7 +174,6 @@ router.post('/', isLogin, function (req, res, next) {
         // workshop manager
         if (nextperson == '2') {
             // update the application before result
-            // TODO no workshopmgrtime
             confService.getApproveCount().then((counts) => {
                 if (typeof counts === 'undefined' || counts.length == 0) {
                     req.flash('error', 'ApproveCount未存储');
@@ -188,6 +186,7 @@ router.post('/', isLogin, function (req, res, next) {
 
                     app2.approveid = approveid;
                     app2.workshopmgr = req.body.workshopmgr;
+                    app2.workshopmgrtime = getTime();
                     app2.nextperson = '6';
                     app2.formId = req.body.applyid;
 

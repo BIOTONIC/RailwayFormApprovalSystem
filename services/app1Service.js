@@ -45,6 +45,7 @@ module.exports = {
     updateWorkshopMgr: function updateWorkshopMgr(app1) {
         return App1.update({
                 workshopmgr: app1.workshopmgr,
+                workshopmgrtime: app1.workshopmgrtime,
                 nextperson: app1.nextperson
             },
             {
@@ -56,6 +57,7 @@ module.exports = {
     updateTech: function updateTech(app1) {
         return App1.update({
                 techdepart: app1.techdepart,
+                techtime: app1.techtime,
                 pfstarttime: app1.pfendtime,
                 pfendtime: app1.pfendtime,
                 nextperson: app1.nextperson
@@ -69,6 +71,7 @@ module.exports = {
     updateSecure: function updateSecure(app1) {
         return App1.update({
                 securedepart: app1.securedepart,
+                securetime: app1.securetime,
                 nextperson: app1.nextperson
             },
             {
@@ -81,6 +84,7 @@ module.exports = {
         return App1.update({
                 approveid: app1.approveid,
                 manager: app1.manager,
+                managertime: app1.managertime,
                 nextperson: app1.nextperson
             },
             {
