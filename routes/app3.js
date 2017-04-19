@@ -29,9 +29,7 @@ router.get('/create', isLogin, function (req, res, next) {
     res.locals.techplan = '';
     res.locals.secureplan = '';
     res.locals.workshopmgr = '';
-    // workshopmgrtime will be add in workshopmgr
-    // no need to render separately
-    res.locals.workshopmgrtime = '';
+    res.locals.workshopmgrtime = '系统自行分配';
     res.locals.result = '';
     res.locals.applytime = '系统自行分配';
     req.session.nextperson = '1';

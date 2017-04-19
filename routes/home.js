@@ -16,6 +16,11 @@ router.get('/', isLogin, function (req, res, next) {
 });
 
 router.get('/apply', isLogin, function (req, res, next) {
+    var person = req.session.userId.slice(0, 1);
+    if (person != '1'){
+        req.flash('error', '无权申请表格');
+        return res.redirect('back');
+    }
     var type = req.query.type;
     // NOTICE
     // redirect
