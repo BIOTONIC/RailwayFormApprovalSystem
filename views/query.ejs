@@ -23,32 +23,46 @@
             margin: 40px auto 150px auto;
         }
     </style>
+    <link rel="stylesheet" href="/stylesheets/cxcalendar.css">
+    <script src="/javascripts/jquery-1.9.1.js"></script>
+    <script src="/javascripts/calendar.js"></script>
 </head>
 <body onload="controldisplay()">
 <%- include('head')%>
 <%- include('notif') %>
 <div class="container">
 	<h6>根据车间查询</h6>
-	<form action="/home/queryByWorkshop" method="get">
+	<form action="/home/queryResult" method="get">
 		选择车间：
 		<select name="workshop">
-			<option value="####">车间1</option>
-			<option value="####">车间2</option>
-			<option value="####">车间3</option>
+			<option value="01">车间1</option>
+			<option value="02">车间2</option>
+			<option value="03">车间3</option>
 		</select>
 		<input type="submit" value="确认">
 	</form>
 	<h6>根据时间查询</h6>
-	<form action="/home/queryByTime" method="get">
+	<form action="/home/queryResult" method="get">
 		申请起始时间：<input class="time" type="text" name="sqstarttime"><br>
 		申请结束时间：<input class="time" type="text" name="sqendtime"><br>
 		<input type="submit" value="确认">
 	</form>
 	<h6>根据区段查询</h6>
-	<form action="/home/queryBySection" method="get">
+	<form action="/home/queryResult" method="get">
 		输入区段：<input type="text" name="section">
 		<input type="submit" value="确认">
 	</form>
+	<script>
+    $('.time').each(function () {
+        var a = new Calendar({
+            targetCls: $(this),
+            type: 'yyyy-mm-dd HH:MM:SS',
+            wday: 2
+        }, function (val) {
+            console.log(val);
+        });
+    });
+</script>
 </div>
 </body>
 </html>
