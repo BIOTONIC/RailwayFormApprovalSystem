@@ -31,7 +31,7 @@ router.get('/create', isLogin, function (req, res, next) {
     res.locals.workshopmgr = '';
     // workshopmgrtime will be add in workshopmgr
     // no need to render separately
-    //res.locals.workshopmgrtime = '';
+    res.locals.workshopmgrtime = '';
     res.locals.result = '';
     res.locals.applytime = '系统自行分配';
     req.session.nextperson = '1';
@@ -41,7 +41,7 @@ router.get('/create', isLogin, function (req, res, next) {
 router.get('/', isLogin, function (req, res, next) {
     // open a already exist application
     var query = {};
-    if (typeof req.session.formId === 'undefined') {
+    if (typeof req.query.formId != 'undefined') {
         query.id = req.query.formId;
         req.session.formId = req.query.formId;
     }

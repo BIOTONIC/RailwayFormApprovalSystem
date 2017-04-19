@@ -45,7 +45,7 @@ router.get('/create', isLogin, function (req, res, next) {
 
 router.get('/', isLogin, function (req, res, next) {
     var query = {};
-    if (typeof req.session.formId === 'undefined') {
+    if (typeof req.query.formId != 'undefined') {
         query.id = req.query.formId;
         req.session.formId = req.query.formId;
     }
