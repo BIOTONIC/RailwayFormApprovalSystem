@@ -8,7 +8,7 @@ var app2Service = require('../services/app2Service');
 var app3Service = require('../services/app3Service');
 
 router.get('/', isLogin, function (req, res, next) {
-    if (typeof req.session.formId != 'Undefined') {
+    if (typeof req.session.formId != 'undefined') {
         delete req.session.formId;
     }
     res.render('home');
@@ -107,20 +107,9 @@ router.get('/query', isLogin, function (req, res, next) {
     res.render('query');
 });
 
-// router.get('/query', isLogin, function (req, res, next) {
-//     var level = req.query.level;
-//     req.session.formId = req.query.id;
-//     if (level == '1') {
-//         res.redirect('/app1');
-//     } else if (level == '2') {
-//         res.redirect('/app2');
-//     } else if (level == '3') {
-//         res.redirect('/app3');
-//     } else {
-//         req.flash('error', '请求参数错误');
-//         res.redirect('/home');
-//     }
-// });
+router.get('/queryByWorkshop',isLogin,function(req,res,next){
+
+});
 
 router.get('/queryall', isLogin, function (req, res, next) {
     var need = ['id', 'workshop', 'nextperson'];

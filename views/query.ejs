@@ -29,7 +29,7 @@
 <%- include('notif') %>
 <div class="container">
 	<h6>根据车间查询</h6>
-	<form action="/selectByWorkshop" method="get">
+	<form action="/home/queryByWorkshop" method="get">
 		选择车间：
 		<select name="workshop">
 			<option value="####">车间1</option>
@@ -39,13 +39,13 @@
 		<input type="submit" value="确认">
 	</form>
 	<h6>根据时间查询</h6>
-	<form action="/selectByTime" method="get">
+	<form action="/home/queryByTime" method="get">
 		申请起始时间：<input class="time" type="text" name="sqstarttime"><br>
 		申请结束时间：<input class="time" type="text" name="sqendtime"><br>
 		<input type="submit" value="确认">
 	</form>
 	<h6>根据区段查询</h6>
-	<form action="/selectBySection" method="get">
+	<form action="/home/queryBySection" method="get">
 		输入区段：<input type="text" name="section">
 		<input type="submit" value="确认">
 	</form>
