@@ -23,40 +23,16 @@
             margin: 40px auto 150px auto;
         }
     </style>
-    <script>
-        function controldisplay() {
-            var cookies = document.cookie.split(";");
-            var userid;
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = cookies[i].split("=");
-                if ("id" == cookie[0]) {
-                    if (!cookie[1].match(/^1[0-9]*/)) {
-                        var applys = document.getElementsByClassName("hidden");
-                        for (var j = 0; j < applys.length; j++) {
-                            applys[j].style.display = "none";
-                        }
-                    }
-                }
-            }
-        }
-        function createLinks(father, type, id, level, workshop) {
-            var li = document.createElement('li');
-            var a = document.createElement('a');
-            a.setAttribute('href', "home/query?id=" + id + "&level=" + level);
-            if (level == 1) {
-                a.innerHTML = "一级（段）通信线路及设备停机要点审批表(车间:" + workshop + ")";
-            } else if (level == 2) {
-                a.innerHTML = "二级（段）通信线路及设备停机要点审批表(车间:" + workshop + ")";
-            } else {
-                a.innerHTML = "三级（段）通信线路及设备停机要点审批表(车间:" + workshop + ")";
-            }
-            li.appendChild(a);
-            father.appendChild(li);
-        }
-    </script>
 </head>
 <body onload="controldisplay()">
 <%- include('head')%>
 <%- include('notif') %>
+<div class="container">
+	<h3>使用说明：</h3>
+	<p>点击[首页]，可以进入此页面；</p>
+	<p>鼠标移至[要点申请]，会出现三个选项，选择一项点击填写；</p>
+	<p>点击[要点审批]，会根据您的权限显示对应的审批表；</p>
+	<p>点击[要点查询]，跳转至查询页面，在对应的输入框输入查询条件可以进行查询；</p>
+</div>
 </body>
 </html>

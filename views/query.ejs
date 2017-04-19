@@ -1,0 +1,54 @@
+﻿<html>
+<head>
+    <meta charset="utf-8">
+    <title>要点查询</title>
+    <style>
+        body {
+            width: 980px;
+            margin: auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        .apply {
+            border: 1px solid;
+            width: 80%;
+            margin: auto;
+            text-align: center;
+        }
+        .applybtn {
+            width: 32%;
+        }
+        .container {
+            margin: 40px auto 150px auto;
+        }
+    </style>
+</head>
+<body onload="controldisplay()">
+<%- include('head')%>
+<%- include('notif') %>
+<div class="container">
+	<h6>根据车间查询</h6>
+	<form action="/selectByWorkshop" method="get">
+		选择车间：
+		<select name="workshop">
+			<option value="####">车间1</option>
+			<option value="####">车间2</option>
+			<option value="####">车间3</option>
+		</select>
+		<input type="submit" value="确认">
+	</form>
+	<h6>根据时间查询</h6>
+	<form action="/selectByTime" method="get">
+		申请起始时间：<input class="time" type="text" name="sqstarttime"><br>
+		申请结束时间：<input class="time" type="text" name="sqendtime"><br>
+		<input type="submit" value="确认">
+	</form>
+	<h6>根据区段查询</h6>
+	<form action="/selectBySection" method="get">
+		输入区段：<input type="text" name="section">
+		<input type="submit" value="确认">
+	</form>
+</div>
+</body>
+</html>

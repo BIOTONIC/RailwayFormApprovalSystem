@@ -41,7 +41,13 @@ router.get('/create', isLogin, function (req, res, next) {
 router.get('/', isLogin, function (req, res, next) {
     // open a already exist application
     var query = {};
-    query.id = req.session.formId;
+    if (typeof req.session.formId === 'undefined') {
+        query.id = req.query.formId;
+        req.session.formId = req.query.formId;
+    }
+    else {
+        query.id = req.session.formId;
+    }
     app3Service.find3(query).then((results) => {
         if (typeof results === 'undefined') {
             req.flash('error', '申请表不存在');

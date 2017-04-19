@@ -1,0 +1,50 @@
+﻿<html>
+<head>
+    <meta charset="utf-8">
+    <title>要点查询</title>
+    <style>
+        body {
+            width: 980px;
+            margin: auto;
+        }
+
+        .container {
+            margin: 40px auto 150px auto;
+        }
+
+        table, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        td {
+            padding: 5px;
+        }
+    </style>
+</head>
+<%- include('head') %>
+<%- include('notif') %>
+<div class="container">
+    <table>
+        <tbody>
+        <tr>
+            <td>审批表</td>
+            <td>所属车间</td>
+            <td>查看或审批</td>
+        </tr>
+        <% for (var i = 0;i < appResults.length;i++){ %>
+        <tr>
+            <td><%- appResults[i].name %></td>
+            <td><%- appResults[i].workshop %></td>
+            <td><a href=<%- appResults[i].href %>><%= appResults[i].state %></a></td>
+        </tr>
+        <% } %>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
