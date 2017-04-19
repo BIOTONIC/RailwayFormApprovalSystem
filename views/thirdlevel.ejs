@@ -57,11 +57,11 @@
             <td colspan="1"><input id="workshop" name="workshop" type="text" readonly value=<%= workshop %>></td>
             <td colspan="1"><span>联系电话</span></td>
             <td colspan="1"><span class="cj" style="color:red;font-weight:bold;display:none;">*</span>
-                <input class="full cj" id="telephone" readonly name="telephone" type="text"
-                       value=<%= telephone %>></td>
+			<input class="full cj" id="telephone" readonly name="telephone" type="text"
+                                   value=<%= telephone %>></td>
             <td colspan="1"><span>传真</span></td>
             <td colspan="1"><span class="cj" style="color:red;font-weight:bold;display:none;">*</span>
-                <input class="full cj" id="fax" readonly name="fax" type="text" value=<%= fax %>></td>
+			<input class="full cj" id="fax" readonly name="fax" type="text" value=<%= fax %>></td>
         </tr>
         <tr>
             <td colspan="1"><span>申请编号</span></td>
@@ -75,10 +75,10 @@
         </tr>
         <tr>
             <td colspan="3"><span class="cj" style="color:red;font-weight:bold;display:none;">*</span>
-                <input class="full cj" id="section" name="section" readonly type="text"
-                       value=<%= section %>></td>
+			<input class="full cj" id="section" name="section" readonly type="text"
+                                   value=<%= section %>></td>
             <td colspan="3"><span class="cj" style="color:red;font-weight:bold;display:none;">*</span>
-                <input class="full cj" id="reason" name="reason" readonly type="text" value=<%= reason %>>
+			<input class="full cj" id="reason" name="reason" readonly type="text" value=<%= reason %>>
             </td>
         </tr>
         <tr>
@@ -107,58 +107,53 @@
             <td colspan="6" align="center">施工负责人及施工配合人</td>
         </tr>
         <tr>
-            <td colspan="6" align="center"><span class="cj"
-                                                 style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
-                <textarea class="cj" readonly name="shigongfang"
-                          id="shigongfang"
-                          value=<%= shigongfang %>><%= shigongfang %></textarea>
+            <td colspan="6" align=""><span class="cj" style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
+			<textarea class="cj" readonly name="shigongfang"
+                                                     id="shigongfang"
+                                                     value=<%= shigongfang %>><%= shigongfang %></textarea>
             </td>
         </tr>
         <tr>
             <td colspan="6" align="center">影响范围及停机施工方案(可另附页)</td>
         </tr>
         <tr>
-            <td colspan="6" align="center"><span class="cj"
-                                                 style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
-                <textarea class="cj" id="plan" readonly name="plan"
-                          value=<%= plan %>><%= plan %></textarea>
+            <td colspan="6" align=""><span class="cj" style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
+			<textarea class="cj" id="plan" readonly name="plan"
+                                                     value=<%= plan %>><%= plan %></textarea>
             </td>
         </tr>
         <tr>
             <td colspan="6" align="center">电路或设备倒代措施</td>
         </tr>
         <tr>
-            <td colspan="6" align="center"><span class="cj"
-                                                 style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
-                <textarea class="ta1 cj" id="techplan" readonly
-                          name="techplan" value=<%= techplan %>><%= techplan %></textarea>
+            <td colspan="6" align=""><span class="cj" style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
+			<textarea class="ta1 cj" id="techplan" readonly
+                                                     name="techplan" value=<%= techplan %>><%= techplan %></textarea>
             </td>
         </tr>
         <tr>
             <td colspan="6" align="center">施工安全组织措施</td>
         </tr>
         <tr>
-            <td colspan="6" align="center"><span class="cj"
-                                                 style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
-                <textarea class="ta1 cj" id="secureplan" readonly
-                          name="secureplan"
-                          value=<%= secureplan %>><%= secureplan %></textarea></td>
+            <td colspan="6" align=""><span class="cj" style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
+			<textarea class="ta1 cj" id="secureplan" readonly
+                                                     name="secureplan"
+                                                     value=<%= secureplan %>><%= secureplan %></textarea></td>
         </tr>
         <tr>
             <td colspan="6" align="center">工长(安全员)审批</td>
         </tr>
         <tr>
-            <td colspan="6" align="center"><span class="cjzr"
-                                                 style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
-                <textarea class="cjzr" id="workshopmgr" readonly
-                          name="workshopmgr"
-                          value=<%= workshopmgr %>><%= workshopmgr %></textarea>
-                <label align="right">提交时间：<%= workshopmgrtime %></label></td>
+            <td colspan="6" align=""><span class="cjzr" style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
+			<textarea class="cjzr" id="workshopmgr" readonly
+                                                     name="workshopmgr"
+                                                     value=<%= workshopmgr %>><%= workshopmgr %></textarea>
+			<label align="right">提交时间：系统自动填写</label></td>
         </tr>
         <tr>
             <td colspan="1"><span>完成及销点情况(销点人签字)</span></td>
             <td colspan="5"><span class="cj2" style="color:red;font-weight:bold;display:none;">*</span>
-                <input class="full cj2" id="result" readonly name="result" value=<%= result %>></td>
+			<input class="full cj2" id="result" readonly name="result" value=<%= result %>></td>
         </tr>
         <tr>
             <td colspan="6" align="right">申请上报日期：<input name="applydate" type="text" readonly value=<%= applytime %>>
@@ -270,11 +265,11 @@
 
     function removeReadOnly(element) {
         for (var i = 0; i < element.length; i++) {
-            if (element[i].tagName.toLowerCase() == "span") {
-                element[i].style.display = "";
-            } else {
-                element[i].readOnly = false;
-            }
+            if(element[i].tagName.toLowerCase() == "span"){
+				element[i].style.display="";
+			} else{
+				element[i].readOnly=false;
+			}
         }
     }
     function getcookie() {

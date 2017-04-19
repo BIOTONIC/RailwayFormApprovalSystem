@@ -31,7 +31,7 @@
 <%- include('head')%>
 <%- include('notif') %>
 <div class="container">
-	<h6>根据车间查询</h6>
+	<h4>根据车间查询</h4>
 	<form action="/home/queryResult" method="get">
 		选择车间：
 		<select name="workshop">
@@ -41,13 +41,13 @@
 		</select>
 		<input type="submit" value="确认">
 	</form>
-	<h6>根据时间查询</h6>
+	<h4>根据时间查询</h4>
 	<form action="/home/queryResult" method="get">
 		申请起始时间：<input class="time" type="text" name="sqstarttime"><br>
 		申请结束时间：<input class="time" type="text" name="sqendtime"><br>
 		<input type="submit" value="确认">
 	</form>
-	<h6>根据区段查询</h6>
+	<h4>根据区段查询</h4>
 	<form action="/home/queryResult" method="get">
 		输入区段：<input type="text" name="section">
 		<input type="submit" value="确认">

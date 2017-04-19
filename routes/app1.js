@@ -126,7 +126,7 @@ router.post('/', isLogin, function (req, res, next) {
                     // NOTICE!!!
                     //
                     // 先贴上原本的错误范例
-                    // app1.constructor = req.body.shigongfang;
+                    // app1.constructor = req.body.constructor;
                     //
                     // 血泪教训告诉你
                     // 施工方英文不能叫constructor啊
