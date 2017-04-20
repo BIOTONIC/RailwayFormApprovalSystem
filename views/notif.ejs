@@ -2,15 +2,27 @@
     <div class="four wide column"></div>
     <div class="eight wide column">
         <% if (success) { %>
-        <div class="ui success message">
+        <div id="successNotif" class="ui success message">
             <p><%= success %></p>
+			<script>
+				setTimeout("hideNotif('successNotif')",1000);
+			</script>
         </div>
         <% } %>
 
         <% if (error) { %>
-        <div class="ui error message">
+        <div id="errorNotif" class="ui error message">
             <p><%= error %></p>
+			<script>
+				setTimeout("hideNotif('errorNotif')",1000);
+			</script>
         </div>
         <% } %>
     </div>
 </div>
+	<script>
+		function hideNotif(sign){
+			var notif = document.getElementById(sign);
+			notif.style.display="none";
+		}
+	</script>

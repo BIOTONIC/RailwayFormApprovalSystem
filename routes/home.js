@@ -17,7 +17,7 @@ router.get('/', isLogin, function (req, res, next) {
 
 router.get('/apply', isLogin, function (req, res, next) {
     var person = req.session.userId.slice(0, 1);
-    if (person != '1'){
+    if (person != '1') {
         req.flash('error', '无权申请表格');
         return res.redirect('back');
     }
@@ -56,8 +56,7 @@ router.get('/list', isLogin, function (req, res, next) {
         return res.redirect('/home');
     }
 
-
-    app1Service.find(need, query).then((app1Results) => {
+    var func1 = app1Service.find(need, query).then((app1Results) => {
         if (app1Results != null && app1Results.length > 0) {
             for (var i = 0; i < app1Results.length; i++) {
                 var result = {};
@@ -71,7 +70,7 @@ router.get('/list', isLogin, function (req, res, next) {
         }
     });
 
-    app2Service.find(need, query).then((app2Results) => {
+    var func2 = app2Service.find(need, query).then((app2Results) => {
         if (app2Results != null && app2Results.length > 0) {
             for (var i = 0; i < app2Results.length; i++) {
                 var result = {};
@@ -85,7 +84,7 @@ router.get('/list', isLogin, function (req, res, next) {
         }
     });
 
-    app3Service.find(need, query).then((app3Results) => {
+    var func3 = app3Service.find(need, query).then((app3Results) => {
         if (app3Results != null && app3Results.length > 0) {
             for (var i = 0; i < app3Results.length; i++) {
                 var result = {};
@@ -99,7 +98,7 @@ router.get('/list', isLogin, function (req, res, next) {
         }
     });
 
-    setTimeout(function () {
+    Promise.all([func1, func2, func3]).then((result) => {
         for (var i = 0; i < appResults.length; i++) {
             appResults[i].state = getState(person, appResults[i].nextperson);
         }
@@ -107,7 +106,7 @@ router.get('/list', isLogin, function (req, res, next) {
         res.locals.appResults = appResults;
 
         res.render('list');
-    }, 1000);
+    });
 });
 
 router.get('/query', isLogin, function (req, res, next) {
@@ -151,7 +150,7 @@ router.get('/queryResult', isLogin, function (req, res, next) {
         res.redirect('back');
     }
 
-    app1Service.find(need, query).then((app1Results) => {
+    var func1 = app1Service.find(need, query).then((app1Results) => {
         if (app1Results != null && app1Results.length > 0) {
             for (var i = 0; i < app1Results.length; i++) {
                 var result = {};
@@ -165,7 +164,7 @@ router.get('/queryResult', isLogin, function (req, res, next) {
         }
     });
 
-    app2Service.find(need, query).then((app2Results) => {
+    var func2 = app2Service.find(need, query).then((app2Results) => {
         if (app2Results != null && app2Results.length > 0) {
             for (var i = 0; i < app2Results.length; i++) {
                 var result = {};
@@ -179,7 +178,7 @@ router.get('/queryResult', isLogin, function (req, res, next) {
         }
     });
 
-    app3Service.find(need, query).then((app3Results) => {
+    var func3 = app3Service.find(need, query).then((app3Results) => {
         if (app3Results != null && app3Results.length > 0) {
             for (var i = 0; i < app3Results.length; i++) {
                 var result = {};
@@ -193,15 +192,16 @@ router.get('/queryResult', isLogin, function (req, res, next) {
         }
     });
 
-    setTimeout(function () {
-        for (var i = 0; i < appResults.length; i++) {
-            appResults[i].state = getState(person, appResults[i].nextperson);
+    Promise.all([func1, func2, func3]).then((result) => {
+            for (var i = 0; i < appResults.length; i++) {
+                appResults[i].state = getState(person, appResults[i].nextperson);
+            }
+
+            res.locals.appResults = appResults;
+
+            res.render('list');
         }
-
-        res.locals.appResults = appResults;
-
-        res.render('list');
-    }, 1000);
+    );
 });
 
 module.exports = router;
