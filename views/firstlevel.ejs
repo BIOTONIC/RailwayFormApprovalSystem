@@ -329,13 +329,17 @@
                     if (mgrelement.innerText == "") {
                         removeReadOnly(getpart("cj"));
                     } else {
-                        removeReadOnly(getpart("cj2"));
+                        if (typeof getpart("cj2")[0].value === "undefined") {
+                            removeReadOnly(getpart("cj2"));
+                        }
                     }
                 } else {
                     if (mgrelement.innerHTML == "" && mgrelement.value == "") {
                         removeReadOnly(getpart("cj"));
                     } else {
-                        removeReadOnly(getpart("cj2"));
+                        if (typeof getpart("cj2")[0].value === "undefined") {
+                            removeReadOnly(getpart("cj2"));
+                        }
                     }
                 }
                 break;
