@@ -17,7 +17,7 @@ drop event if exists event_clear_app_count;
 create event if not exists event_clear_app_count
 	on schedule 
 	every 1 day
-	starts now()
+	starts '2017-01-01 01:00:00'
 	on completion preserve enable
 	do 
 	begin
