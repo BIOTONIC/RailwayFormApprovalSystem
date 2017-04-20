@@ -292,7 +292,7 @@
                     if (mgrelement.innerText == "") {
                         removeReadOnly(getpart("cj"));
                     } else {
-                        if (typeof getpart("cj2")[0].value === "undefined") {
+                        if (getpart("cj2")[1].value == "") {
                             removeReadOnly(getpart("cj2"));
                         }
                     }
@@ -300,7 +300,7 @@
                     if (mgrelement.innerHTML == "" && mgrelement.value == "") {
                         removeReadOnly(getpart("cj"));
                     } else {
-                        if (typeof getpart("cj2")[0].value === "undefined") {
+                        if (getpart("cj2")[1].value == "") {
                             removeReadOnly(getpart("cj2"));
                         }
                     }
