@@ -58,7 +58,7 @@ module.exports = {
         return App1.update({
                 techdepart: app1.techdepart,
                 techtime: app1.techtime,
-                pfstarttime: app1.pfendtime,
+                pfstarttime: app1.pfstarttime,
                 pfendtime: app1.pfendtime,
                 nextperson: app1.nextperson
             },

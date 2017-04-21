@@ -150,7 +150,7 @@
                 <textarea readonly class="cjzr" id="workshopmgr"
                           name="workshopmgr"
                           value=<%= workshopmgr %>><%= workshopmgr %></textarea>
-                <label align="right">提交时间：系统自动填写</label></td>
+                <label align="right">提交时间：<%= workshopmgrtime%></label></td>
         </tr>
         <tr>
             <td colspan="3" align="center">技术科意见</td>
@@ -160,7 +160,7 @@
             <td colspan="3" align=""><span class="jsk" style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
                 <textarea readonly name="techdepart" class="jsk"
                           id="techdepart" value=<%= techdepart %>><%= techdepart %></textarea>
-                <label align="right">提交时间：系统自动填写</label>
+                <label align="right">提交时间：<%=techtime%></label>
             </td>
             <td colspan="3" align="center">
                 起始时间：<span class="jsk" style="color:red;font-weight:bold;display:none;">*</span>
@@ -178,7 +178,7 @@
                 <textarea readonly class="aqk" id="securedepart"
                           name="securedepart"
                           value=<%= securedepart %>><%= securedepart %></textarea>
-                <label align="right">提交时间：系统自动填写</label></td>
+                <label align="right">提交时间：<%=securetime%></label></td>
         </tr>
         <tr>
             <td colspan="6" align="center">主管段长意见</td>
@@ -188,7 +188,7 @@
                                            style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
                 <textarea readonly class="zgdz" id="manager"
                           name="manager" value=<%= manager %>><%= manager %></textarea>
-                <label align="right">提交时间：系统自动填写</label>
+                <label align="right">提交时间：<%=managertime%></label>
             </td>
         </tr>
         <tr>
