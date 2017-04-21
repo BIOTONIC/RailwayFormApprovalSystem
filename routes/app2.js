@@ -32,12 +32,13 @@ router.get('/create', isLogin, function (req, res, next) {
     res.locals.workshopmgrtime = '系统自行分配';
     res.locals.result = '';
     res.locals.applytime = '系统自行分配';
+    res.locals.submitbtn = '提交';
     req.session.nextperson = '1';
     res.render('secondlevel');
 });
 
 router.get('/', isLogin, function (req, res, next) {
-    // open a already exist application
+    var person = req.session.userId.slice(0, 1);
     var query = {};
     if (typeof req.query.formId != 'undefined') {
         query.id = req.query.formId;
@@ -70,6 +71,7 @@ router.get('/', isLogin, function (req, res, next) {
             res.locals.workshopmgr = results[0].workshopmgr;
             res.locals.workshopmgrtime = results[0].workshopmgrtime;
             res.locals.result = results[0].result;
+            res.locals.submitbtn = (person=='1'?'提交':'同意');
             req.session.nextperson = results[0].nextperson;
             res.render('secondlevel');
         }

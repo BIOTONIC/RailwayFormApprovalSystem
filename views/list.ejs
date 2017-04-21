@@ -38,7 +38,7 @@
         </tr>
         <% for (var i = 0;i < appResults.length;i++){ %>
         <tr>
-            <td><%- appResults[i].name %></td>
+            <td><a href=<%- appResults[i].href %>><%- appResults[i].name %></a></td>
             <td><%- appResults[i].workshop %></td>
             <td><a href=<%- appResults[i].href %>><%= appResults[i].state %></a></td>
         </tr>

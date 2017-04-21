@@ -39,11 +39,13 @@ router.get('/create', isLogin, function (req, res, next) {
     res.locals.managertime = '系统自行分配';
     res.locals.result = '';
     res.locals.applytime = '系统自行分配';
+    res.locals.submitbtn = '提交';
     req.session.nextperson = '1';
     res.render('firstlevel');
 });
 
 router.get('/', isLogin, function (req, res, next) {
+    var person = req.session.userId.slice(0, 1);
     var query = {};
     if (typeof req.query.formId != 'undefined') {
         query.id = req.query.formId;
@@ -84,6 +86,7 @@ router.get('/', isLogin, function (req, res, next) {
             res.locals.manager = results[0].manager;
             res.locals.managertime = results[0].managertime;
             res.locals.result = results[0].result;
+            res.locals.submitbtn = (person=='1'?'提交':'同意');
             req.session.nextperson = results[0].nextperson;
             res.render('firstlevel');
         }

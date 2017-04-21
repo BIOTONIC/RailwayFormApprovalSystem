@@ -31,25 +31,22 @@
 <%- include('head')%>
 <%- include('notif') %>
 <div class="container">
-	<h4>根据车间查询</h4>
-	<form action="/home/queryResult" method="get">
+	<form style="float:left;margin:20px" action="/home/queryResult" method="get">
 		选择车间：
 		<select name="workshop">
 			<option value="01">车间1</option>
 			<option value="02">车间2</option>
 			<option value="03">车间3</option>
-		</select>
+		</select><br>
 		<input type="submit" value="确认">
 	</form>
-	<h4>根据时间查询</h4>
-	<form action="/home/queryResult" method="get">
+	<form style="float:left;margin:20px" action="/home/queryResult" method="get">
 		申请起始时间：<input class="time" type="text" name="sqstarttime"><br>
 		申请结束时间：<input class="time" type="text" name="sqendtime"><br>
 		<input type="submit" value="确认">
 	</form>
-	<h4>根据区段查询</h4>
-	<form action="/home/queryResult" method="get">
-		输入区段：<input type="text" name="section">
+	<form style="float:left;margin:20px" action="/home/queryResult" method="get">
+		输入区段：<input type="text" name="section"><br>
 		<input type="submit" value="确认">
 	</form>
 	<script>
