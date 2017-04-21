@@ -21,8 +21,7 @@ create event if not exists event_clear_app_count
 	on completion preserve enable
 	do 
 	begin
-    update conf set applycount = 0 where id = 0;
-    update conf set approvecount = 0 where id = 0;
+    update conf set applycount = 0, approvecount = 0 where id = 0;
 	end $$
 delimiter ;
 
