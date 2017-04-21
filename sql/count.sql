@@ -16,7 +16,7 @@ delimiter $$
 drop event if exists event_clear_app_count;
 create event if not exists event_clear_app_count
 	on schedule 
-	every 1 day
+	every 10 minute
 	starts '2017-04-20 01:00:00'
 	on completion preserve enable
 	do 
