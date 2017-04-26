@@ -7,18 +7,22 @@
             width: 980px;
             margin: auto;
         }
+
         h1 {
             text-align: center;
         }
+
         .apply {
             border: 1px solid;
             width: 80%;
             margin: auto;
             text-align: center;
         }
+
         .applybtn {
             width: 32%;
         }
+
         .container {
             margin: 40px auto 150px auto;
         }
@@ -28,44 +32,44 @@
     <script src="/javascripts/calendar.js"></script>
 </head>
 <body onload="controldisplay()">
-<%- include('head')%>
+<%- include('head') %>
 <%- include('notif') %>
 <div class="container">
-		<table>
-	<tr><td>
-		选择车间：
-		<select name="workshop">
-			<option value="01">车间1</option>
-			<option value="02">车间2</option>
-			<option value="03">车间3</option>
-		</select><br><br>
-		</td>
-		<td>
-		申请起始时间：<input class="time" type="text" name="sqstarttime"><br>
-		申请结束时间：<input class="time" type="text" name="sqendtime">
-		</td>
-		<td>
-		输入区段：<input type="text" name="section"><br><br>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="3"><input type="button" value="确认" onclick="search()"></td>
-	</tr>
-	</table>
-	<script>
-    $('.time').each(function () {
-        var a = new Calendar({
-            targetCls: $(this),
-            type: 'yyyy-mm-dd HH:MM:SS',
-            wday: 2
-        }, function (val) {
-            console.log(val);
+    <form action="/home/queryResult" , method="get">
+        <table>
+            <tr>
+                <td>
+                    选择车间：
+                    <select name="workshop">
+                        <option value="01">车间1</option>
+                        <option value="02">车间2</option>
+                        <option value="03">车间3</option>
+                    </select><br><br>
+                </td>
+                <td>
+                    申请起始时间：<input class="time" type="text" name="sqstarttime"><br>
+                    申请结束时间：<input class="time" type="text" name="sqendtime">
+                </td>
+                <td>
+                    输入区段：<input type="text" name="section"><br><br>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3"><input type="submit" value="确认"></td>
+            </tr>
+        </table>
+    </form>
+    <script>
+        $('.time').each(function () {
+            var a = new Calendar({
+                targetCls: $(this),
+                type: 'yyyy-mm-dd HH:MM:SS',
+                wday: 2
+            }, function (val) {
+                console.log(val);
+            });
         });
-    });
-	function search(){
-		alert("暂未实现！")
-	}
-</script>
+    </script>
 </div>
 </body>
 </html>

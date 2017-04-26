@@ -114,19 +114,16 @@ router.get('/query', isLogin, function (req, res, next) {
 });
 
 router.get('/queryResult', isLogin, function (req, res, next) {
-    var person = req.session.userId.slice(0, 1);
-    var workshop = req.query.workshop;
-    var sqstarttime = req.query.sqstarttime;
-    var sqendtime = req.query.sqendtime;
-    var section = req.query.section;
+        var person = req.session.userId.slice(0, 1);
+        var workshop = req.query.workshop;
+        var sqstarttime = req.query.sqstarttime;
+        var sqendtime = req.query.sqendtime;
+        var section = req.query.section;
 
-    var need = ['id', 'workshop', 'nextperson'];
-    var query = {};
-    var appResults = [];
+        var need = ['id', 'workshop', 'nextperson'];
+        var query = {};
+        var appResults = [];
 
-    if (typeof workshop != 'undefined') {
-        query = {workshop: workshop};
-    } else if (typeof sqstarttime != 'undefined' && typeof sqendtime != 'undefined') {
         if (sqstarttime != '' && sqendtime != '') {
             sqstarttime = getFormatTime(sqstarttime);
             sqendtime = getFormatTime(sqendtime);
@@ -137,71 +134,68 @@ router.get('/queryResult', isLogin, function (req, res, next) {
         } else if (sqstarttime == '' && sqendtime != '') {
             sqendtime = getFormatTime(sqendtime);
             query = {sqendtime: {$lte: sqendtime}};
-        } else {
-            res.redirect('back');
         }
-    } else if (typeof section != 'undefined') {
-        if (section == '') {
-            res.redirect('back');
-        } else {
-            query = {section: section};
+        if (typeof workshop != '') {
+            query.workshop = workshop;
         }
-    } else {
-        res.redirect('back');
+        if (section != '') {
+            query.section = section;
+        }
+
+        var func1 = app1Service.find(need, query).then((app1Results) => {
+            if (app1Results != null && app1Results.length > 0) {
+                for (var i = 0; i < app1Results.length; i++) {
+                    var result = {};
+                    result.id = app1Results[i].id;
+                    result.href = '/app1?formId=' + result.id;
+                    result.name = '一级审批表' + result.id;
+                    result.workshop = app1Results[i].workshop;
+                    result.nextperson = app1Results[i].nextperson;
+                    appResults.push(result);
+                }
+            }
+        });
+
+        var func2 = app2Service.find(need, query).then((app2Results) => {
+            if (app2Results != null && app2Results.length > 0) {
+                for (var i = 0; i < app2Results.length; i++) {
+                    var result = {};
+                    result.id = app2Results[i].id;
+                    result.href = '/app2?formId=' + result.id;
+                    result.name = '二级审批表' + result.id;
+                    result.workshop = app2Results[i].workshop;
+                    result.nextperson = app2Results[i].nextperson;
+                    appResults.push(result);
+                }
+            }
+        });
+
+        var func3 = app3Service.find(need, query).then((app3Results) => {
+            if (app3Results != null && app3Results.length > 0) {
+                for (var i = 0; i < app3Results.length; i++) {
+                    var result = {};
+                    result.id = app3Results[i].id;
+                    result.href = '/app3?formId=' + result.id;
+                    result.name = '三级审批表' + result.id;
+                    result.workshop = app3Results[i].workshop;
+                    result.nextperson = app3Results[i].nextperson;
+                    appResults.push(result);
+                }
+            }
+        });
+
+        Promise.all([func1, func2, func3]).then((result) => {
+                for (var i = 0; i < appResults.length; i++) {
+                    appResults[i].state = getState(person, appResults[i].nextperson);
+                }
+
+                res.locals.appResults = appResults;
+
+                res.render('list');
+            }
+        );
     }
-
-    var func1 = app1Service.find(need, query).then((app1Results) => {
-        if (app1Results != null && app1Results.length > 0) {
-            for (var i = 0; i < app1Results.length; i++) {
-                var result = {};
-                result.id = app1Results[i].id;
-                result.href = '/app1?formId=' + result.id;
-                result.name = '一级审批表' + result.id;
-                result.workshop = app1Results[i].workshop;
-                result.nextperson = app1Results[i].nextperson;
-                appResults.push(result);
-            }
-        }
-    });
-
-    var func2 = app2Service.find(need, query).then((app2Results) => {
-        if (app2Results != null && app2Results.length > 0) {
-            for (var i = 0; i < app2Results.length; i++) {
-                var result = {};
-                result.id = app2Results[i].id;
-                result.href = '/app2?formId=' + result.id;
-                result.name = '二级审批表' + result.id;
-                result.workshop = app2Results[i].workshop;
-                result.nextperson = app2Results[i].nextperson;
-                appResults.push(result);
-            }
-        }
-    });
-
-    var func3 = app3Service.find(need, query).then((app3Results) => {
-        if (app3Results != null && app3Results.length > 0) {
-            for (var i = 0; i < app3Results.length; i++) {
-                var result = {};
-                result.id = app3Results[i].id;
-                result.href = '/app3?formId=' + result.id;
-                result.name = '三级审批表' + result.id;
-                result.workshop = app3Results[i].workshop;
-                result.nextperson = app3Results[i].nextperson;
-                appResults.push(result);
-            }
-        }
-    });
-
-    Promise.all([func1, func2, func3]).then((result) => {
-            for (var i = 0; i < appResults.length; i++) {
-                appResults[i].state = getState(person, appResults[i].nextperson);
-            }
-
-            res.locals.appResults = appResults;
-
-            res.render('list');
-        }
-    );
-});
+)
+;
 
 module.exports = router;
