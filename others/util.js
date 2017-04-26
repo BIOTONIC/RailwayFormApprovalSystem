@@ -31,6 +31,32 @@ module.exports = {
     getFormatTime: function getFormatTime(origin) {
         return origin.replace(/[^0-9]/g, '');
     },
+    getNormalTime: function getNormalTime(origin) {
+        // origin: 20170215180000
+        // result: 2017-02-15 18:00:00
+
+        if (origin == null){
+            return origin;
+        }
+
+        var result = origin;
+        result = result.replace(/(.{12})/,'$1:');
+        // origin: 201702151800:00
+
+        result = result.replace(/(.{10})/,'$1:');
+        // origin: 2017021518:00:00
+
+        result = result.replace(/(.{8})/,'$1 ');
+        // origin: 20170215 18:00:00
+
+        result = result.replace(/(.{6})/,'$1-');
+        // origin: 201702-15 18:00:00
+
+        result = result.replace(/(.{4})/,'$1-');
+        // origin: 2017-02-15 18:00:00
+
+        return result;
+    },
     getState: function getState(person, nextperson) {
         switch (person) {
             case '1':

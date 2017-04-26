@@ -7,6 +7,7 @@ var getTime = require('../others/util').getTime;
 var getFixNumber = require('../others/util').getFixNumber;
 var getNoticedepart = require('../others/util').getNoticedepart;
 var getFormatTime = require('../others/util').getFormatTime;
+var getNormalTime = require('../others/util').getNormalTime;
 var app3Service = require('../services/app3Service');
 var confService = require('../services/confService');
 
@@ -64,8 +65,8 @@ router.get('/', isLogin, function (req, res, next) {
             res.locals.approveid = results[0].approveid;
             res.locals.section = results[0].section;
             res.locals.reason = results[0].reason;
-            res.locals.sqstarttime = results[0].sqstarttime;
-            res.locals.sqendtime = results[0].sqendtime;
+            res.locals.sqstarttime = getNormalTime(results[0].sqstarttime);
+            res.locals.sqendtime = getNormalTime(results[0].sqendtime);
             res.locals.noticedepart = results[0].noticedepart;
             res.locals.shigongfang = results[0].shigongfang;
             res.locals.plan = results[0].plan;
@@ -73,7 +74,7 @@ router.get('/', isLogin, function (req, res, next) {
             res.locals.secureplan = results[0].secureplan;
             res.locals.applytime = results[0].applytime;
             res.locals.workshopmgr = results[0].workshopmgr;
-            res.locals.workshopmgrtime = results[0].workshopmgrtime;
+            res.locals.workshopmgrtime = getNormalTime(results[0].workshopmgrtime);
             res.locals.result = results[0].result;
             res.locals.submitbtn = (person=='1'?'提交':'同意');
             req.session.nextperson = results[0].nextperson;
