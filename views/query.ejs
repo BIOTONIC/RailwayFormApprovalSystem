@@ -31,24 +31,27 @@
 <%- include('head')%>
 <%- include('notif') %>
 <div class="container">
-	<form style="float:left;margin:20px" action="/home/queryResult" method="get">
+		<table>
+	<tr><td>
 		选择车间：
 		<select name="workshop">
 			<option value="01">车间1</option>
 			<option value="02">车间2</option>
 			<option value="03">车间3</option>
-		</select><br>
-		<input type="submit" value="确认">
-	</form>
-	<form style="float:left;margin:20px" action="/home/queryResult" method="get">
+		</select><br><br>
+		</td>
+		<td>
 		申请起始时间：<input class="time" type="text" name="sqstarttime"><br>
-		申请结束时间：<input class="time" type="text" name="sqendtime"><br>
-		<input type="submit" value="确认">
-	</form>
-	<form style="float:left;margin:20px" action="/home/queryResult" method="get">
-		输入区段：<input type="text" name="section"><br>
-		<input type="submit" value="确认">
-	</form>
+		申请结束时间：<input class="time" type="text" name="sqendtime">
+		</td>
+		<td>
+		输入区段：<input type="text" name="section"><br><br>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3"><input type="button" value="确认" onclick="search()"></td>
+	</tr>
+	</table>
 	<script>
     $('.time').each(function () {
         var a = new Calendar({
@@ -59,6 +62,9 @@
             console.log(val);
         });
     });
+	function search(){
+		alert("暂未实现！")
+	}
 </script>
 </div>
 </body>
