@@ -111,9 +111,10 @@ module.exports = {
             where: query
         });
     },
-    find2: function find2(need, order) {
+    find2: function find2(need, query, order) {
         return App1.findAll({
             attributes: need,
+            where: query,
             order: order
         });
     },
