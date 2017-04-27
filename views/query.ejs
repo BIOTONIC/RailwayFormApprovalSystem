@@ -4,7 +4,6 @@
     <title>要点查询</title>
     <style>
         body {
-            width: 980px;
             margin: auto;
         }
 
@@ -32,7 +31,7 @@
     <script src="/javascripts/calendar.js"></script>
 </head>
 <body onload="controldisplay()">
-<%- include('head') %>
+<%- include('nav') %>
 <%- include('notif') %>
 <div class="container">
     <form action="/home/queryResult" , method="get">
