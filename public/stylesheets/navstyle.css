@@ -24,12 +24,12 @@
   font-size: 15px;
 }
 .animenu a {
-  color: #aaaaaa;
+  color: #eeeeee;
   text-decoration: none;
 }
 
 .animenu__nav {
-  background-color: #111;
+  background-color: #101010;
 }
 .animenu__nav > li {
   position: relative;
@@ -94,8 +94,8 @@
   border-color: #373737;
 }
 .animenu__nav__child a:hover {
-  background-color: #0186ba;
-  border-color: #0186ba;
+  background-color: #7ea9ba;
+  border-color: #7ea9ba;
   color: #fff;
 }
 
@@ -138,14 +138,14 @@
     position: relative;
   }
   .animenu__nav a:hover {
-    background-color: #0186ba;
-    border-color: #0186ba;
+    background-color: #7ea9ba;
+    border-color: #7ea9ba;
     color: #fff;
   }
 
   .animenu__nav__child {
     position: static;
-    background-color: #373737;
+    background-color: #131313;
     margin: 0;
     transition: none;
     visibility: visible;
