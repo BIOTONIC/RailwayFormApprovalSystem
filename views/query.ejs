@@ -24,6 +24,20 @@
 
         .container {
             margin: 40px auto 150px auto;
+            width: 80%;
+        }
+
+        table, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        td {
+            padding: 5px;
         }
     </style>
     <link rel="stylesheet" href="/stylesheets/cxcalendar.css">
@@ -69,6 +83,24 @@
             });
         });
     </script>
+</div>
+<div class="container">
+    <table>
+        <tbody>
+        <tr>
+            <td>审批表</td>
+            <td>所属车间</td>
+            <td>查看或审批</td>
+        </tr>
+        <% for (var i = 0;i < appResults.length;i++){ %>
+        <tr>
+            <td><a href=<%- appResults[i].href %>><%- appResults[i].name %></a></td>
+            <td><%- appResults[i].workshop %></td>
+            <td><a href=<%- appResults[i].href %>><%= appResults[i].state %></a></td>
+        </tr>
+        <% } %>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

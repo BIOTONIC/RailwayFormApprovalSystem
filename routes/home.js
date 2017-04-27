@@ -110,6 +110,7 @@ router.get('/list', isLogin, function (req, res, next) {
 });
 
 router.get('/query', isLogin, function (req, res, next) {
+    res.locals.appResults=[];
     res.render('query');
 });
 
@@ -191,7 +192,7 @@ router.get('/queryResult', isLogin, function (req, res, next) {
 
                 res.locals.appResults = appResults;
 
-                res.render('list');
+                res.render('query');
             }
         );
     }
