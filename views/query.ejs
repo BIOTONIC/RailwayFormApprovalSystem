@@ -39,6 +39,12 @@
         td {
             padding: 5px;
         }
+		.applylink {
+			color: #000;
+		}
+		.applylink:visited {
+			color: #222;
+		}
     </style>
     <link rel="stylesheet" href="/stylesheets/cxcalendar.css">
     <script src="/javascripts/jquery-1.9.1.js"></script>
@@ -94,9 +100,9 @@
         </tr>
         <% for (var i = 0;i < appResults.length;i++){ %>
         <tr style="<%= (i % 2 == 0 ? "background-color:#0186ba" : "") %>">
-            <td><a href=<%- appResults[i].href %>><%- appResults[i].name %></a></td>
+            <td><a class="applylink" href=<%- appResults[i].href %>><%- appResults[i].name %></a></td>
             <td><%- appResults[i].workshop %></td>
-            <td><a href=<%- appResults[i].href %>><%= appResults[i].state %></a></td>
+            <td><a class="applylink" href=<%- appResults[i].href %>><%= appResults[i].state %></a></td>
         </tr>
         <% } %>
         </tbody>
