@@ -1,15 +1,17 @@
 var db = require('../others/db');
 
-var Conf = db.sequelize.define('conf', {
+var mysql = db.mysql;
+
+var Conf = mysql.sequelize.define('conf', {
         id: {
-            type: db.Sequelize.INTEGER(11),
+            type: mysql.Sequelize.INTEGER(11),
             primaryKey: true
         },
         applycount: {
-            type: db.Sequelize.INTEGER(11)
+            type: mysql.Sequelize.INTEGER(11)
         },
         approvecount: {
-            type: db.Sequelize.INTEGER(11)
+            type: mysql.Sequelize.INTEGER(11)
         }
     },
     {

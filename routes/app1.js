@@ -12,7 +12,7 @@ var app1Service = require('../services/app1Service');
 var confService = require('../services/confService');
 
 router.get('/create', isLogin, function (req, res, next) {
-    var workshop = req.session.userId.slice(1);
+    var workshop = req.session.workshop;
     // create a new application
     res.locals.workshop = workshop;
     res.locals.telephone = '';
@@ -46,7 +46,7 @@ router.get('/create', isLogin, function (req, res, next) {
 });
 
 router.get('/', isLogin, function (req, res, next) {
-    var person = req.session.userId.slice(0, 1);
+    var person = req.session.workshop;
     var query = {};
     if (typeof req.query.formId != 'undefined') {
         query.id = req.query.formId;
@@ -95,14 +95,14 @@ router.get('/', isLogin, function (req, res, next) {
 });
 
 router.post('/', isLogin, function (req, res, next) {
-    var person = req.session.userId.slice(0, 1);
+    var person = req.session.person;
     var nextperson = req.session.nextperson;
 
     var app1 = {};
 
     if (person == '1') {
         // normal worker
-        var workshop = req.session.userId.slice(1);
+        var workshop = req.session.workshop;
         var actualworkshop = req.body.workshop;
         if (nextperson == '1') {
             // create a new application
@@ -118,7 +118,7 @@ router.post('/', isLogin, function (req, res, next) {
 
                     //id is the same with applyid
                     app1.id = applyid;
-                    app1.workshop = req.session.userId.slice(1);
+                    app1.workshop = req.session.workshop;
                     app1.telephone = req.body.telephone;
                     app1.fax = req.body.fax;
                     app1.applyid = applyid;
@@ -215,7 +215,7 @@ router.post('/', isLogin, function (req, res, next) {
     }
     else if (person == '2') {
         //workshop manager
-        var workshop = req.session.userId.slice(1);
+        var workshop = req.session.workshop;
         var actualworkshop = req.body.workshop;
         if (workshop != actualworkshop) {
             // only the exact workshop manager can check the application

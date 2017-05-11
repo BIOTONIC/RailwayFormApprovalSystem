@@ -12,7 +12,7 @@ var app3Service = require('../services/app3Service');
 var confService = require('../services/confService');
 
 router.get('/create', isLogin, function (req, res, next) {
-    var workshop = req.session.userId.slice(1);
+    var workshop = req.session.workshop;
 
     // create a new application
     res.locals.workshop = workshop;
@@ -39,7 +39,7 @@ router.get('/create', isLogin, function (req, res, next) {
 });
 
 router.get('/', isLogin, function (req, res, next) {
-    var person = req.session.userId.slice(0, 1);
+    var person = req.session.person;
     var query = {};
     if (typeof req.query.formId != 'undefined') {
         query.id = req.query.formId;
@@ -84,14 +84,14 @@ router.get('/', isLogin, function (req, res, next) {
 });
 
 router.post('/', isLogin, function (req, res, next) {
-    var person = req.session.userId.slice(0, 1);
+    var person = req.session.person;
     var nextperson = req.session.nextperson;
 
     var app3 = {};
 
     if (person == '1') {
         //normal worker
-        var workshop = req.session.userId.slice(1);
+        var workshop = req.session.workshop;
         var actualworkshop = req.body.workshop;
         if (nextperson == '1') {
             //create a new application
@@ -107,7 +107,7 @@ router.post('/', isLogin, function (req, res, next) {
 
                     //id is the same with applyid
                     app3.id = applyid;
-                    app3.workshop = req.session.userId.slice(1);
+                    app3.workshop = req.session.workshop;
                     app3.telephone = req.body.telephone;
                     app3.fax = req.body.fax;
                     app3.applyid = applyid;

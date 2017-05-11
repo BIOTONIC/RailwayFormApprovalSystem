@@ -16,7 +16,7 @@ router.get('/', isLogin, function (req, res, next) {
 });
 
 router.get('/apply', isLogin, function (req, res, next) {
-    var person = req.session.userId.slice(0, 1);
+    var person = req.session.person;
     if (person != '1') {
         req.flash('error', '无权申请表格');
         return res.redirect('back');
@@ -38,7 +38,7 @@ router.get('/apply', isLogin, function (req, res, next) {
 });
 
 router.get('/list', isLogin, function (req, res, next) {
-    var person = req.session.userId.slice(0, 1);
+    var person = req.session.person;
     var need = ['id', 'workshop', 'nextperson'];
     var order = [['id','DESC']];
     var query = {};
@@ -46,7 +46,7 @@ router.get('/list', isLogin, function (req, res, next) {
 
     if (person == '1' || person == '2') {
         // list forms only from this workshop
-        var workshop = req.session.userId.slice(1);
+        var workshop = req.session.workshop;
         query = {workshop: workshop};
     } else if (person == '3' || person == '4' || person == '5') {
         // list all forms
@@ -116,7 +116,7 @@ router.get('/query', isLogin, function (req, res, next) {
 });
 
 router.get('/queryResult', isLogin, function (req, res, next) {
-        var person = req.session.userId.slice(0, 1);
+        var person = req.session.person;
         var workshop = req.query.workshop;
         var sqstarttime = req.query.sqstarttime;
         var sqendtime = req.query.sqendtime;

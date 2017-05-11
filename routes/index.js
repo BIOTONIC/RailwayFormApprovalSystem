@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/', function(req, res, next) {
-    if(!req.session.userId){
+router.get('/', function (req, res, next) {
+    if (!req.session.userId && !req.session.person && !req.session.workshop) {
         res.redirect('/login');
-    }else{
+    } else {
         res.redirect('/home');
     }
 
@@ -12,9 +12,9 @@ router.get('/', function(req, res, next) {
 
 router.use('/login', require('./login'));
 router.use('/home', require('./home'));
-router.use('/app1',require('./app1'));
-router.use('/app2',require('./app2'));
-router.use('/app3',require('./app3'));
+router.use('/app1', require('./app1'));
+router.use('/app2', require('./app2'));
+router.use('/app3', require('./app3'));
 
 // 404 page
 router.use(function (req, res) {

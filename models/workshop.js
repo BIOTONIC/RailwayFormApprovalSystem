@@ -1,12 +1,14 @@
 var db = require('../others/db');
 
-var Workshop = db.sequelize.define('workshop', {
+var mysql = db.mysql;
+
+var Workshop = mysql.sequelize.define('workshop', {
         id: {
-            type: db.Sequelize.CHAR(2),
+            type: mysql.Sequelize.CHAR(2),
             primaryKey: true
         },
         name: {
-            type:db.Sequelize.STRING(10),
+            type: mysql.Sequelize.STRING(10),
             unique: true,
             allowNull: false
         }

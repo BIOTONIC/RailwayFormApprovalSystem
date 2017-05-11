@@ -1,17 +1,19 @@
 var db = require('../others/db');
 
-var User = db.sequelize.define('user', {
+var mysql = db.mysql;
+
+var User = mysql.sequelize.define('user', {
         id: {
-            type: db.Sequelize.CHAR(3),
+            type: mysql.Sequelize.CHAR(3),
             primaryKey: true
         },
         username: {
-            type: db.Sequelize.STRING(30),
+            type: mysql.Sequelize.STRING(30),
             unique: true,
             allowNull: false
         },
         password: {
-            type: db.Sequelize.STRING(30),
+            type: mysql.Sequelize.STRING(30),
             allowNull: false
         }
     },
