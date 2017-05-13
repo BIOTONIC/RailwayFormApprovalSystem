@@ -1,33 +1,22 @@
-var db = require('../others/db');
-
-var sqlserver = db.sqlserver;
+var mssql = require('../others/db').mssql;
+var conf = require('../others/config');
 
 module.exports = {
     findUserByName: function findUserByName(username) {
-        var results=[];
-
-        sqlserver.conection.on('connect', function (err) {
-            var request = new sqlserver.request("select * from user where username = " + username, function (err, rowCount) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    // TODO  返回结果？
-                    // console.log(rowCount + ' rows');
-                    return results;
-                }
+        return mssql.connect(conf.mssql)
+            .then(pool => {
+                return pool.request()
+                    .input('input_parameter', mssql.NVarChar, username)
+                    .query('select top 1 * from emptb where Name = @input_parameter order by Sort ASC')
             });
+    },
 
-            request.on('row', function(columns) {
-                var row = {};
-                columns.forEach(function(column) {
-                    row[column.metadata.colName] = column.value;
-                });
-                results.push(row);
+    findByParentId: function findByParentId(id) {
+        return mssql.connect(conf.mssql)
+            .then(pool => {
+                return pool.request()
+                    .input('input_parameter', mssql.Int, id)
+                    .query('select top 1 * from depttb where ID = @input_parameter order by Sort ASC')
             });
-
-            // SQL Server 2000: execSqlBatch
-            // Other Versions: execSql
-            sqlserver.conection.execSqlBatch(request);
-        });
     }
 }

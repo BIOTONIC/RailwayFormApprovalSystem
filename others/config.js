@@ -7,22 +7,32 @@ module.exports = {
         password: '',
         database: 'railway'
     },
-    // http://tediousjs.github.io/tedious/api-connection.html#function_newConnection
-    sqlserver: {
-        server: 'localhost',
-        userName: 'test',
-        password: 'test',
+    // mssql: {
+    //     server: '10.78.119.201',
+    //     user: 'thrid',
+    //     password: 'thrid',
+    //     database: 'BJTXD',
+    //     options: {
+    //         tdsVersion: '7_1'
+    //     }
+    // },
+    mssql: {
+        server: '192.168.1.107',
+        user: 'sa',
+        password: '',
+        database: 'BJTXD',
+        pool: {
+            max: 100,
+            min: 0
+        },
         options: {
-            debug: {
-                packet: true,
-                data: true,
-                payload: true,
-                token: false,
-                log: true
-            },
-            database: 'DBName',
-            encrypt: true // for Azure users
+            tdsVersion: '7_1'
+        },
+        parentId: {
+            manager: 0,
+            department: 1273,
+            workshopmgr: 1274
         }
     },
-    userTableFromSqlServer: false,
+    userTableFromSqlServer: true,
 }
