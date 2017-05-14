@@ -33,17 +33,18 @@ router.post('/', notLogin, function (req, res, next) {
                         // manager will get person at second query
                         else if (result2[0].ParentID == conf.mssql.parentId.manager) {
                             // TODO delete person info on flash
-                            req.flash('success', '登录成功 5');
                             delete password;
                             req.session.userId = result1[0].ID;
                             req.session.person = '5';
                             req.session.workshop = '0';
                             res.cookie('id', req.session.userId);
+                            res.cookie('person',req.session.person);
+                            res.cookie('workshop',req.session.workshop);
+                            req.flash('success', '登录成功 ' + result2[0].Name + ' ' + req.session.person);
                             return res.redirect('home');
                         }
                         // department will get person at second query
                         else if (result2[0].ParentID == conf.mssql.parentId.department) {
-
                             delete password;
                             req.session.userId = result2[0].ID;
                             // TODO 判断是安全科还是技术科 还是其他科
@@ -55,17 +56,21 @@ router.post('/', notLogin, function (req, res, next) {
                             }
                             req.session.workshop = '0';
                             res.cookie('id', req.session.userId);
-                            req.flash('success', '登录成功' + req.session.person);
+                            res.cookie('person',req.session.person);
+                            res.cookie('workshop',req.session.workshop);
+                            req.flash('success', '登录成功 ' + result2[0].Name + ' ' + req.session.person);
                             return res.redirect('home');
                         }
                         // workshopmgr will get person at second query
                         else if (result2[0].ParentID == conf.mssql.parentId.department) {
-                            req.flash('success', '登录成功 2');
+                            req.flash('success', '登录成功 ' + result2[0].Name + ' ' + req.session.person);
                             delete password;
                             req.session.userId = result2[0].ID;
                             req.session.person = '2';
                             req.session.workshop = result2[0].Name;
                             res.cookie('id', req.session.userId);
+                            res.cookie('person',req.session.person);
+                            res.cookie('workshop',req.session.workshop);
                             return res.redirect('home');
                         }
                         else {
@@ -81,7 +86,9 @@ router.post('/', notLogin, function (req, res, next) {
                                     req.session.person = '1';
                                     req.session.workshop = result3[0].Name;
                                     res.cookie('id', req.session.userId);
-                                    req.flash('success', '登录成功 1' + req.session.workshop);
+                                    res.cookie('person',req.session.person);
+                                    res.cookie('workshop',req.session.workshop);
+                                    req.flash('success', '登录成功 ' + result3[0].Name + ' ' + req.session.person);
                                     return res.redirect('home');
                                 } else {
                                     req.flash('err', '未知错误');
@@ -104,13 +111,15 @@ router.post('/', notLogin, function (req, res, next) {
                     return res.redirect('login');
                 }
                 else {
-                    req.flash('success', '登录成功');
                     delete password;
                     // can not use req.session.id because it is a reserved word
                     req.session.userId = results[0].id;
                     req.session.person = results[0].id.slice(0, 1);
                     req.session.workshop = results[0].id.slice(1);
                     res.cookie('id', req.session.userId);
+                    res.cookie('person',req.session.person);
+                    res.cookie('workshop',req.session.workshop);
+                    req.flash('success', '登录成功');
                     return res.redirect('home');
                 }
             });

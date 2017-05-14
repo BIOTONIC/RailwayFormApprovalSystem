@@ -46,7 +46,7 @@ router.get('/create', isLogin, function (req, res, next) {
 });
 
 router.get('/', isLogin, function (req, res, next) {
-    var person = req.session.workshop;
+    var person = req.session.person;
     var query = {};
     if (typeof req.query.formId != 'undefined') {
         query.id = req.query.formId;
@@ -341,7 +341,6 @@ router.post('/', isLogin, function (req, res, next) {
         req.flash('error', '账号角色错误');
         return res.redirect('/app1');
     }
-})
-;
+});
 
 module.exports = router;

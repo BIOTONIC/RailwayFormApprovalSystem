@@ -17,7 +17,7 @@ module.exports = {
     //     }
     // },
     mssql: {
-        server: '192.168.1.107',
+        server: '192.168.1.102',
         user: 'sa',
         password: '',
         database: 'BJTXD',
