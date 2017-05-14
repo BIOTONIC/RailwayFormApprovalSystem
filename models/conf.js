@@ -19,6 +19,8 @@ var Conf = mysql.sequelize.define('conf', {
         timestamps: false // no 'createdAt' and 'updateAt' column
     });
 
-var mssql = db.mysql;
+mysql.sequelize.sync().then(function () {
+    console.log('Conf Sync Success');
+})
 
 module.exports = Conf;

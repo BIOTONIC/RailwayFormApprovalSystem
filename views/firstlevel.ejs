@@ -148,7 +148,7 @@
                 <textarea readonly class="cjzr" id="workshopmgr"
                           name="workshopmgr"
                           value=<%= workshopmgr %>><%= workshopmgr %></textarea>
-                <label align="right">提交时间：<%= workshopmgrtime%></label></td>
+                <label align="right">提交时间：<%= workshopmgrtime %></label></td>
         </tr>
         <tr>
             <td colspan="3" align="center">技术科意见</td>
@@ -158,7 +158,7 @@
             <td colspan="3" align=""><span class="jsk" style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
                 <textarea readonly name="techdepart" class="jsk"
                           id="techdepart" value=<%= techdepart %>><%= techdepart %></textarea>
-                <label align="right">提交时间：<%=techtime%></label>
+                <label align="right">提交时间：<%= techtime %></label>
             </td>
             <td colspan="3" align="center">
                 起始时间：<span class="jsk" style="color:red;font-weight:bold;display:none;">*</span>
@@ -176,7 +176,7 @@
                 <textarea readonly class="aqk" id="securedepart"
                           name="securedepart"
                           value=<%= securedepart %>><%= securedepart %></textarea>
-                <label align="right">提交时间：<%=securetime%></label></td>
+                <label align="right">提交时间：<%= securetime %></label></td>
         </tr>
         <tr>
             <td colspan="6" align="center">主管段长意见</td>
@@ -186,7 +186,7 @@
                                            style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
                 <textarea readonly class="zgdz" id="manager"
                           name="manager" value=<%= manager %>><%= manager %></textarea>
-                <label align="right">提交时间：<%=managertime%></label>
+                <label align="right">提交时间：<%= managertime %></label>
             </td>
         </tr>
         <tr>
@@ -199,7 +199,8 @@
             </td>
         </tr>
         <tr>
-            <td colspan="6" align="center"><input onclick="return submitform()" type="submit" value="<%=submitbtn %>"></td>
+            <td colspan="6" align="center"><input onclick="return submitform()" type="submit" value="<%= submitbtn %>">
+            </td>
         </tr>
         </tbody>
     </table>
@@ -276,8 +277,8 @@
     }
 
     function submitform() {
-        var id = getcookie();
-        switch (id[0]) {
+        var cookie = getcookie();
+        switch (cookie["person"]) {
             case "1":
                 if (document.getElementById("manager").innerHTML == "") {
                     return checkpart("cj");
@@ -310,19 +311,23 @@
             }
         }
     }
-
+    //cookie
+    //person 1-6
+    //id emptb的id
+    //workshop 具体名称
     function getcookie() {
         var cookies = document.cookie.split(";");
+        var cookieDic = [];
         for (var i = 0; i < cookies.length; i++) {
             var cookie = cookies[i].split("=");
-            if (cookie[0] == "id") {
-                return cookie[1];
-            }
+            cookieDic[cookie[0].trim()] = cookie[1].trim();
+            //alert(decodeURI(cookie[1].trim()));
         }
+        return cookieDic;
     }
     function controldisplay() {
-        var id = getcookie();
-        switch (id[0]) {
+        var cookie = getcookie();
+        switch (cookie["person"]) {
             case "1":
                 var mgrelement = document.getElementById("manager");
                 if (isIE()) {
@@ -345,7 +350,7 @@
                 break;
             case "2":
                 removeReadOnly(getpart("cjzr"));
-                if (id.substring(1) != document.getElementById("workshop").substring(2)) {
+                if (cookie["person"] != document.getElementById("workshop").substring(2)) {
                     document.getElementById("subbtn").disabled = "disabled";
                 }
                 break;

@@ -4,7 +4,7 @@ var mysql = db.mysql;
 
 var User = mysql.sequelize.define('user', {
         id: {
-            type: mysql.Sequelize.CHAR(3),
+            type: mysql.Sequelize.CHAR(10),
             primaryKey: true
         },
         username: {
@@ -20,6 +20,11 @@ var User = mysql.sequelize.define('user', {
     {
         freezeTableName: true, // false will change 'user' to 'users'
         timestamps: false // no 'createdAt' and 'updateAt' column
+    });
+
+mysql.sequelize.sync()
+    .then(function () {
+        console.log("User Sync Success");
     });
 
 module.exports = User;

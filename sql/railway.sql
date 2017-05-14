@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `application1`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `application1` (
   `id` varchar(13) NOT NULL,
-  `workshop` char(2) NOT NULL,
+  `workshop` varchar(40) NOT NULL,
   `telephone` varchar(11) NOT NULL,
   `fax` varchar(11) NOT NULL,
   `applyid` varchar(13) NOT NULL,
@@ -115,7 +115,7 @@ DROP TABLE IF EXISTS `application2`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `application2` (
   `id` varchar(13) NOT NULL,
-  `workshop` char(2) NOT NULL,
+  `workshop` varchar(40) NOT NULL,
   `telephone` varchar(11) NOT NULL,
   `fax` varchar(11) NOT NULL,
   `applyid` varchar(13) NOT NULL,
@@ -198,7 +198,7 @@ DROP TABLE IF EXISTS `application3`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `application3` (
   `id` varchar(13) NOT NULL,
-  `workshop` char(2) NOT NULL,
+  `workshop` varchar(40) NOT NULL,
   `telephone` varchar(11) NOT NULL,
   `fax` varchar(11) NOT NULL,
   `applyid` varchar(13) NOT NULL,
@@ -305,7 +305,7 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
-  `id` char(3) NOT NULL,
+  `id` varchar(10) NOT NULL,
   `username` varchar(30) NOT NULL,
   `password` varchar(30) NOT NULL,
   PRIMARY KEY (`id`),
@@ -332,4 +332,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-20  8:40:17
+-- Dump completed on 2017-05-14 20:17:07

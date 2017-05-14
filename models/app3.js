@@ -8,7 +8,7 @@ var App3 = mysql.sequelize.define('application3', {
             primaryKey: true
         },
         workshop: {
-            type: mysql.Sequelize.CHAR(2),
+            type: mysql.Sequelize.STRING(40),
             allowNull: false
         },
         telephone: {
@@ -73,6 +73,11 @@ var App3 = mysql.sequelize.define('application3', {
     {
         freezeTableName: true,
         timestamps: false
+    });
+
+mysql.sequelize.sync()
+    .then(function () {
+        console.log("App3 Sync Success");
     });
 
 module.exports = App3;

@@ -239,8 +239,8 @@
     }
 
     function submitform() {
-        var id = getcookie();
-        switch (id[0]) {
+        var cookie = getcookie();
+        switch (cookie['person']) {
             case "1":
                 if (document.getElementById("workshopmgr").innerHTML == "") {
                     return checkpart("cj");
@@ -279,16 +279,17 @@
 
     function getcookie() {
         var cookies = document.cookie.split(";");
+        var cookieDic = [];
         for (var i = 0; i < cookies.length; i++) {
             var cookie = cookies[i].split("=");
-            if (cookie[0] == "id") {
-                return cookie[1];
-            }
+            cookieDic[cookie[0].trim()] = cookie[1].trim();
+            //alert(decodeURI(cookie[1].trim()));
         }
+        return cookieDic;
     }
     function controldisplay() {
-        var id = getcookie();
-        switch (id[0]) {
+        var cookie = getcookie();
+        switch (cookie['person']) {
             case "1":
                 var mgrelement = document.getElementById("workshopmgr");
                 if (isIE()) {
