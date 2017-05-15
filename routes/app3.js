@@ -5,7 +5,6 @@ var isLogin = require('../others/auth').isLogin;
 var getDate = require('../others/util').getDate;
 var getTime = require('../others/util').getTime;
 var getFixNumber = require('../others/util').getFixNumber;
-var getNoticedepart = require('../others/util').getNoticedepart;
 var getFormatTime = require('../others/util').getFormatTime;
 var getNormalTime = require('../others/util').getNormalTime;
 var app3Service = require('../services/app3Service');
@@ -76,7 +75,7 @@ router.get('/', isLogin, function (req, res, next) {
             res.locals.workshopmgr = results[0].workshopmgr;
             res.locals.workshopmgrtime = getNormalTime(results[0].workshopmgrtime);
             res.locals.result = results[0].result;
-            res.locals.submitbtn = (person=='1'?'提交':'同意');
+            res.locals.submitbtn = (person == '1' ? '提交' : '同意');
             req.session.nextperson = results[0].nextperson;
             res.render('thirdlevel');
         }
@@ -115,7 +114,7 @@ router.post('/', isLogin, function (req, res, next) {
                     app3.reason = req.body.reason;
                     app3.sqstarttime = getFormatTime(req.body.sqstarttime);
                     app3.sqendtime = getFormatTime(req.body.sqendtime);
-                    app3.noticedepart = getNoticedepart(req.body.noticedepart);
+                    app3.noticedepart = req.body.noticedepart;
                     app3.shigongfang = req.body.shigongfang;
                     app3.plan = req.body.plan;
                     app3.techplan = req.body.techplan;
@@ -145,7 +144,7 @@ router.post('/', isLogin, function (req, res, next) {
             app3.reason = req.body.reason;
             app3.sqstarttime = getFormatTime(req.body.sqstarttime);
             app3.sqendtime = getFormatTime(req.body.sqendtime);
-            app3.noticedepart = getNoticedepart(req.body.noticedepart);
+            app3.noticedepart = req.body.noticedepart;
             app3.shigongfang = req.body.shigongfang;
             app3.plan = req.body.plan;
             app3.techplan = req.body.techplan;
@@ -182,9 +181,17 @@ router.post('/', isLogin, function (req, res, next) {
             req.flash('error', '表格状态错误');
             return res.redirect('/app3');
         }
-    } else if (person == '2') {
+    }
+    else if (person == '2') {
         // workshop manager
-        if (nextperson == '2') {
+        var workshop = req.session.workshop;
+        var actualworkshop = req.body.workshop;
+        if (workshop != actualworkshop) {
+            // only the exact workshop manager can check the application
+            req.flash('error', '无权查看其他车间');
+            return res.redirect('/app3');
+        }
+        else if (nextperson == '2') {
             // update the application before result
             confService.getApproveCount().then((counts) => {
                 if (typeof counts === 'undefined' || counts.length == 0) {

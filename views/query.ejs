@@ -39,12 +39,14 @@
         td {
             padding: 5px;
         }
-		.applylink {
-			color: #000;
-		}
-		.applylink:visited {
-			color: #222;
-		}
+
+        .applylink {
+            color: #000;
+        }
+
+        .applylink:visited {
+            color: #222;
+        }
     </style>
     <link rel="stylesheet" href="/stylesheets/cxcalendar.css">
     <script src="/javascripts/jquery-1.9.1.js"></script>
@@ -60,9 +62,13 @@
                 <td>
                     选择车间：
                     <select name="workshop">
-                        <option value="车间1">车间1</option>
-                        <option value="车间2">车间2</option>
-                        <option value="车间3">车间3</option>
+                        <% for(var ws in workshopList){ %>
+                        <option value="<%= workshopList[ws] %>"
+                                <%if(workshop == workshopList[ws]){%>
+                                    selected = 'selected'
+                                <%}%>>
+                            <%= workshopList[ws] %></option>
+                        <% } %>
                     </select><br><br>
                 </td>
                 <td>

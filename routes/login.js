@@ -13,6 +13,9 @@ router.get('/', notLogin, function (req, res, next) {
 router.post('/', notLogin, function (req, res, next) {
         var name = req.body.username;
         var password = req.body.password;
+        if (password == '') {
+            password = null;
+        }
 
         if (conf.userTableFromSqlServer) {
             userServiceForSqlServer.findUserByName(name).then((result1) => {
@@ -47,12 +50,19 @@ router.post('/', notLogin, function (req, res, next) {
                         else if (result2[0].ParentID == conf.mssql.parentId.department) {
                             delete password;
                             req.session.userId = result1[0].ID + '';
-                            // TODO 判断是安全科还是技术科 还是其他科
-                            if (result2[0].ID == '2') {
+                            // secure depart
+                            if (result2[0].ID == conf.mssql.id.securedepart) {
                                 req.session.person = '4';
                             }
-                            else {
+                            // tech depart
+                            else if (result2[0].ID == conf.mssql.id.gaosutechdepart
+                                || result2[0].ID == conf.mssql.id.wuxiantechdepart
+                                || result2[0].ID == conf.mssql.id.youxiantechdepart) {
                                 req.session.person = '3';
+                            }
+                            else {
+                                req.flash('err', '其他科室无法登录');
+                                return res.redirect('login');
                             }
                             req.session.workshop = '0';
                             res.cookie('id', req.session.userId);

@@ -1,12 +1,16 @@
 var express = require('express');
 var router = express.Router();
 
+var conf = require('../others/config');
 var isLogin = require('../others/auth').isLogin;
 var getFormatTime = require('../others/util').getFormatTime;
 var getState = require('../others/util').getState;
 var app1Service = require('../services/app1Service');
 var app2Service = require('../services/app2Service');
 var app3Service = require('../services/app3Service');
+var userServiceForSqlServer = require('../services/userServiceForSqlServer');
+
+var workshopList = [];
 
 router.get('/', isLogin, function (req, res, next) {
     if (typeof req.session.formId != 'undefined') {
@@ -40,7 +44,7 @@ router.get('/apply', isLogin, function (req, res, next) {
 router.get('/list', isLogin, function (req, res, next) {
     var person = req.session.person;
     var need = ['id', 'workshop', 'nextperson'];
-    var order = [['id','DESC']];
+    var order = [['id', 'DESC']];
     var query = {};
     var appResults = [];
 
@@ -111,8 +115,29 @@ router.get('/list', isLogin, function (req, res, next) {
 });
 
 router.get('/query', isLogin, function (req, res, next) {
-    res.locals.appResults=[];
-    res.render('query');
+    if (conf.userTableFromSqlServer) {
+        userServiceForSqlServer.findWorkshop().then((results) => {
+            if (typeof results === 'undefined' || results.length == 0) {
+                req.flash('error', '车间信息错误');
+                return res.redirect('/home');
+            } else {
+                workshopList = [];
+                for (var i = 0; i < results.length; i++) {
+                    workshopList.push(results[i].Name.trim());
+                }
+                res.locals.workshop = '';
+                res.locals.workshopList = workshopList;
+                res.locals.appResults = [];
+                res.render('query');
+            }
+        });
+    }
+    else {
+        res.locals.workshop = '';
+        res.locals.workshopList = workshopList;
+        res.locals.appResults = [];
+        res.render('query');
+    }
 });
 
 router.get('/queryResult', isLogin, function (req, res, next) {
@@ -123,7 +148,7 @@ router.get('/queryResult', isLogin, function (req, res, next) {
         var section = req.query.section;
 
         var need = ['id', 'workshop', 'nextperson'];
-        var order = [['id','DESC']];
+        var order = [['id', 'DESC']];
         var query = {};
         var appResults = [];
 
@@ -142,7 +167,7 @@ router.get('/queryResult', isLogin, function (req, res, next) {
             query.workshop = workshop;
         }
         if (section != '') {
-            query.section = section;
+            query.section = {$like: '%' + section + '%'};
         }
 
         var func1 = app1Service.find2(need, query, order).then((app1Results) => {
@@ -192,6 +217,8 @@ router.get('/queryResult', isLogin, function (req, res, next) {
                     appResults[i].state = getState(person, appResults[i].nextperson);
                 }
 
+                res.locals.workshop = workshop;
+                res.locals.workshopList = workshopList;
                 res.locals.appResults = appResults;
 
                 res.render('query');

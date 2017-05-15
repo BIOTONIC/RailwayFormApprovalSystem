@@ -16,18 +16,6 @@ module.exports = {
     getFixNumber: function getFixNumber(num, length) {
         return ('' + num).length < length ? ((new Array(length + 1)).join('0') + num).slice(-length) : '' + num;
     },
-    getNoticedepart: function getNoticedepart(noticedepart) {
-        if (typeof noticedepart === 'undefined' || noticedepart.length == 0) {
-            return '';
-        } else {
-            var str = '';
-            for (var i = 0; i < noticedepart.length - 1; i++) {
-                str = str + noticedepart[i] + '&';
-            }
-            str = str + noticedepart[noticedepart.length - 1];
-            return str;
-        }
-    },
     getFormatTime: function getFormatTime(origin) {
         return origin.replace(/[^0-9]/g, '');
     },

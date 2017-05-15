@@ -97,10 +97,10 @@
             <td colspan="6" align="center">建议通知部门</td>
         </tr>
         <tr>
-            <td colspan="6" align="center"><input class="cj" readonly name="noticedepart" type="checkbox" value="A">A部门
-                <input class="cj" name="noticedepart" readonly type="checkbox" value="B">B部门
-                <br>
-                <label>已选部门：<%= noticedepart %></label>
+            <td colspan="6" align="center">
+                <input class="cj ckdepart" readonly type="checkbox" value="北京会调中心">北京会调中心
+                <input id="noticedepart" hidden="hidden" name="noticedepart" value="<%= noticedepart %>"/>
+                <input class="cj ckdepart" readonly type="checkbox" value="GSM-R技术支持中心">GSM-R技术支持中心
             </td>
         </tr>
         <tr>
@@ -219,6 +219,29 @@
             console.log(val);
         });
     });
+
+    $('.ckdepart').click(function () {
+        var departs = $(".ckdepart");
+        var ckddepart = '';
+        for(var idx =0;idx < departs.length;idx++) {
+            if(departs[idx].checked) {
+                ckddepart += departs[idx].value + ';';
+            }
+        }
+        var noticedepart = $("#noticedepart");
+        noticedepart.val(ckddepart);
+    });
+
+    $().ready(function () {
+        var noticedepart = $("#noticedepart").val();
+        var departs = $(".ckdepart");
+        var ckddepart = noticedepart.split(';');
+        for(var idx=0;idx < departs.length;idx++) {
+            if($.inArray(departs[idx].value,ckddepart)!=-1){
+                departs[idx].checked="checked";
+            }
+        }
+    })
 </script>
 
 <script>

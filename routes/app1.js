@@ -5,7 +5,6 @@ var isLogin = require('../others/auth').isLogin;
 var getDate = require('../others/util').getDate;
 var getTime = require('../others/util').getTime;
 var getFixNumber = require('../others/util').getFixNumber;
-var getNoticedepart = require('../others/util').getNoticedepart;
 var getFormatTime = require('../others/util').getFormatTime;
 var getNormalTime = require('../others/util').getNormalTime;
 var app1Service = require('../services/app1Service');
@@ -126,7 +125,7 @@ router.post('/', isLogin, function (req, res, next) {
                     app1.reason = req.body.reason;
                     app1.sqstarttime = getFormatTime(req.body.sqstarttime);
                     app1.sqendtime = getFormatTime(req.body.sqendtime);
-                    app1.noticedepart = getNoticedepart(req.body.noticedepart);
+                    app1.noticedepart = req.body.noticedepart;
                     // NOTICE!!!
                     //
                     // 先贴上原本的错误范例
@@ -167,7 +166,7 @@ router.post('/', isLogin, function (req, res, next) {
             app1.reason = req.body.reason;
             app1.sqstarttime = getFormatTime(req.body.sqstarttime);
             app1.sqendtime = getFormatTime(req.body.sqendtime);
-            app1.noticedepart = getNoticedepart(req.body.noticedepart);
+            app1.noticedepart = req.body.noticedepart;
             app1.shigongfang = req.body.shigongfang;
             app1.plan = req.body.plan;
             app1.techplan = req.body.techplan;
