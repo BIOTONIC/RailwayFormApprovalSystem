@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>人员登录记录</title>
+    <style>
+        body {
+            margin: auto;
+        }
+
+        .container {
+            margin: 40px auto 150px auto;
+            width: 80%;
+        }
+
+        table, td, th {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        td, th {
+            padding: 5px;
+        }
+
+        .applylink {
+            color: #000;
+        }
+
+        .applylink:visited {
+            color: #222;
+        }
+    </style>
+    <link rel="stylesheet" href="/stylesheets/cxcalendar.css">
+    <script src="/javascripts/jquery-1.9.1.js"></script>
+    <script src="/javascripts/calendar.js"></script>
+</head>
+<body>
+<%- include('nav') %>
+<%- include('notif') %>
+<div class="container">
+<table>
+    <thead>
+    <tr>
+        <form action="/loginLog/query" method="get">
+            <th colspan="2">起始时间:<input name="starttime" class="time" type="text"/></th>
+            <th colspan="2">截止时间:<input name="endtime" class="time" type="text"/></th>
+            <th colspan="2"><input type="submit"/></th>
+        </form>
+    </tr>
+    <tr>
+        <th>编号</th>
+        <th>名称</th>
+        <th>身份</th>
+        <th>车间</th>
+        <th>区段</th>
+        <th>登录时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% for (var i = 0;i < loginLogs.length;i++){ %>
+    <tr style="<%= (i % 2 == 0 ? "background-color:#7ea9ba" : "") %>">
+        <td><%= loginLogs[i].userId %></td>
+        <td><%= loginLogs[i].name %></td>
+        <td><%= loginLogs[i].person %></td>
+        <td><%= loginLogs[i].workshop %></td>
+        <td><%= loginLogs[i].section %></td>
+        <td><%= loginLogs[i].loginTime %></td>
+        <% } %>
+    </tbody>
+</table>
+</div>
+<script>
+    $('.time').each(function () {
+        var a = new Calendar({
+            targetCls: $(this),
+            type: 'yyyy-mm-dd HH:MM:SS',
+            wday: 2
+        }, function (val) {
+            console.log(val);
+        });
+    });
+</script>
+</body>
+</html>

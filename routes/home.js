@@ -12,6 +12,7 @@ var userServiceForSqlServer = require('../services/userServiceForSqlServer');
 
 var workshopList = [];
 
+
 router.get('/', isLogin, function (req, res, next) {
     if (typeof req.session.formId != 'undefined') {
         delete req.session.formId;
