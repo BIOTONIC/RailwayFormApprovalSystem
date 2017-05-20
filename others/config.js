@@ -4,8 +4,8 @@ module.exports = {
     mysql: {
         host: 'localhost',
         user: 'root',
-        password: '',
-        database: 'railway'
+        password: 'bjtxd',
+        database: 'formapproval'
     },
     mssql: {
         server: '10.78.119.201',
@@ -24,12 +24,13 @@ module.exports = {
             department: 1273,
             workshopmgr: 1274
         },
-        id:{
+        id: {
             gaosutechdepart: 1423,
             wuxiantechdepart: 1118,
             youxiantechdepart: 1792,
             securedepart: 1276
         }
     },
+    sessionPool: {},
     userTableFromSqlServer: true,
 }

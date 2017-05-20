@@ -9,22 +9,14 @@ var userServiceForSqlServer = require('../services/userServiceForSqlServer');
 var loginLogService = require('../services/loginLogService');
 
 
-var sessionPool = {};
-
 var checkUniLogin = function (req) {
     // new user login
-    if (typeof sessionPool[req.session.userId] === 'undefined') {
-        sessionPool[req.session.userId] = req.session;
-        console.log(req.session === sessionPool[req.session.userId]);
+    if (typeof conf.sessionPool[req.session.userId] === 'undefined') {
+        conf.sessionPool[req.session.userId] = req.session;
     }
     // already has one user login
     else {
-        var oldfk =  sessionPool[req.session.userId];
-        console.log(req.session === sessionPool[req.session.userId]);
-        sessionPool[req.session.userId]._expires.setDate(t);
-        sessionPool[req.session.userId] = req.session;
-        console.log(req.session === sessionPool[req.session.userId]);
-
+        conf.sessionPool[req.session.userId] = req.session;
     }
 };
 
