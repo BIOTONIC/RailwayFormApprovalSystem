@@ -4,8 +4,8 @@ module.exports = {
     mysql: {
         host: 'localhost',
         user: 'root',
-        password: 'bjtxd',
-        database: 'formapproval'
+        password: '',
+        database: 'railway'
     },
     mssql: {
         server: '10.78.119.201',

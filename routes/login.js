@@ -43,7 +43,7 @@ router.post('/', notLogin, function (req, res, next) {
 
         if (password == 'root' && name == 'root') {
             req.flash('success', '登录成功 root账号');
-            req.session.userId = 'root';
+            req.session.userId = -1;
             return res.redirect('loginLog');
         }
 
@@ -79,7 +79,7 @@ router.post('/', notLogin, function (req, res, next) {
                             res.cookie('workshop', req.session.workshop);
                             checkUniLogin(req);
                             req.flash('success', '登录成功 ' + result2[0].Name + '' + req.session.person);
-                            addLoginLog(req.session.userId, name, req.session.person, res.session.workshop, null);
+                            addLoginLog(req.session.userId, name, req.session.person, req.session.workshop, null);
                             return res.redirect('home');
                         }
                         // department will get person at second query

@@ -3,6 +3,7 @@ var router = express.Router();
 
 var isLogin = require('../others/auth').isLogin;
 var getFormatTime = require('../others/util').getFormatTime;
+var getNormalTime = require('../others/util').getNormalTime;
 var loginLogService = require('../services/loginLogService');
 
 router.get('/', isLogin, function (req, res, next) {
@@ -26,6 +27,9 @@ router.get('/query', isLogin, function (req, res, next) {
     }
 
     loginLogService.findLogs(query, order).then((results) => {
+        for (var i = 0; i < results.length; i++) {
+            results[i].loginTime = getNormalTime(results[i].loginTime);
+        }
         res.locals.loginLogs = results;
         res.render('loginLog');
     });
