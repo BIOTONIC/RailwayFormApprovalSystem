@@ -40,7 +40,7 @@ router.get('/create', isLogin, function (req, res, next) {
     res.locals.result = '';
     res.locals.applytime = '系统自行分配';
     res.locals.submitbtn = '提交';
-    req.session.nextperson = '1';
+    req.session.nextperson = '10';
     res.render('firstlevel');
 });
 
@@ -86,7 +86,7 @@ router.get('/', isLogin, function (req, res, next) {
             res.locals.manager = results[0].manager;
             res.locals.managertime = getNormalTime(results[0].managertime);
             res.locals.result = results[0].result;
-            res.locals.submitbtn = (person=='1'?'提交':'同意');
+            res.locals.submitbtn = (person == '1' ? '提交' : '同意');
             req.session.nextperson = results[0].nextperson;
             res.render('firstlevel');
         }
@@ -103,7 +103,7 @@ router.post('/', isLogin, function (req, res, next) {
         // normal worker
         var workshop = req.session.workshop;
         var actualworkshop = req.body.workshop;
-        if (nextperson == '1') {
+        if (nextperson == '10') {
             // create a new application
             confService.getApplyCount().then((counts) => {
                 if (typeof counts === 'undefined' || counts.length == 0) {
@@ -140,7 +140,7 @@ router.post('/', isLogin, function (req, res, next) {
                     app1.techplan = req.body.techplan;
                     app1.secureplan = req.body.secureplan;
                     app1.applytime = getTime();
-                    app1.nextperson = '2';
+                    app1.nextperson = '20';
 
                     app1Service.createApp1(app1).then((result) => {
                         req.flash('success', '提交成功');
@@ -156,7 +156,7 @@ router.post('/', isLogin, function (req, res, next) {
             req.flash('error', '无权查看其他车间');
             return res.redirect('/app1');
         }
-        else if (nextperson == '2') {
+        else if (nextperson == '20') {
             // update the application before workshop manager check
 
 
@@ -172,7 +172,7 @@ router.post('/', isLogin, function (req, res, next) {
             app1.techplan = req.body.techplan;
             app1.secureplan = req.body.secureplan;
             // nextperson will not change
-            app1.nextperson = '2';
+            app1.nextperson = '20';
 
             //play a small trick here because applyid equals to form id
             app1.formId = req.body.applyid;
@@ -184,15 +184,33 @@ router.post('/', isLogin, function (req, res, next) {
                 req.flash('error', '提交失败');
                 return res.redirect('/app1');
             });
-        } else if (nextperson == '3' || nextperson == '4' || nextperson == '5') {
-            // can not post under check
-            req.flash('error', '审核中 不能更新');
+        } else if (nextperson == '29') {
+            req.flash('error', '车间主任不同意');
             return res.redirect('/app1');
-        } else if (nextperson == '6') {
+        } else if (nextperson == '30') {
+            req.flash('error', '技术科审核中 不能更新');
+            return res.redirect('/app1');
+        }
+        else if (nextperson == '39') {
+            req.flash('error', ' 技术科不同意');
+            return res.redirect('/app1');
+        } else if (nextperson == '40') {
+            req.flash('error', '安全科审核中 不能更新');
+            return res.redirect('/app1');
+        } else if (nextperson == '49') {
+            req.flash('error', ' 安全科不同意');
+            return res.redirect('/app1');
+        } else if (nextperson == '50') {
+            req.flash('error', '段领导审核中 不能更新');
+            return res.redirect('/app1');
+        } else if (nextperson == '59') {
+            req.flash('error', '段领导不同意');
+            return res.redirect('/app1');
+        } else if (nextperson == '60') {
             // finish the result
             app1.result = req.body.result;
             // nextperson change to 7, means finish
-            app1.nextperson = '7';
+            app1.nextperson = '70';
             app1.formId = req.body.applyid;
 
             app1Service.updateResult(app1).then((result) => {
@@ -202,7 +220,7 @@ router.post('/', isLogin, function (req, res, next) {
                 req.flash('error', '提交失败');
                 return res.redirect('/app1');
             });
-        } else if (nextperson == '7') {
+        } else if (nextperson == '70') {
             // the application is closed
             req.flash('error', '填写完毕 不能更新');
             return res.redirect('/app1');
@@ -221,11 +239,16 @@ router.post('/', isLogin, function (req, res, next) {
             req.flash('error', '无权审批其他车间');
             return res.redirect('/app1');
         }
-        else if (nextperson == '2' || nextperson == '3') {
+        else if (nextperson == '20' || nextperson == '29' || nextperson == '30') {
             // update the application before tech depart check
             app1.workshopmgr = req.body.workshopmgr;
             app1.workshopmgrtime = getTime();
-            app1.nextperson = '3';
+            if (req.body.approve) {
+                app1.nextperson = '30';
+            }
+            else {
+                app1.nextperson = '29';
+            }
             app1.formId = req.body.applyid;
 
             app1Service.updateWorkshopMgr(app1).then((result) => {
@@ -235,7 +258,9 @@ router.post('/', isLogin, function (req, res, next) {
                 req.flash('error', '提交失败');
                 return res.redirect('/app1');
             });
-        } else if (nextperson == '4' || nextperson == '5' || nextperson == '6' || nextperson == '7') {
+        } else if (nextperson == '39' || nextperson == '40' || nextperson == '49'
+            || nextperson == '50' || nextperson == '59' || nextperson == '60'
+            || nextperson == '70') {
             // can not update
             req.flash('error', '审批结束 不能更新');
             return res.redirect('/app1');
@@ -246,13 +271,17 @@ router.post('/', isLogin, function (req, res, next) {
         }
     } else if (person == '3') {
         // tech depart
-        if (nextperson == '3' || nextperson == '4') {
+        if (nextperson == '30' || nextperson == '39' || nextperson == '40') {
             // update the application before secure depart check
             app1.techdepart = req.body.techdepart;
             app1.techtime = getTime();
             app1.pfstarttime = getFormatTime(req.body.pfstarttime);
             app1.pfendtime = getFormatTime(req.body.pfendtime);
-            app1.nextperson = '4';
+            if (req.body.approve) {
+                app1.nextperson = '40';
+            } else {
+                app1.nextperson = '39';
+            }
             app1.formId = req.body.applyid;
 
             app1Service.updateTech(app1).then((result) => {
@@ -262,7 +291,8 @@ router.post('/', isLogin, function (req, res, next) {
                 req.flash('error', '提交失败');
                 return res.redirect('/app1');
             });
-        } else if (nextperson == '5' || nextperson == '6' || nextperson == '7') {
+        } else if (nextperson == '49' || nextperson == '50' || nextperson == '60'
+            || nextperson == '70') {
             // can not update
             req.flash('error', '审批结束 不能更新');
             return res.redirect('/app1');
@@ -272,13 +302,18 @@ router.post('/', isLogin, function (req, res, next) {
             req.flash('error', '表格状态错误');
             return res.redirect('/app1');
         }
-    } else if (person == '4') {
+    } else if (person == '40') {
         // secure depart
-        if (nextperson == '4' || nextperson == '5') {
+        if (nextperson == '40' || nextperson == '49' || nextperson == '50') {
             // update the application before manager check
             app1.securedepart = req.body.securedepart;
             app1.securetime = getTime();
-            app1.nextperson = '5';
+            if (req.body.approve) {
+                app1.nextperson = '50';
+            }
+            else {
+                app1.nextperson = '49';
+            }
             app1.formId = req.body.applyid;
 
             app1Service.updateSecure(app1).then((result) => {
@@ -288,7 +323,7 @@ router.post('/', isLogin, function (req, res, next) {
                 req.flash('error', '提交失败');
                 return res.redirect('/app1');
             });
-        } else if (nextperson == '6' || nextperson == '7') {
+        } else if (nextperson == '59' || nextperson == '60' || nextperson == '70') {
             // can not update
             req.flash('error', '审批结束 不能更新');
             return res.redirect('/app1');
@@ -299,7 +334,7 @@ router.post('/', isLogin, function (req, res, next) {
         }
     } else if (person == '5') {
         // manager
-        if (nextperson == '5') {
+        if (nextperson == '50') {
             // update the application before result
             confService.getApproveCount().then((counts) => {
                 if (typeof counts === 'undefined' || counts.length == 0) {
@@ -314,7 +349,12 @@ router.post('/', isLogin, function (req, res, next) {
                     app1.approveid = approveid;
                     app1.manager = req.body.manager;
                     app1.managertime = getTime();
-                    app1.nextperson = '6';
+                    if (req.body.approve) {
+                        app1.nextperson = '60';
+                    }
+                    else {
+                        app1.nextperson = '59';
+                    }
                     app1.formId = req.body.applyid;
 
                     app1Service.updateManager(app1).then((result) => {
@@ -326,7 +366,7 @@ router.post('/', isLogin, function (req, res, next) {
                     });
                 }
             });
-        } else if (nextperson == '6' || nextperson == '7') {
+        } else if (nextperson == '60' || nextperson == '70') {
             // can not update
             req.flash('error', '审批结束 不能更新');
             return res.redirect('/app1');

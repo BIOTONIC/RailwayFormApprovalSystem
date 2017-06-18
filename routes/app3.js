@@ -33,7 +33,7 @@ router.get('/create', isLogin, function (req, res, next) {
     res.locals.result = '';
     res.locals.applytime = '系统自行分配';
     res.locals.submitbtn = '提交';
-    req.session.nextperson = '1';
+    req.session.nextperson = '10';
     res.render('thirdlevel');
 });
 
@@ -92,7 +92,7 @@ router.post('/', isLogin, function (req, res, next) {
         //normal worker
         var workshop = req.session.workshop;
         var actualworkshop = req.body.workshop;
-        if (nextperson == '1') {
+        if (nextperson == '10') {
             //create a new application
             confService.getApplyCount().then((counts) => {
                 if (typeof counts === 'undefined' || counts.length == 0) {
@@ -120,7 +120,7 @@ router.post('/', isLogin, function (req, res, next) {
                     app3.techplan = req.body.techplan;
                     app3.secureplan = req.body.secureplan;
                     app3.applytime = getTime();
-                    app3.nextperson = '2';
+                    app3.nextperson = '20';
 
                     app3Service.createApp3(app3).then((result) => {
                         req.flash('success', '提交成功');
@@ -136,7 +136,7 @@ router.post('/', isLogin, function (req, res, next) {
             // only the exact workshop manager can check the application
             req.flash('error', '无权查看其他车间');
             return res.redirect('/app3');
-        } else if (nextperson == '2') {
+        } else if (nextperson == '20') {
             // update the application before workshop manager check
             app3.telephone = req.body.telephone;
             app3.fax = req.body.fax;
@@ -149,7 +149,7 @@ router.post('/', isLogin, function (req, res, next) {
             app3.plan = req.body.plan;
             app3.techplan = req.body.techplan;
             app3.secureplan = req.body.secureplan;
-            app3.nextperson = '2';
+            app3.nextperson = '20';
             app3.formId = req.body.applyid;
 
             app3Service.updateApp3(app3).then((result) => {
@@ -159,10 +159,14 @@ router.post('/', isLogin, function (req, res, next) {
                 req.flash('error', '提交失败');
                 return res.redirect('/app3');
             });
-        } else if (nextperson == '6') {
+        } else if (nextperson == '29') {
+            // can not update the application because the workshop manager has refused it
+            req.flash('error', '车间主任不同意');
+            return res.redirect('/app3');
+        } else if (nextperson == '60') {
             // finish the result
             app3.result = req.body.result;
-            app3.nextperson = '7';
+            app3.nextperson = '70';
             app3.formId = req.body.applyid;
 
             app3Service.updateResult(app3).then((result) => {
@@ -172,7 +176,7 @@ router.post('/', isLogin, function (req, res, next) {
                 req.flash('error', '提交失败');
                 return res.redirect('/app3');
             });
-        } else if (nextperson == '7') {
+        } else if (nextperson == '70') {
             // the application is closed
             req.flash('error', '填写完毕 不能更新');
             return res.redirect('/app3');
@@ -191,7 +195,7 @@ router.post('/', isLogin, function (req, res, next) {
             req.flash('error', '无权查看其他车间');
             return res.redirect('/app3');
         }
-        else if (nextperson == '2') {
+        else if (nextperson == '20') {
             // update the application before result
             confService.getApproveCount().then((counts) => {
                 if (typeof counts === 'undefined' || counts.length == 0) {
@@ -206,7 +210,12 @@ router.post('/', isLogin, function (req, res, next) {
                     app3.approveid = approveid;
                     app3.workshopmgr = req.body.workshopmgr;
                     app3.workshopmgrtime = getTime();
-                    app3.nextperson = '6';
+                    if (req.body.approve) {
+                        app3.nextperson = '60';
+                    }
+                    else {
+                        app3.nextperson = '29';
+                    }
                     app3.formId = req.body.applyid;
 
 
@@ -219,7 +228,7 @@ router.post('/', isLogin, function (req, res, next) {
                     });
                 }
             });
-        } else if (nextperson == '6' || nextperson == '7') {
+        } else if (nextperson == '60' || nextperson == '70') {
             // can not update
             req.flash('error', '审批结束 不能更新');
             return res.redirect('/app3');

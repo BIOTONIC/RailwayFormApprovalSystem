@@ -32,5 +32,5 @@ module.exports = {
         }
     },
     sessionPool: {},
-    userTableFromSqlServer: true,
+    userTableFromSqlServer: false,
 }

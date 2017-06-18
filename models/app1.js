@@ -73,8 +73,9 @@ var App1 = mysql.sequelize.define('application1', {
         managertime: mysql.Sequelize.STRING(14),
         result: mysql.Sequelize.STRING(100),
         nextperson: {
-            type: mysql.Sequelize.CHAR(1),
-            allowNull: false
+            type: mysql.Sequelize.CHAR(2),
+            allowNull: false,
+            defaultValue: '10'
         }
     },
     {

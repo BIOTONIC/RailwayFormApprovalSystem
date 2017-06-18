@@ -65,9 +65,9 @@ var App2 = mysql.sequelize.define('application2', {
         workshopmgrtime: mysql.Sequelize.STRING(14),
         result: mysql.Sequelize.STRING(100),
         nextperson: {
-            type: mysql.Sequelize.CHAR(1),
+            type: mysql.Sequelize.CHAR(2),
             allowNull: false,
-            defaultValue: '1'
+            defaultValue: '10'
         }
     },
     {
