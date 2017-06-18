@@ -1,21 +1,21 @@
-<div class="ui grid">
+<div style="text-align: center;margin: auto" class="ui grid">
     <div class="four wide column"></div>
     <div class="eight wide column">
         <% if (success) { %>
         <div id="successNotif" class="ui success message">
-            <p><%= success %></p>
-			<script>
-				setTimeout("hideNotif('successNotif')",1000);
-			</script>
+            <p><%- success %></p>
+			<!--<script>-->
+				<!--setTimeout("hideNotif('successNotif')",1000);-->
+			<!--</script>-->
         </div>
         <% } %>
 
         <% if (error) { %>
         <div id="errorNotif" class="ui error message">
-            <p><%= error %></p>
-			<script>
-				setTimeout("hideNotif('errorNotif')",1000);
-			</script>
+            <p><%- error %></p>
+			<!--<script>-->
+				<!--setTimeout("hideNotif('errorNotif')",1000);-->
+			<!--</script>-->
         </div>
         <% } %>
     </div>

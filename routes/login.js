@@ -74,11 +74,13 @@ router.post('/', notLogin, function (req, res, next) {
                             req.session.userId = result1[0].ID + '';
                             req.session.person = '5';
                             req.session.workshop = '段领导';
+                            // add underline for notification
+                            req.session.notif = '用户名：<span style="text-decoration: underline">' + name + '</span>';
                             res.cookie('id', req.session.userId);
                             res.cookie('person', req.session.person);
                             res.cookie('workshop', req.session.workshop);
                             checkUniLogin(req);
-                            req.flash('success', '登录成功 ' + result2[0].Name + '' + req.session.person);
+                            req.flash('success', req.session.notif);
                             addLoginLog(req.session.userId, name, req.session.person, req.session.workshop, null);
                             return res.redirect('home');
                         }
@@ -109,11 +111,13 @@ router.post('/', notLogin, function (req, res, next) {
                                 return res.redirect('login');
                             }
 
+                            req.session.notif = '用户名：<span style="text-decoration: underline">' + name + '</span> 上级：<span style="text-decoration: underline">北京通讯段</span>';
+
                             res.cookie('id', req.session.userId);
                             res.cookie('person', req.session.person);
                             res.cookie('workshop', req.session.workshop);
                             checkUniLogin(req);
-                            req.flash('success', '登录成功 ' + result2[0].Name + '' + req.session.person);
+                            req.flash('success', req.session.notif);
                             addLoginLog(req.session.userId, name, req.session.person, req.session.workshop, null);
                             return res.redirect('home');
                         }
@@ -123,11 +127,12 @@ router.post('/', notLogin, function (req, res, next) {
                             req.session.userId = result1[0].ID + '';
                             req.session.person = '2';
                             req.session.workshop = result2[0].Name.trim();
+                            req.session.notif = '用户名：<span style="text-decoration: underline">' + name + '</span> 上级：<span style="text-decoration: underline">北京通讯段</span>';
                             res.cookie('id', req.session.userId);
                             res.cookie('person', req.session.person);
                             res.cookie('workshop', req.session.workshop);
                             checkUniLogin(req);
-                            req.flash('success', '登录成功 ' + result2[0].Name + '' + req.session.person);
+                            req.flash('success', req.session.notif);
                             addLoginLog(req.session.userId, name, req.session.person, req.session.workshop, null);
                             return res.redirect('home');
                         }
@@ -143,11 +148,12 @@ router.post('/', notLogin, function (req, res, next) {
                                     req.session.userId = result1[0].ID + '';
                                     req.session.person = '1';
                                     req.session.workshop = result3[0].Name.trim();
+                                    req.session.notif = '用户名：<span style="text-decoration: underline">' + name + '</span> 上级：<span style="text-decoration: underline">' + result3[0].Name + '</span>';
                                     res.cookie('id', req.session.userId);
                                     res.cookie('person', req.session.person);
                                     res.cookie('workshop', req.session.workshop);
                                     checkUniLogin(req);
-                                    req.flash('success', '登录成功 ' + result3[0].Name + '' + req.session.person);
+                                    req.flash('success', req.session.notif);
                                     addLoginLog(req.session.userId, name, req.session.person, req.session.workshop, result2[0].Name.trim());
                                     return res.redirect('home');
                                 } else {
@@ -176,11 +182,12 @@ router.post('/', notLogin, function (req, res, next) {
                     req.session.userId = results[0].id;
                     req.session.person = results[0].id.slice(0, 1);
                     req.session.workshop = results[0].id.slice(1);
+                    req.session.notif = '登录成功';
                     res.cookie('id', req.session.userId);
                     res.cookie('person', req.session.person);
                     res.cookie('workshop', req.session.workshop);
                     checkUniLogin(req);
-                    req.flash('success', '登录成功');
+                    req.flash('success', req.session.notif);
                     addLoginLog(req.session.userId, name, req.session.workshop, null);
                     return res.redirect('home');
                 }

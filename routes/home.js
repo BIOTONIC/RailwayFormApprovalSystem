@@ -17,10 +17,12 @@ router.get('/', isLogin, function (req, res, next) {
     if (typeof req.session.formId != 'undefined') {
         delete req.session.formId;
     }
+    req.flash('success', req.session.notif);
     res.render('home');
 });
 
 router.get('/apply', isLogin, function (req, res, next) {
+    req.flash('success', req.session.notif);
     var person = req.session.person;
     if (person != '1') {
         req.flash('error', '无权申请表格');
@@ -43,6 +45,8 @@ router.get('/apply', isLogin, function (req, res, next) {
 });
 
 router.get('/list', isLogin, function (req, res, next) {
+    req.flash('success', req.session.notif);
+
     var person = req.session.person;
     var need = ['id', 'workshop', 'nextperson'];
     var order = [['id', 'DESC']];
@@ -116,6 +120,12 @@ router.get('/list', isLogin, function (req, res, next) {
 });
 
 router.get('/query', isLogin, function (req, res, next) {
+    req.flash('success', req.session.notif);
+
+    res.locals.person = req.session.person;
+    // this is current user's workshop
+    res.locals.currWorkshop = req.session.workshop;
+
     if (conf.userTableFromSqlServer) {
         userServiceForSqlServer.findWorkshop().then((results) => {
             if (typeof results === 'undefined' || results.length == 0) {
@@ -126,6 +136,9 @@ router.get('/query', isLogin, function (req, res, next) {
                 for (var i = 0; i < results.length; i++) {
                     workshopList.push(results[i].Name.trim());
                 }
+
+                // this is the workshop selected in ComboBox
+                // maybe it is better to call it selectedWorkshop
                 res.locals.workshop = '';
                 res.locals.workshopList = workshopList;
                 res.locals.appResults = [];
@@ -142,6 +155,11 @@ router.get('/query', isLogin, function (req, res, next) {
 });
 
 router.get('/queryResult', isLogin, function (req, res, next) {
+        req.flash('success', req.session.notif);
+
+        res.locals.person = req.session.person;
+        res.locals.currWorkshop = req.session.workshop;
+
         var person = req.session.person;
         var workshop = req.query.workshop;
         var sqstarttime = req.query.sqstarttime;
