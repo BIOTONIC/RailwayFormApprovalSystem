@@ -21,6 +21,13 @@ router.get('/', isLogin, function (req, res, next) {
     res.render('home');
 });
 
+router.get('/logout', isLogin, function (req, res, next) {
+    res.cookie('id', 0, {maxAge: 0});
+    res.cookie('person', 0, {maxAge: 0});
+    res.cookie('workshop', 0, {maxAge: 0});
+    res.redirect('/login');
+});
+
 router.get('/apply', isLogin, function (req, res, next) {
     req.flash('success', req.session.notif);
     var person = req.session.person;

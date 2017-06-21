@@ -7,7 +7,8 @@ module.exports = {
             .then(pool => {
                 return pool.request()
                     .input('input_parameter', mssql.NVarChar, username)
-                    .query('select top 1 ID, Code, DeptID, SecuPassword from emptb where Name = @input_parameter order by Sort ASC')
+                    .query('select top 1 ID, Code, DeptID, SecuPassword from emptb where Name = @input_parameter ' +
+                        'and StateTime is not null and LoginIp is not null and LoginDate is not null order by Sort ASC')
             });
     },
 

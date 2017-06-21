@@ -40,12 +40,36 @@
             <td>审批表</td>
             <td>所属车间</td>
             <td>查看或审批</td>
+			<td>审批进度</td>
         </tr>
         <% for (var i = 0;i < appResults.length;i++){ %>
         <tr style="<%= (i % 2 == 0 ? "background-color:#7ea9ba" : "") %>">
             <td><a class="applylink" href=<%- appResults[i].href %>><%- appResults[i].name %></a></td>
             <td><%- appResults[i].workshop %></td>
             <td><a class="applylink" href=<%- appResults[i].href %>><%= appResults[i].state %></a></td>
+			<td>			
+			<% if(appResults[i].nextperson == '20'){ %>
+				<%="待车间主任审批" %>
+			<% }else if(appResults[i].nextperson == '29'){%>
+				<%="车间主任不同意" %>
+			<% }else if(appResults[i].nextperson == '30'){%>
+				<%="待技术科审批" %>
+			<% }else if(appResults[i].nextperson == '39'){%>
+				<%="技术科不同意" %>
+			<% }else if(appResults[i].nextperson == '40'){%>
+				<%="待安全科审批" %>
+			<% }else if(appResults[i].nextperson == '49'){%>
+				<%="安全科不同意" %>
+			<% }else if(appResults[i].nextperson == '50'){%>
+				<%="待段领导审批" %>
+			<% }else if(appResults[i].nextperson == '59'){%>
+				<%="段领导不同意" %>
+			<% }else if(appResults[i].nextperson == '60'){%>
+				<%="待工区销点" %>
+			<% }else if(appResults[i].nextperson == '70'){%>
+				<%="已完成" %>
+			<% } %>
+			</td>
         <% } %>
         </tbody>
     </table>

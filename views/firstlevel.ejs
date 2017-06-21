@@ -47,6 +47,8 @@
 <%- include('nav') %>
 <%- include('notif') %>
 <form action="/app1" method="post">
+
+		<input type="hidden" name="approve" id="approve" value="true"/>
     <table>
         <caption>一级（段）通信线路及设备停机要点审批表</caption>
         <tbody>
@@ -84,12 +86,12 @@
         </tr>
         <tr>
             <td colspan="3">起始时间：<span class="cj" style="color:red;font-weight:bold;display:none;">*</span>
-                <input class="cj time"
+                <input class="cj time" autocomplete="off"
                        readonly id="sqstarttime" name="sqstarttime" type="text"
                        value="<%= sqstarttime %>">
             </td>
             <td colspan="3">截止时间：<span class="cj" style="color:red;font-weight:bold;display:none;">*</span>
-                <input class="cj time" readonly
+                <input class="cj time" readonly autocomplete="off"
                        id="sqendtime" name="sqendtime" type="text" value="<%= sqendtime %>">
             </td>
         </tr>
@@ -139,6 +141,11 @@
                           name="secureplan" value=<%= secureplan %>><%= secureplan %></textarea>
             </td>
         </tr>
+		
+		<tr><td id="cjbtn" style="display:none;" colspan="6" align="center">
+		<input style="width:300px;" onclick="return submitform('true')" type="submit" value="提交"/></td></tr>
+        <tr>		
+		
         <tr>
             <td colspan="6" align="center">车间主任审批</td>
         </tr>
@@ -147,9 +154,12 @@
                                            style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
                 <textarea readonly class="cjzr" id="workshopmgr"
                           name="workshopmgr"
-                          value=<%= workshopmgr %>><%= workshopmgr %></textarea>
-                <label align="right">提交时间：<%= workshopmgrtime %></label></td>
+                          value=<%= workshopmgr %>><%= workshopmgr %></textarea></td>
         </tr>
+		<tr><td colspan="6" align="right"><label>提交时间：<%= workshopmgrtime %></label></td></tr>
+		<tr><td colspan="6" align="center" style="display:none;" id="cjzrbtn">
+		<input type="submit" onclick="return submitform('true')" value="同意"/>
+		<input type="submit" onclick="return submitform('false')" value="不同意" /></td></tr>
         <tr>
             <td colspan="3" align="center">技术科意见</td>
             <td colspan="3" align="center">批准施工时间</td>
@@ -162,12 +172,17 @@
             </td>
             <td colspan="3" align="center">
                 起始时间：<span class="jsk" style="color:red;font-weight:bold;display:none;">*</span>
-                <input readonly class="jsk time" id="pfstarttime" name="pfstarttime" type="text"
+                <input readonly class="jsk time" autocomplete="off" id="pfstarttime" name="pfstarttime" type="text"
                        value="<%= pfstarttime %>">
                 <br>截止时间：<span class="jsk" style="color:red;font-weight:bold;display:none;">*</span>
-                <input class="jsk time" id="pfendtime" readonly name="pfendtime" type="text"
+                <input class="jsk time" id="pfendtime" autocomplete="off" readonly name="pfendtime" type="text"
                        value="<%= pfendtime %>"></td>
         </tr>
+		
+		<tr><td colspan="6" align="center" style="display:none;" id="jskbtn">
+		<input type="submit" onclick="return submitform('true')" value="同意"/>
+		<input type="submit" onclick="return submitform('false')" value="不同意" /></td></tr>
+		
         <tr>
             <td colspan="6" align="center">安全科意见</td>
         </tr>
@@ -177,7 +192,12 @@
                           name="securedepart"
                           value=<%= securedepart %>><%= securedepart %></textarea>
                 <label align="right">提交时间：<%= securetime %></label></td>
-        </tr>
+        </tr>		
+		
+		<tr><td colspan="6" align="center" style="display:none;" id="aqkbtn">
+		<input type="submit" onclick="return submitform('true')" value="同意"/>
+		<input type="submit" onclick="return submitform('false')" value="不同意" /></td></tr>		
+		
         <tr>
             <td colspan="6" align="center">主管段长意见</td>
         </tr>
@@ -189,17 +209,19 @@
                 <label align="right">提交时间：<%= managertime %></label>
             </td>
         </tr>
+		
+		<tr><td colspan="6" align="center" style="display:none;" id="zgdzbtn">
+		<input type="submit" onclick="return submitform('true')" value="同意"/>
+		<input type="submit" onclick="return submitform('false')" value="不同意" /></td></tr>
+		
         <tr>
             <td colspan="1"><span>完成及销点情况(销点人签字)</span></td>
             <td colspan="5"><span class="cj2" style="color:red;font-weight:bold;display:none;">*</span>
-                <input class="full cj2" readonly id="result" name="result" value=<%= result %>></td>
+                <input class="full cj2" readonly id="result" name="result" value=<%= result %>>
+				<input id="cjbtn2" onclick="return submitform('true')" type="submit" value="确认销点" style="display:none;"/></td>
         </tr>
         <tr>
             <td colspan="6" align="right">申请上报日期：<input name="applydate" readonly type="text" value="<%= applytime %>">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="6" align="center"><input onclick="return submitform()" type="submit" value="<%= submitbtn %>">
             </td>
         </tr>
         </tbody>
@@ -300,6 +322,7 @@
     }
 
     function submitform() {
+        $("#approve").val(approve);
         var cookie = getcookie();
         switch (cookie["person"]) {
             case "1":
@@ -355,36 +378,53 @@
                 var mgrelement = document.getElementById("manager");
                 if (isIE()) {
                     if (mgrelement.innerText == "") {
+						$("#cjbtn")[0].style.display = "";
                         removeReadOnly(getpart("cj"));
                     } else {
                         if (getpart("cj2")[1].value == "") {
+							$("#cjbtn2")[0].style.display = "";
                             removeReadOnly(getpart("cj2"));
                         }
                     }
                 } else {
                     if (mgrelement.innerHTML == "" && mgrelement.value == "") {
+							$("#cjbtn")[0].style.display = "";
                         removeReadOnly(getpart("cj"));
                     } else {
                         if (getpart("cj2")[1].value == "") {
+							$("#cjbtn2")[0].style.display = "";
                             removeReadOnly(getpart("cj2"));
                         }
                     }
                 }
                 break;
             case "2":
-                removeReadOnly(getpart("cjzr"));
-                if (cookie["person"] != document.getElementById("workshop").substring(2)) {
-                    document.getElementById("subbtn").disabled = "disabled";
+                removeReadOnly(getpart("cjzr"));				
+                if($("#workshopmgr").val().replace(" ","") === "")
+                {
+                    $("#cjzrbtn")[0].style.display = "";
                 }
                 break;
             case "3":
-                removeReadOnly(getpart("jsk"));
+                removeReadOnly(getpart("jsk"));				
+                if($("#techdepart").val().replace(" ","") === "")
+                {
+                    $("#jskbtn")[0].style.display = "";
+                }
                 break;
             case "4":
                 removeReadOnly(getpart("aqk"));
+                if($("#securedepart").val().replace(" ","") === "")
+                {
+                    $("#aqkbtn")[0].style.display = "";
+                }
                 break;
             case "5":
                 removeReadOnly(getpart("zgdz"));
+                if($("#manager").val().replace(" ","") === "")
+                {
+                    $("#zgdzbtn")[0].style.display = "";
+                }
                 break;
         }
     }

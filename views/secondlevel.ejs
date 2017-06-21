@@ -48,6 +48,7 @@
 <%- include('nav') %>
 <%- include('notif') %>
 <form action="/app2" method="post">
+		<input type="hidden" name="approve" id="approve" value="true"/>
     <table>
         <caption>二级（段）通信线路及设备停机要点审批表</caption>
         <tbody>
@@ -86,11 +87,11 @@
         </tr>
         <tr>
             <td colspan="3">起始时间：<span class="cj" style="color:red;font-weight:bold;display:none;">*</span>
-                <input class="cj time" id="sqstarttime" name="sqstarttime" readonly type="text"
+                <input class="cj time" id="sqstarttime" name="sqstarttime" readonly type="text" autocomplete="off"
                        value="<%= sqstarttime %>">
             </td>
             <td colspan="3">截止时间：<span class="cj" style="color:red;font-weight:bold;display:none;">*</span>
-                <input class="cj time" id="sqendtime" name="sqendtime" readonly type="text" value="<%= sqendtime %>">
+                <input class="cj time" id="sqendtime" autocomplete="off" name="sqendtime" readonly type="text" value="<%= sqendtime %>">
             </td>
         </tr>
         <tr>
@@ -140,6 +141,9 @@
                           name="secureplan"
                           value=<%= secureplan %>><%= secureplan %></textarea></td>
         </tr>
+		<tr><td id="cjbtn" style="display:none;" colspan="6" align="center">
+		<input style="width:300px;" onclick="return submitform('true')" type="submit" value="提交"/></td></tr>
+        <tr>
         <tr>
             <td colspan="6" align="center">车间主任审批</td>
         </tr>
@@ -148,20 +152,20 @@
                                            style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
                 <textarea class="cjzr" id="workshopmgr" readonly
                           name="workshopmgr"
-                          value=<%= workshopmgr %>><%= workshopmgr %></textarea>
-                <label align="right">提交时间：<%= workshopmgrtime %></label></td>
+                          value=<%= workshopmgr %>><%= workshopmgr %></textarea></td>
         </tr>
+		<tr><td colspan="6" align="right"><label>提交时间：<%= workshopmgrtime %></label></td></tr>
+		<tr><td colspan="6" align="center" style="display:none;" id="cjzrbtn">
+		<input type="submit" onclick="return submitform('true')" value="同意"/>
+		<input type="submit" onclick="return submitform('false')" value="不同意" /></td></tr>
         <tr>
             <td colspan="1"><span>完成及销点情况(销点人签字)</span></td>
             <td colspan="5"><span class="cj2" style="color:red;font-weight:bold;display:none;">*</span>
-                <input class="full cj2" id="result" readonly name="result" value=<%= result %>></td>
+                <input class="full cj2" id="result" readonly name="result" value=<%= result %>>
+				<input id="cjbtn2" onclick="return submitform('true')" type="submit" value="确认销点" style="display:none;"/></td>
         </tr>
         <tr>
             <td colspan="6" align="right">申请上报日期：<input name="applydate" readonly type="text" value="<%= applytime %>">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="6" align="center"><input type="submit" onclick="return submitform()" value="<%= submitbtn %>">
             </td>
         </tr>
         </tbody>
@@ -260,7 +264,8 @@
         return true;
     }
 
-    function submitform() {
+    function submitform(approve) {
+        $("#approve").val(approve);
         var cookie = getcookie();
         switch (cookie['person']) {
             case "1":
@@ -316,17 +321,21 @@
                 var mgrelement = document.getElementById("workshopmgr");
                 if (isIE()) {
                     if (mgrelement.innerText == "") {
+						$("#cjbtn")[0].style.display = "";
                         removeReadOnly(getpart("cj"));
                     } else {
                         if (getpart("cj2")[1].value == "") {
+							$("#cjbtn2")[0].style.display = "";
                             removeReadOnly(getpart("cj2"));
                         }
                     }
                 } else {
                     if (mgrelement.innerHTML == "" && mgrelement.value == "") {
+                        $("#cjbtn")[0].style.display = "";
                         removeReadOnly(getpart("cj"));
                     } else {
                         if (getpart("cj2")[1].value == "") {
+                            $("#cjbtn2")[0].style.display = "";
                             removeReadOnly(getpart("cj2"));
                         }
                     }
@@ -334,6 +343,10 @@
                 break;
             case "2":
                 removeReadOnly(getpart("cjzr"));
+                if($("#workshopmgr").val().replace(" ","") === "")
+                {
+                    $("#cjzrbtn")[0].style.display = "";
+                }
                 break;
             case "3":
                 removeReadOnly(getpart("jsk"));

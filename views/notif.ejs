@@ -1,4 +1,4 @@
-<div style="text-align: center;margin: auto" class="ui grid">
+<div style="width:80%" class="ui grid">
     <div class="four wide column"></div>
     <div class="eight wide column">
         <% if (success) { %>
@@ -12,7 +12,7 @@
 
         <% if (error) { %>
         <div id="errorNotif" class="ui error message">
-            <p><%- error %></p>
+            <p><%= error %></p>
 			<!--<script>-->
 				<!--setTimeout("hideNotif('errorNotif')",1000);-->
 			<!--</script>-->
