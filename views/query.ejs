@@ -52,7 +52,7 @@
     <script src="/javascripts/jquery-1.9.1.js"></script>
     <script src="/javascripts/calendar.js"></script>
 </head>
-<body onload="controldisplay()">
+<body>
 <%- include('nav') %>
 <%- include('notif') %>
 <div class="container">
@@ -91,8 +91,8 @@
 <br><br>
                 </td>
                 <td>
-                    申请起始时间：<input class="time" type="text" name="sqstarttime"><br>
-                    申请结束时间：<input class="time" type="text" name="sqendtime">
+                    申请起始时间：<input id="sqstarttime" class="time" type="text" name="sqstarttime"><br>
+                    申请结束时间：<input id="sqendtime" class="time" type="text" name="sqendtime">
                 </td>
                 <td>
                     输入区段：<input type="text" name="section"><br><br>
@@ -113,6 +113,55 @@
                 console.log(val);
             });
         });
+		$().ready(function(){
+			$("#sqstarttime").val(getNormalTime(getFormatTime(getTimeBefore(3))));
+			$("#sqendtime").val(getNormalTime(getFormatTime(getTimeBefore(-3))));
+		});
+		
+function getTime() {
+        var rightNow = new Date();
+        rightNow.setMinutes(rightNow.getMinutes() - rightNow.getTimezoneOffset());
+        var result = rightNow.toISOString().slice(0, 19).replace(/[^0-9]/g, '');
+        return result;
+    }
+function getTimeBefore(days) {
+        var rightNow = new Date();
+        rightNow.setMinutes(rightNow.getMinutes() - rightNow.getTimezoneOffset());
+        var daysBefore = rightNow.getTime() - days * 24 * 60 * 60 * 1000;
+		var tmp = new Date(daysBefore);
+        var result = tmp.toISOString().slice(0, 19).replace(/[^0-9]/g, '');
+        return result;
+    }
+
+function getFormatTime(origin) {
+        return origin.replace(/[^0-9]/g, '');
+    }
+	function getNormalTime(origin) {
+        // origin: 20170215180000
+        // result: 2017-02-15 18:00:00
+
+        if (origin == null){
+            return origin;
+        }
+
+        var result = origin;
+        result = result.replace(/(.{12})/,'$1:');
+        // origin: 201702151800:00
+
+        result = result.replace(/(.{10})/,'$1:');
+        // origin: 2017021518:00:00
+
+        result = result.replace(/(.{8})/,'$1 ');
+        // origin: 20170215 18:00:00
+
+        result = result.replace(/(.{6})/,'$1-');
+        // origin: 201702-15 18:00:00
+
+        result = result.replace(/(.{4})/,'$1-');
+        // origin: 2017-02-15 18:00:00
+
+        return result;
+    }
     </script>
 </div>
 <div class="container">

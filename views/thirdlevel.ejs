@@ -50,7 +50,13 @@
     <table>
         <caption>三级（段）通信线路及设备停机要点审批表</caption>
         <tbody>
-		<input type="hidden" name="approve" id="approve" value="true"/>
+        <input type="hidden" name="approve" id="approve"
+                <% if(nextperson%10==9){%>
+               value=<%="false"%>
+               <%}else{%>
+               value=<%="true"%>
+                <%} %>
+        />
         <tr>
             <td colspan="1"><span>申请车间(盖章)</span></td>
             <td colspan="1"><input id="workshop" name="workshop" type="text" readonly value=<%= workshop %>></td>
@@ -302,6 +308,9 @@
         return cookieDic;
     }
     function controldisplay() {
+		if($("#approve").val() == "false"){
+			return;
+		}	
         var cookie = getcookie();
 
         switch (cookie['person']) {

@@ -13,6 +13,14 @@ module.exports = {
         var result = rightNow.toISOString().slice(0, 19).replace(/[^0-9]/g, '');
         return result;
     },
+    getTimeBefore: function getTimeBefore(days) {
+        var rightNow = new Date();
+        rightNow.setMinutes(rightNow.getMinutes() - rightNow.getTimezoneOffset());
+        var daysBefore = rightNow.getTime() - days * 24 * 60 * 60 * 1000;
+        daysBefore = new Date(daysBefore);
+        var result = daysBefore.toISOString().slice(0, 19).replace(/[^0-9]/g, '');
+        return result;
+    },
     getFixNumber: function getFixNumber(num, length) {
         return ('' + num).length < length ? ((new Array(length + 1)).join('0') + num).slice(-length) : '' + num;
     },

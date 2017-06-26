@@ -23,8 +23,6 @@ router.get('/', isLogin, function (req, res, next) {
 
 router.get('/logout', isLogin, function (req, res, next) {
     res.cookie('id', 0, {maxAge: 0});
-    res.cookie('person', 0, {maxAge: 0});
-    res.cookie('workshop', 0, {maxAge: 0});
     res.redirect('/login');
 });
 
@@ -55,7 +53,7 @@ router.get('/list', isLogin, function (req, res, next) {
     req.flash('success', req.session.notif);
 
     var person = req.session.person;
-    var need = ['id', 'workshop', 'nextperson'];
+    var need = ['id', 'workshop', 'section', 'nextperson'];
     var order = [['id', 'DESC']];
     var query = {};
     var appResults = [];
@@ -81,6 +79,7 @@ router.get('/list', isLogin, function (req, res, next) {
                 result.href = '/app1?formId=' + result.id;
                 result.name = '一级审批表' + result.id;
                 result.workshop = app1Results[i].workshop;
+                result.section = app1Results[i].section;
                 result.nextperson = app1Results[i].nextperson;
                 appResults.push(result);
             }
@@ -95,6 +94,7 @@ router.get('/list', isLogin, function (req, res, next) {
                 result.href = '/app2?formId=' + result.id;
                 result.name = '二级审批表' + result.id;
                 result.workshop = app2Results[i].workshop;
+                result.section = app2Results[i].section;
                 result.nextperson = app2Results[i].nextperson;
                 appResults.push(result);
             }
@@ -109,6 +109,7 @@ router.get('/list', isLogin, function (req, res, next) {
                 result.href = '/app3?formId=' + result.id;
                 result.name = '三级审批表' + result.id;
                 result.workshop = app3Results[i].workshop;
+                result.section = app3Results[i].section;
                 result.nextperson = app3Results[i].nextperson;
                 appResults.push(result);
             }
@@ -173,7 +174,7 @@ router.get('/queryResult', isLogin, function (req, res, next) {
         var sqendtime = req.query.sqendtime;
         var section = req.query.section;
 
-        var need = ['id', 'workshop', 'nextperson'];
+        var need = ['id', 'workshop', 'section', 'nextperson',];
         var order = [['id', 'DESC']];
         var query = {};
         var appResults = [];
@@ -189,7 +190,7 @@ router.get('/queryResult', isLogin, function (req, res, next) {
             sqendtime = getFormatTime(sqendtime);
             query = {sqendtime: {$lte: sqendtime}};
         }
-        if (typeof workshop != '') {
+        if (workshop != '') {
             query.workshop = workshop;
         }
         if (section != '') {
@@ -204,6 +205,7 @@ router.get('/queryResult', isLogin, function (req, res, next) {
                     result.href = '/app1?formId=' + result.id;
                     result.name = '一级审批表' + result.id;
                     result.workshop = app1Results[i].workshop;
+                    result.section = app1Results[i].section;
                     result.nextperson = app1Results[i].nextperson;
                     appResults.push(result);
                 }
@@ -218,6 +220,7 @@ router.get('/queryResult', isLogin, function (req, res, next) {
                     result.href = '/app2?formId=' + result.id;
                     result.name = '二级审批表' + result.id;
                     result.workshop = app2Results[i].workshop;
+                    result.section = app2Results[i].section;
                     result.nextperson = app2Results[i].nextperson;
                     appResults.push(result);
                 }
@@ -232,6 +235,7 @@ router.get('/queryResult', isLogin, function (req, res, next) {
                     result.href = '/app3?formId=' + result.id;
                     result.name = '三级审批表' + result.id;
                     result.workshop = app3Results[i].workshop;
+                    result.section = app3Results[i].section;
                     result.nextperson = app3Results[i].nextperson;
                     appResults.push(result);
                 }

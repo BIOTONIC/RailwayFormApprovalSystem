@@ -48,7 +48,13 @@
 <%- include('nav') %>
 <%- include('notif') %>
 <form action="/app2" method="post">
-		<input type="hidden" name="approve" id="approve" value="true"/>
+    <input type="hidden" name="approve" id="approve"
+            <% if(nextperson%10==9){%>
+           value=<%="false"%>
+           <%}else{%>
+           value=<%="true"%>
+            <%} %>
+    />
     <table>
         <caption>二级（段）通信线路及设备停机要点审批表</caption>
         <tbody>
@@ -315,6 +321,9 @@
         return cookieDic;
     }
     function controldisplay() {
+		if($("#approve").val() == "false"){
+			return;
+		}
         var cookie = getcookie();
         switch (cookie['person']) {
             case "1":

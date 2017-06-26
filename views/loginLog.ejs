@@ -42,34 +42,34 @@
 <%- include('nav') %>
 <%- include('notif') %>
 <div class="container">
-<table>
-    <thead>
-    <tr>
-        <form action="/loginLog/query" method="get">
-            <th colspan="2">起始时间:<input name="starttime" class="time" type="text"/></th>
-            <th colspan="2">截止时间:<input name="endtime" class="time" type="text"/></th>
-            <th colspan="1"><input type="submit"/></th>
-        </form>
-    </tr>
-    <tr>
-        <th>编号</th>
-        <th>名称</th>
-        <th>车间</th>
-        <th>区段</th>
-        <th>登录时间</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% for (var i = 0;i < loginLogs.length;i++){ %>
-    <tr style="<%= (i % 2 == 0 ? "background-color:#7ea9ba" : "") %>">
-        <td><%= loginLogs[i].userId %></td>
-        <td><%= loginLogs[i].name %></td>
-        <td><%= loginLogs[i].workshop %></td>
-        <td><%= loginLogs[i].section %></td>
-        <td><%= loginLogs[i].loginTime %></td>
-        <% } %>
-    </tbody>
-</table>
+    <table>
+        <thead>
+        <tr>
+            <form action="/loginLog/query" method="get">
+                <th colspan="2">起始时间:<input name="starttime" class="time" type="text"/></th>
+                <th colspan="2">截止时间:<input name="endtime" class="time" type="text"/></th>
+                <th colspan="2"><input type="submit"/></th>
+            </form>
+        </tr>
+        <tr>
+            <th>编号</th>
+            <th>名称</th>
+            <th>车间</th>
+            <th>区段</th>
+            <th>登录时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% for (var i = 0;i < loginLogs.length;i++){ %>
+        <tr style="<%= (i % 2 == 0 ? "background-color:#7ea9ba" : "") %>">
+            <td><%= loginLogs[i].userId %></td>
+            <td><%= loginLogs[i].name %></td>
+            <td><%= loginLogs[i].workshop %></td>
+            <td><%= loginLogs[i].section %></td>
+            <td><%= loginLogs[i].loginTime %></td>
+            <% } %>
+        </tbody>
+    </table>
 </div>
 <script>
     $('.time').each(function () {

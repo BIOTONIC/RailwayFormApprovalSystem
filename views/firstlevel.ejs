@@ -48,7 +48,13 @@
 <%- include('notif') %>
 <form action="/app1" method="post">
 
-		<input type="hidden" name="approve" id="approve" value="true"/>
+		<input type="hidden" name="approve" id="approve" 
+		<% if(nextperson%10==9){%>
+		value=<%="false"%>
+		<%}else{%>
+		value=<%="true"%>
+		<%} %>
+		/>
     <table>
         <caption>一级（段）通信线路及设备停机要点审批表</caption>
         <tbody>
@@ -321,7 +327,7 @@
         return true;
     }
 
-    function submitform() {
+    function submitform(approve) {
         $("#approve").val(approve);
         var cookie = getcookie();
         switch (cookie["person"]) {
@@ -372,6 +378,10 @@
         return cookieDic;
     }
     function controldisplay() {
+	
+		if($("#approve").val() == "false"){
+			return;
+		}
         var cookie = getcookie();
         switch (cookie["person"]) {
             case "1":
@@ -406,6 +416,8 @@
                 }
                 break;
             case "3":
+                $("#pfstarttime").val($("#sqstarttime").val());
+                $("#pfendtime").val($("#sqendtime").val());
                 removeReadOnly(getpart("jsk"));				
                 if($("#techdepart").val().replace(" ","") === "")
                 {

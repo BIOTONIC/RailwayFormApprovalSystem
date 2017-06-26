@@ -8,7 +8,7 @@ module.exports = {
         database: 'railway'
     },
     mssql: {
-        server: '10.78.119.201',
+        server: '10.66.188.8',
         user: 'thrid',
         password: 'thrid',
         database: 'BJTXD',
