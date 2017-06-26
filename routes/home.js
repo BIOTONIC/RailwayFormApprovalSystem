@@ -14,6 +14,8 @@ var workshopList = [];
 
 
 router.get('/', isLogin, function (req, res, next) {
+    res.locals.popup = false;
+
     if (typeof req.session.formId != 'undefined') {
         delete req.session.formId;
     }
@@ -22,11 +24,15 @@ router.get('/', isLogin, function (req, res, next) {
 });
 
 router.get('/logout', isLogin, function (req, res, next) {
+    res.locals.popup = false;
+
     res.cookie('id', 0, {maxAge: 0});
     res.redirect('/login');
 });
 
 router.get('/apply', isLogin, function (req, res, next) {
+    res.locals.popup = false;
+
     req.flash('success', req.session.notif);
     var person = req.session.person;
     if (person != '1') {
@@ -50,6 +56,8 @@ router.get('/apply', isLogin, function (req, res, next) {
 });
 
 router.get('/list', isLogin, function (req, res, next) {
+    res.locals.popup = false;
+
     req.flash('success', req.session.notif);
 
     var person = req.session.person;
@@ -128,6 +136,8 @@ router.get('/list', isLogin, function (req, res, next) {
 });
 
 router.get('/query', isLogin, function (req, res, next) {
+    res.locals.popup = false;
+
     req.flash('success', req.session.notif);
 
     res.locals.person = req.session.person;
@@ -163,6 +173,8 @@ router.get('/query', isLogin, function (req, res, next) {
 });
 
 router.get('/queryResult', isLogin, function (req, res, next) {
+        res.locals.popup = false;
+
         req.flash('success', req.session.notif);
 
         res.locals.person = req.session.person;

@@ -34,10 +34,14 @@ var addLoginLog = function (userId, name, person, workshop, section) {
 };
 
 router.get('/', notLogin, function (req, res, next) {
+    res.locals.popup = false;
+
     res.render('login');
 });
 
 router.post('/', notLogin, function (req, res, next) {
+        res.locals.popup = false;
+
         var name = req.body.username;
         var password = req.body.password;
 
@@ -94,6 +98,10 @@ router.post('/', notLogin, function (req, res, next) {
                                 req.session.person = '4';
                             }
                             // tech depart
+                            else if (result2[0].ID == conf.mssql.id.gongchengshidepart) {
+                                req.session.workshop = '工程管理室';
+                                req.session.person = '3';
+                            }
                             else if (result2[0].ID == conf.mssql.id.gaosutechdepart) {
                                 req.session.workshop = '高速技术科';
                                 req.session.person = '3';
@@ -111,7 +119,7 @@ router.post('/', notLogin, function (req, res, next) {
                                 return res.redirect('login');
                             }
 
-                            req.session.notif = '用户名：<span style="text-decoration: underline">' + name + '</span> 归属部门:<span style="text-decoration: underline">' + result2[0].Name+ '</span> 上级：<span style="text-decoration: underline">北京通信段</span>';
+                            req.session.notif = '用户名：<span style="text-decoration: underline">' + name + '</span> 归属部门:<span style="text-decoration: underline">' + result2[0].Name + '</span> 上级：<span style="text-decoration: underline">北京通信段</span>';
 
                             res.cookie('id', req.session.userId);
                             res.cookie('person', req.session.person);

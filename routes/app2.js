@@ -11,6 +11,8 @@ var app2Service = require('../services/app2Service');
 var confService = require('../services/confService');
 
 router.get('/create', isLogin, function (req, res, next) {
+    res.locals.popup = true;
+
     var workshop = req.session.workshop;
 
     // create a new application
@@ -39,6 +41,8 @@ router.get('/create', isLogin, function (req, res, next) {
 });
 
 router.get('/', isLogin, function (req, res, next) {
+    res.locals.popup = true;
+
     var person = req.session.person;
     var query = {};
     if (typeof req.query.formId != 'undefined') {
@@ -81,6 +85,8 @@ router.get('/', isLogin, function (req, res, next) {
 });
 
 router.post('/', isLogin, function (req, res, next) {
+    res.locals.popup = true;
+
     var person = req.session.person;
     var nextperson = req.session.nextperson;
 

@@ -39,6 +39,7 @@
         <tr>
             <td>审批表</td>
             <td>所属车间</td>
+            <td>区段</td>
             <td>查看或审批</td>
 			<td>审批进度</td>
         </tr>
@@ -46,6 +47,7 @@
         <tr style="<%= (i % 2 == 0 ? "background-color:#7ea9ba" : "") %>">
             <td><a class="applylink" href=<%- appResults[i].href %>><%- appResults[i].name %></a></td>
             <td><%- appResults[i].workshop %></td>
+            <td><%- appResults[i].section %></td>
             <td><a class="applylink" href=<%- appResults[i].href %>><%= appResults[i].state %></a></td>
 			<td>			
 			<% if(appResults[i].nextperson == '20'){ %>

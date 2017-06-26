@@ -1,28 +1,29 @@
 <div style="text-align: center;margin: auto" class="ui grid">
     <div class="four wide column"></div>
     <div class="eight wide column">
+        <% if (popup) { %>
+        <% if (success) { %>
+        <script>
+            alert("<%- success %>");
+        </script>
+        <% } %>
+        <% if (error) { %>
+        <script>
+            alert("<%- error %>");
+        </script>
+        <% } %>
+        <% } else { %>
         <% if (success) { %>
         <div id="successNotif" class="ui success message">
             <p><%- success %></p>
-			<!--<script>-->
-				<!--setTimeout("hideNotif('successNotif')",1000);-->
-			<!--</script>-->
         </div>
         <% } %>
 
         <% if (error) { %>
         <div id="errorNotif" class="ui error message">
             <p><%- error %></p>
-			<!--<script>-->
-				<!--setTimeout("hideNotif('errorNotif')",1000);-->
-			<!--</script>-->
         </div>
+        <% } %>
         <% } %>
     </div>
 </div>
-	<script>
-		function hideNotif(sign){
-			var notif = document.getElementById(sign);
-			notif.style.display="none";
-		}
-	</script>

@@ -20,13 +20,14 @@ module.exports = {
             tdsVersion: '7_1'
         },
         parentId: {
-            manager: 0,
+            manager: 674,
             department: 1273,
             workshopmgr: 1274
         },
         id: {
-            gaosutechdepart: 1423,
             wuxiantechdepart: 1118,
+            gongchengshidepart: 1356,
+            gaosutechdepart: 1423,
             youxiantechdepart: 1792,
             securedepart: 1276
         }

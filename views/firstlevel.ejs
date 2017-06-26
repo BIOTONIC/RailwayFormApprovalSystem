@@ -47,7 +47,7 @@
 <%- include('nav') %>
 <%- include('notif') %>
 <form action="/app1" method="post">
-
+        <input type="hidden" id="nextperson" value="<%- nextperson %>"/>
 		<input type="hidden" name="approve" id="approve" 
 		<% if(nextperson%10==9){%>
 		value=<%="false"%>
@@ -162,7 +162,7 @@
                           name="workshopmgr"
                           value=<%= workshopmgr %>><%= workshopmgr %></textarea></td>
         </tr>
-		<tr><td colspan="6" align="right"><label>提交时间：<%= workshopmgrtime %></label></td></tr>
+		<tr><td colspan="6" align="right"><label>审批时间：<%= workshopmgrtime %></label></td></tr>
 		<tr><td colspan="6" align="center" style="display:none;" id="cjzrbtn">
 		<input type="submit" onclick="return submitform('true')" value="同意"/>
 		<input type="submit" onclick="return submitform('false')" value="不同意" /></td></tr>
@@ -174,7 +174,7 @@
             <td colspan="3" align=""><span class="jsk" style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
                 <textarea readonly name="techdepart" class="jsk"
                           id="techdepart" value=<%= techdepart %>><%= techdepart %></textarea>
-                <label align="right">提交时间：<%= techtime %></label>
+                <label align="right">审批时间：<%= techtime %></label>
             </td>
             <td colspan="3" align="center">
                 起始时间：<span class="jsk" style="color:red;font-weight:bold;display:none;">*</span>
@@ -197,7 +197,7 @@
                 <textarea readonly class="aqk" id="securedepart"
                           name="securedepart"
                           value=<%= securedepart %>><%= securedepart %></textarea>
-                <label align="right">提交时间：<%= securetime %></label></td>
+                <label align="right">审批时间：<%= securetime %></label></td>
         </tr>		
 		
 		<tr><td colspan="6" align="center" style="display:none;" id="aqkbtn">
@@ -212,7 +212,7 @@
                                            style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
                 <textarea readonly class="zgdz" id="manager"
                           name="manager" value=<%= manager %>><%= manager %></textarea>
-                <label align="right">提交时间：<%= managertime %></label>
+                <label align="right">审批时间：<%= managertime %></label>
             </td>
         </tr>
 		
@@ -408,33 +408,33 @@
                     }
                 }
                 break;
-            case "2":
-                removeReadOnly(getpart("cjzr"));				
-                if($("#workshopmgr").val().replace(" ","") === "")
+            case "2":				
+                if($("#nextperson").val() == 20 && $("#workshopmgr").val().replace(" ","") === "")
                 {
+					removeReadOnly(getpart("cjzr"));
                     $("#cjzrbtn")[0].style.display = "";
                 }
                 break;
-            case "3":
-                $("#pfstarttime").val($("#sqstarttime").val());
-                $("#pfendtime").val($("#sqendtime").val());
-                removeReadOnly(getpart("jsk"));				
-                if($("#techdepart").val().replace(" ","") === "")
+            case "3":			
+                if($("#nextperson").val() == 30 && $("#techdepart").val().replace(" ","") === "")
                 {
+					$("#pfstarttime").val($("#sqstarttime").val());
+					$("#pfendtime").val($("#sqendtime").val());
+					removeReadOnly(getpart("jsk"));	
                     $("#jskbtn")[0].style.display = "";
                 }
                 break;
             case "4":
-                removeReadOnly(getpart("aqk"));
-                if($("#securedepart").val().replace(" ","") === "")
+                if($("#nextperson").val() == 40 && $("#securedepart").val().replace(" ","") === "")
                 {
+					removeReadOnly(getpart("aqk"));
                     $("#aqkbtn")[0].style.display = "";
                 }
                 break;
             case "5":
-                removeReadOnly(getpart("zgdz"));
-                if($("#manager").val().replace(" ","") === "")
+                if($("#nextperson").val() == 50 && $("#manager").val().replace(" ","") === "")
                 {
+					removeReadOnly(getpart("zgdz"));
                     $("#zgdzbtn")[0].style.display = "";
                 }
                 break;

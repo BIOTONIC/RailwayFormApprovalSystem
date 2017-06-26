@@ -39,6 +39,7 @@ app.use(function(req, res, next){
     res.locals.id = req.session.id;
     res.locals.state = req.session.state;
     res.locals.message = req.session.message;
+    res.locals.popup = false;
     res.locals.success = req.flash('success').toString();
     res.locals.error = req.flash('error').toString();
     next();

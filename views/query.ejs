@@ -23,7 +23,7 @@
         }
 
         .container {
-            margin: 40px auto 150px auto;
+            margin: 40px auto 70px auto;
             width: 80%;
         }
 
@@ -56,39 +56,40 @@
 <%- include('nav') %>
 <%- include('notif') %>
 <div class="container">
-<script>
+    <script>
 
-    function getcookie() {
-        var cookies = document.cookie.split(";");
-        var cookieDic = [];
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].split("=");
-            cookieDic[cookie[0].trim()] = cookie[1].trim();
-            //alert(decodeURI(cookie[1].trim()));
+        function getcookie() {
+            var cookies = document.cookie.split(";");
+            var cookieDic = [];
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].split("=");
+                cookieDic[cookie[0].trim()] = cookie[1].trim();
+                //alert(decodeURI(cookie[1].trim()));
+            }
+            return cookieDic;
         }
-        return cookieDic;
-    }
-</script>
+    </script>
     <form action="/home/queryResult" , method="get">
         <table>
             <tr>
                 <td>
                     选择车间：
-<%if(person == 1 || person == "1" || person == 2 || person == "2"){%>
-<input type="text" name="workshop" value="<%=currWorkshop%>" readonly/>
-<%}else{%>
+                    <% if(person == 1 || person == "1" || person == 2 || person == "2"){ %>
+                    <input type="text" name="workshop" value="<%= currWorkshop %>" readonly/>
+                    <% }else{ %>
                     <select name="workshop">
-			<option value="" selected='selected'></option>
+                        <option value="" selected='selected'></option>
                         <% for(var ws in workshopList){ %>
                         <option value="<%= workshopList[ws] %>"
-                                <%if(workshop == workshopList[ws]){%>
-                                    selected = 'selected'
-                                <%}%>>
+                                <% if(workshop == workshopList[ws]){ %>
+                                selected='selected'
+                                <% } %>
+                        >
                             <%= workshopList[ws] %></option>
                         <% } %>
                     </select>
-<%}%>
-<br><br>
+                    <% } %>
+                    <br><br>
                 </td>
                 <td>
                     申请起始时间：<input id="sqstarttime" class="time" type="text" name="sqstarttime"><br>
@@ -113,55 +114,48 @@
                 console.log(val);
             });
         });
-		$().ready(function(){
-			$("#sqstarttime").val(getNormalTime(getFormatTime(getTimeBefore(3))));
-			$("#sqendtime").val(getNormalTime(getFormatTime(getTimeBefore(-3))));
-		});
-		
-function getTime() {
-        var rightNow = new Date();
-        rightNow.setMinutes(rightNow.getMinutes() - rightNow.getTimezoneOffset());
-        var result = rightNow.toISOString().slice(0, 19).replace(/[^0-9]/g, '');
-        return result;
-    }
-function getTimeBefore(days) {
-        var rightNow = new Date();
-        rightNow.setMinutes(rightNow.getMinutes() - rightNow.getTimezoneOffset());
-        var daysBefore = rightNow.getTime() - days * 24 * 60 * 60 * 1000;
-		var tmp = new Date(daysBefore);
-        var result = tmp.toISOString().slice(0, 19).replace(/[^0-9]/g, '');
-        return result;
-    }
-
-function getFormatTime(origin) {
-        return origin.replace(/[^0-9]/g, '');
-    }
-	function getNormalTime(origin) {
-        // origin: 20170215180000
-        // result: 2017-02-15 18:00:00
-
-        if (origin == null){
-            return origin;
+        $().ready(function () {
+            $("#sqstarttime").val(getNormalTime(getFormatTime(getTimeBefore(3))));
+            $("#sqendtime").val(getNormalTime(getFormatTime(getTimeBefore(-3))));
+        });
+        function getTimeBefore(days) {
+            var rightNow = new Date();
+            rightNow.setMinutes(rightNow.getMinutes() - rightNow.getTimezoneOffset());
+            var daysBefore = rightNow.getTime() - days * 24 * 60 * 60 * 1000;
+            var tmp = new Date(daysBefore);
+            var result = tmp.toISOString().slice(0, 19).replace(/[^0-9]/g, '');
+            return result;
         }
 
-        var result = origin;
-        result = result.replace(/(.{12})/,'$1:');
-        // origin: 201702151800:00
+        function getFormatTime(origin) {
+            return origin.replace(/[^0-9]/g, '');
+        }
+        function getNormalTime(origin) {
+            // origin: 20170215180000
+            // result: 2017-02-15 18:00:00
 
-        result = result.replace(/(.{10})/,'$1:');
-        // origin: 2017021518:00:00
+            if (origin == null) {
+                return origin;
+            }
 
-        result = result.replace(/(.{8})/,'$1 ');
-        // origin: 20170215 18:00:00
+            var result = origin;
+            result = result.replace(/(.{12})/, '$1:');
+            // origin: 201702151800:00
 
-        result = result.replace(/(.{6})/,'$1-');
-        // origin: 201702-15 18:00:00
+            result = result.replace(/(.{10})/, '$1:');
+            // origin: 2017021518:00:00
 
-        result = result.replace(/(.{4})/,'$1-');
-        // origin: 2017-02-15 18:00:00
+            result = result.replace(/(.{8})/, '$1 ');
+            // origin: 20170215 18:00:00
 
-        return result;
-    }
+            result = result.replace(/(.{6})/, '$1-');
+            // origin: 201702-15 18:00:00
+
+            result = result.replace(/(.{4})/, '$1-');
+            // origin: 2017-02-15 18:00:00
+
+            return result;
+        }
     </script>
 </div>
 <div class="container">
@@ -170,37 +164,39 @@ function getFormatTime(origin) {
         <tr>
             <td>审批表</td>
             <td>所属车间</td>
+            <td>区段</td>
             <td>查看或审批</td>
-			<td>审批进度</td>
+            <td>审批进度</td>
         </tr>
         <% for (var i = 0;i < appResults.length;i++){ %>
         <tr style="<%= (i % 2 == 0 ? "background-color:#7ea9ba" : "") %>">
             <td><a class="applylink" href=<%- appResults[i].href %>><%- appResults[i].name %></a></td>
             <td><%- appResults[i].workshop %></td>
+            <td><%- appResults[i].section%></td>
             <td><a class="applylink" href=<%- appResults[i].href %>><%= appResults[i].state %></a></td>
-			<td>
-			<% if(appResults[i].nextperson == '20'){ %>
-				<%="待车间主任审批" %>
-			<% }else if(appResults[i].nextperson == '29'){%>
-				<%="车间主任不同意" %>
-			<% }else if(appResults[i].nextperson == '30'){%>
-				<%="待技术科审批" %>
-			<% }else if(appResults[i].nextperson == '39'){%>
-				<%="技术科不同意" %>
-			<% }else if(appResults[i].nextperson == '40'){%>
-				<%="待安全科审批" %>
-			<% }else if(appResults[i].nextperson == '49'){%>
-				<%="安全科不同意" %>
-			<% }else if(appResults[i].nextperson == '50'){%>
-				<%="待段领导审批" %>
-			<% }else if(appResults[i].nextperson == '59'){%>
-				<%="段领导不同意" %>
-			<% }else if(appResults[i].nextperson == '60'){%>
-				<%="待工区销点" %>
-			<% }else if(appResults[i].nextperson == '70'){%>
-				<%="已完成" %>
-			<% } %>
-			</td>
+            <td>
+                <% if(appResults[i].nextperson == '20'){ %>
+                <%= "待车间主任审批" %>
+                <% }else if(appResults[i].nextperson == '29'){ %>
+                <%= "车间主任不同意" %>
+                <% }else if(appResults[i].nextperson == '30'){ %>
+                <%= "待技术科审批" %>
+                <% }else if(appResults[i].nextperson == '39'){ %>
+                <%= "技术科不同意" %>
+                <% }else if(appResults[i].nextperson == '40'){ %>
+                <%= "待安全科审批" %>
+                <% }else if(appResults[i].nextperson == '49'){ %>
+                <%= "安全科不同意" %>
+                <% }else if(appResults[i].nextperson == '50'){ %>
+                <%= "待段领导审批" %>
+                <% }else if(appResults[i].nextperson == '59'){ %>
+                <%= "段领导不同意" %>
+                <% }else if(appResults[i].nextperson == '60'){ %>
+                <%= "待工区销点" %>
+                <% }else if(appResults[i].nextperson == '70'){ %>
+                <%= "已完成" %>
+                <% } %>
+            </td>
         </tr>
         <% } %>
         </tbody>

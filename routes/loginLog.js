@@ -7,11 +7,15 @@ var getNormalTime = require('../others/util').getNormalTime;
 var loginLogService = require('../services/loginLogService');
 
 router.get('/', isLogin, function (req, res, next) {
+    res.locals.popup = false;
+
     res.locals.loginLogs = [];
     res.render('loginLog');
 });
 
 router.get('/query', isLogin, function (req, res, next) {
+    res.locals.popup = false;
+
     var starttime = getFormatTime(req.query.starttime);
     var endtime = getFormatTime(req.query.endtime);
 

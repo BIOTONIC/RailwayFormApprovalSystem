@@ -152,7 +152,7 @@
             <td colspan="6">
 			<span class="cjzr" style="color:red;font-weight:bold;display:none;">*请在此行下方填写</span>
             <textarea class="cjzr" id="workshopmgr" readonly name="workshopmgr" value=<%= workshopmgr %>><%= workshopmgr %></textarea></td></tr>
-		<tr><td colspan="6" align="right"><label>提交时间：<%= workshopmgrtime %></label></td></tr>
+		<tr><td colspan="6" align="right"><label>审批时间：<%= workshopmgrtime %></label></td></tr>
 		<tr><td colspan="6" align="center" style="display:none;" id="cjzrbtn">
 		<input type="submit" onclick="return submitform('true')" value="同意"/>
 		<input type="submit" onclick="return submitform('false')" value="不同意" /></td></tr>
@@ -339,9 +339,9 @@
                 }
                 break;
             case "2":
-                removeReadOnly(getpart("cjzr"));
                 if($("#workshopmgr").val().replace(" ","") === "")
                 {
+                    removeReadOnly(getpart("cjzr"));
                     $("#cjzrbtn")[0].style.display = "";
                 }
                 break;
