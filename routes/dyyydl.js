@@ -32,7 +32,7 @@ router.post('/', function (req, res, next) {
                     else if (result2[0].ParentID == conf.mssql.parentId.manager) {
                         delete password;
                         var userId = result1[0].ID + '';
-                        return res.json({'state': 'success', 'desc': userId + '&5&段领导&北京通信段'});
+                        return res.json({'state': 'success', 'desc': userId + '&5&' + name + '&段领导&北京通信段'});
                     }
                     // department will get person at second query
                     else if (result2[0].ParentID == conf.mssql.parentId.department) {
@@ -42,32 +42,32 @@ router.post('/', function (req, res, next) {
                         if (result2[0].ID == conf.mssql.id.securedepart) {
                             return res.json({
                                 'state': 'success',
-                                'desc': userId + '&4&安全科&' + result2[0].Name.trim() + '&北京通讯段'
+                                'desc': userId + '&4&' + name + '&' + result2[0].Name.trim() + '&北京通讯段'
                             });
                         }
                         // tech depart
                         else if (result2[0].ID == conf.mssql.id.gongchengshidepart) {
                             return res.json({
                                 'state': 'success',
-                                'desc': userId + '&3&工程管理室&' + result2[0].Name + '&北京通讯段'
+                                'desc': userId + '&3&' + name + '&' + result2[0].Name.trim() + '&北京通讯段'
                             });
                         }
                         else if (result2[0].ID == conf.mssql.id.gaosutechdepart) {
                             return res.json({
                                 'state': 'success',
-                                'desc': userId + '&3&高速技术科&' + result2[0].Name + '&北京通讯段'
+                                'desc': userId + '&3&' + name + '&' + result2[0].Name.trim() + '&北京通讯段'
                             });
                         }
                         else if (result2[0].ID == conf.mssql.id.wuxiantechdepart) {
                             return res.json({
                                 'state': 'success',
-                                'desc': userId + '&3&无线技术科&' + result2[0].Name + '&北京通讯段'
+                                'desc': userId + '&3&' + name + '&' + result2[0].Name.trim() + '&北京通讯段'
                             });
                         }
                         else if (result2[0].ID == conf.mssql.id.youxiantechdepart) {
                             return res.json({
                                 'state': 'success',
-                                'desc': userId + '&3&有线技术科&' + result2[0].Name + '&北京通讯段'
+                                'desc': userId + '&3&' + name + '&' + result2[0].Name.trim() + '&北京通讯段'
                             });
                         }
                         else {
