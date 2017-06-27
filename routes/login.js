@@ -73,7 +73,6 @@ router.post('/', notLogin, function (req, res, next) {
                         }
                         // manager will get person at second query
                         else if (result2[0].ParentID == conf.mssql.parentId.manager) {
-                            // TODO delete person info on flash
                             delete password;
                             req.session.userId = result1[0].ID + '';
                             req.session.person = '5';
@@ -119,7 +118,7 @@ router.post('/', notLogin, function (req, res, next) {
                                 return res.redirect('login');
                             }
 
-                            req.session.notif = '用户名：<span style="text-decoration: underline">' + name + '</span> 归属部门:<span style="text-decoration: underline">' + result2[0].Name + '</span> 上级：<span style="text-decoration: underline">北京通信段</span>';
+                            req.session.notif = '用户名：<span style="text-decoration: underline">' + name + '</span> 归属部门:<span style="text-decoration: underline">' + result2[0].Name.trim() + '</span> 上级：<span style="text-decoration: underline">北京通信段</span>';
 
                             res.cookie('id', req.session.userId);
                             res.cookie('person', req.session.person);
@@ -135,7 +134,7 @@ router.post('/', notLogin, function (req, res, next) {
                             req.session.userId = result1[0].ID + '';
                             req.session.person = '2';
                             req.session.workshop = result2[0].Name.trim();
-                            req.session.notif = '用户名：<span style="text-decoration: underline">' + name + '</span> 归属部门:<span style="text-decoration: underline">' + result2[0].Name + '</span> 上级：<span style="text-decoration: underline">北京通信段</span>';
+                            req.session.notif = '用户名：<span style="text-decoration: underline">' + name + '</span> 归属部门:<span style="text-decoration: underline">' + result2[0].Name.trim() + '</span> 上级：<span style="text-decoration: underline">北京通信段</span>';
                             res.cookie('id', req.session.userId);
                             res.cookie('person', req.session.person);
                             res.cookie('workshop', req.session.workshop);
@@ -156,7 +155,7 @@ router.post('/', notLogin, function (req, res, next) {
                                     req.session.userId = result1[0].ID + '';
                                     req.session.person = '1';
                                     req.session.workshop = result3[0].Name.trim();
-                                    req.session.notif = '用户名：<span style="text-decoration: underline">' + name + '</span> 归属部门:<span style="text-decoration: underline">' + result2[0].Name + '</span> 上级：<span style="text-decoration: underline">' + result3[0].Name + '</span>';
+                                    req.session.notif = '用户名：<span style="text-decoration: underline">' + name + '</span> 归属部门:<span style="text-decoration: underline">' + result2[0].Name.trim() + '</span> 上级：<span style="text-decoration: underline">' + result3[0].Name.trim() + '</span>';
                                     res.cookie('id', req.session.userId);
                                     res.cookie('person', req.session.person);
                                     res.cookie('workshop', req.session.workshop);
