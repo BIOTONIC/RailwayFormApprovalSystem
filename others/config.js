@@ -7,6 +7,12 @@ module.exports = {
         password: '',
         database: 'railway'
     },
+    // mysql: {
+    //     host: 'localhost',
+    //     user: 'root',
+    //     password: 'bjtxd',
+    //     database: 'formapproval'
+    // },
     mssql: {
         server: '10.66.188.8',
         user: 'thrid',

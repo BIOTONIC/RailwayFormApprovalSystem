@@ -20,17 +20,16 @@ var checkUniLogin = function (req) {
     }
 };
 
-var addLoginLog = function (userId, name, person, workshop, section) {
+var addLoginLog = function (userId, name, person, department, section, loginIp) {
     var log = {};
     log.userId = userId;
     log.name = name;
     log.person = person;
-    log.workshop = workshop;
+    log.department = department;
     log.section = section;
+    log.loginIp = loginIp;
     log.loginTime = getTime();
     loginLogService.createLog(log);
-
-
 };
 
 router.get('/', notLogin, function (req, res, next) {
@@ -44,15 +43,20 @@ router.post('/', notLogin, function (req, res, next) {
 
         var name = req.body.username;
         var password = req.body.password;
+        req.session.userName = name;
+
+        var loginIp = req.headers['x-real-ip'] || req.connection.remoteAddress;
 
         if (password == 'root' && name == 'root') {
             req.flash('success', '登录成功 root账号');
             req.session.userId = -1;
-            return res.redirect('loginLog');
+            return res.redirect('root');
         }
 
         if (conf.userTableFromSqlServer) {
             userServiceForSqlServer.findUserByName(name).then((result1) => {
+
+
                 if (result1.length == 0) {
                     req.flash('error', '用户名不存在');
                     return res.redirect('login');
@@ -78,13 +82,13 @@ router.post('/', notLogin, function (req, res, next) {
                             req.session.person = '5';
                             req.session.workshop = '段领导';
                             // add underline for notification
-                            req.session.notif = '用户名：<span style="text-decoration: underline">' + name + '</span>';
+                            req.session.notif = '用户名：<span style="text-decoration: underline">' + name + '</span>归属部门:<span style="text-decoration: underline">北京通信段</span>';
                             res.cookie('id', req.session.userId);
                             res.cookie('person', req.session.person);
                             res.cookie('workshop', req.session.workshop);
                             checkUniLogin(req);
                             req.flash('success', req.session.notif);
-                            addLoginLog(req.session.userId, name, req.session.person, req.session.workshop, null);
+                            addLoginLog(req.session.userId, req.session.userName, req.session.person, req.session.workshop, null, loginIp);
                             return res.redirect('home');
                         }
                         // department will get person at second query
@@ -125,7 +129,7 @@ router.post('/', notLogin, function (req, res, next) {
                             res.cookie('workshop', req.session.workshop);
                             checkUniLogin(req);
                             req.flash('success', req.session.notif);
-                            addLoginLog(req.session.userId, name, req.session.person, req.session.workshop, null);
+                            addLoginLog(req.session.userId, req.session.userName, req.session.person, req.session.workshop, null, loginIp);
                             return res.redirect('home');
                         }
                         // workshopmgr will get person at second query
@@ -140,7 +144,7 @@ router.post('/', notLogin, function (req, res, next) {
                             res.cookie('workshop', req.session.workshop);
                             checkUniLogin(req);
                             req.flash('success', req.session.notif);
-                            addLoginLog(req.session.userId, name, req.session.person, req.session.workshop, null);
+                            addLoginLog(req.session.userId, req.session.userName, req.session.person, req.session.workshop, null, loginIp);
                             return res.redirect('home');
                         }
                         else {
@@ -161,7 +165,7 @@ router.post('/', notLogin, function (req, res, next) {
                                     res.cookie('workshop', req.session.workshop);
                                     checkUniLogin(req);
                                     req.flash('success', req.session.notif);
-                                    addLoginLog(req.session.userId, name, req.session.person, req.session.workshop, result2[0].Name.trim());
+                                    addLoginLog(req.session.userId, req.session.userName, req.session.person, req.session.workshop, result2[0].Name.trim(), loginIp);
                                     return res.redirect('home');
                                 } else {
                                     req.flash('err', '未知错误');
@@ -195,7 +199,7 @@ router.post('/', notLogin, function (req, res, next) {
                     res.cookie('workshop', req.session.workshop);
                     checkUniLogin(req);
                     req.flash('success', req.session.notif);
-                    addLoginLog(req.session.userId, name, req.session.workshop, null);
+                    addLoginLog(req.session.userId, req.session.userName, req.session.person, req.session.workshop, null, loginIp);
                     return res.redirect('home');
                 }
             });

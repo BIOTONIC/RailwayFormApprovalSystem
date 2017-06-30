@@ -47,14 +47,14 @@
 <%- include('nav') %>
 <%- include('notif') %>
 <form action="/app1" method="post">
-        <input type="hidden" id="nextperson" value="<%- nextperson %>"/>
-		<input type="hidden" name="approve" id="approve" 
-		<% if(nextperson%10==9){%>
-		value=<%="false"%>
-		<%}else{%>
-		value=<%="true"%>
-		<%} %>
-		/>
+    <input type="hidden" id="nextperson" value="<%- nextperson %>"/>
+    <input type="hidden" name="approve" id="approve"
+            <% if(nextperson % 10 == 9){ %>
+           value=<%= "false" %>
+           <% }else{ %>
+           value=<%= "true" %>
+            <% } %>
+    />
     <table>
         <caption>一级（段）通信线路及设备停机要点审批表</caption>
         <tbody>
@@ -147,11 +147,13 @@
                           name="secureplan" value=<%= secureplan %>><%= secureplan %></textarea>
             </td>
         </tr>
-		
-		<tr><td id="cjbtn" style="display:none;" colspan="6" align="center">
-		<input style="width:300px;" onclick="return submitform('true')" type="submit" value="提交"/></td></tr>
-        <tr>		
-		
+
+        <tr>
+            <td id="cjbtn" style="display:none;" colspan="6" align="center">
+                <input style="width:300px;" onclick="return submitform('true')" type="submit" value="提交"/></td>
+        </tr>
+        <tr>
+
         <tr>
             <td colspan="6" align="center">车间主任审批</td>
         </tr>
@@ -162,10 +164,14 @@
                           name="workshopmgr"
                           value=<%= workshopmgr %>><%= workshopmgr %></textarea></td>
         </tr>
-		<tr><td colspan="6" align="right"><label>审批时间：<%= workshopmgrtime %></label></td></tr>
-		<tr><td colspan="6" align="center" style="display:none;" id="cjzrbtn">
-		<input type="submit" onclick="return submitform('true')" value="同意"/>
-		<input type="submit" onclick="return submitform('false')" value="不同意" /></td></tr>
+        <tr>
+            <td colspan="6" align="right"><label>审批时间：<%= workshopmgrtime %></label></td>
+        </tr>
+        <tr>
+            <td colspan="6" align="center" style="display:none;" id="cjzrbtn">
+                <input type="submit" onclick="return submitform('true')" value="同意"/>
+                <input type="submit" onclick="return submitform('false')" value="不同意"/></td>
+        </tr>
         <tr>
             <td colspan="3" align="center">技术科意见</td>
             <td colspan="3" align="center">批准施工时间</td>
@@ -184,11 +190,13 @@
                 <input class="jsk time" id="pfendtime" autocomplete="off" readonly name="pfendtime" type="text"
                        value="<%= pfendtime %>"></td>
         </tr>
-		
-		<tr><td colspan="6" align="center" style="display:none;" id="jskbtn">
-		<input type="submit" onclick="return submitform('true')" value="同意"/>
-		<input type="submit" onclick="return submitform('false')" value="不同意" /></td></tr>
-		
+
+        <tr>
+            <td colspan="6" align="center" style="display:none;" id="jskbtn">
+                <input type="submit" onclick="return submitform('true')" value="同意"/>
+                <input type="submit" onclick="return submitform('false')" value="不同意"/></td>
+        </tr>
+
         <tr>
             <td colspan="6" align="center">安全科意见</td>
         </tr>
@@ -198,12 +206,14 @@
                           name="securedepart"
                           value=<%= securedepart %>><%= securedepart %></textarea>
                 <label align="right">审批时间：<%= securetime %></label></td>
-        </tr>		
-		
-		<tr><td colspan="6" align="center" style="display:none;" id="aqkbtn">
-		<input type="submit" onclick="return submitform('true')" value="同意"/>
-		<input type="submit" onclick="return submitform('false')" value="不同意" /></td></tr>		
-		
+        </tr>
+
+        <tr>
+            <td colspan="6" align="center" style="display:none;" id="aqkbtn">
+                <input type="submit" onclick="return submitform('true')" value="同意"/>
+                <input type="submit" onclick="return submitform('false')" value="不同意"/></td>
+        </tr>
+
         <tr>
             <td colspan="6" align="center">主管段长意见</td>
         </tr>
@@ -215,16 +225,19 @@
                 <label align="right">审批时间：<%= managertime %></label>
             </td>
         </tr>
-		
-		<tr><td colspan="6" align="center" style="display:none;" id="zgdzbtn">
-		<input type="submit" onclick="return submitform('true')" value="同意"/>
-		<input type="submit" onclick="return submitform('false')" value="不同意" /></td></tr>
-		
+
+        <tr>
+            <td colspan="6" align="center" style="display:none;" id="zgdzbtn">
+                <input type="submit" onclick="return submitform('true')" value="同意"/>
+                <input type="submit" onclick="return submitform('false')" value="不同意"/></td>
+        </tr>
+
         <tr>
             <td colspan="1"><span>完成及销点情况(销点人签字)</span></td>
             <td colspan="5"><span class="cj2" style="color:red;font-weight:bold;display:none;">*</span>
                 <input class="full cj2" readonly id="result" name="result" value=<%= result %>>
-				<input id="cjbtn2" onclick="return submitform('true')" type="submit" value="确认销点" style="display:none;"/></td>
+                <input id="cjbtn2" onclick="return submitform('true')" type="submit" value="确认销点"
+                       style="display:none;"/></td>
         </tr>
         <tr>
             <td colspan="6" align="right">申请上报日期：<input name="applydate" readonly type="text" value="<%= applytime %>">
@@ -251,8 +264,8 @@
     $('.ckdepart').click(function () {
         var departs = $(".ckdepart");
         var ckddepart = '';
-        for(var idx =0;idx < departs.length;idx++) {
-            if(departs[idx].checked) {
+        for (var idx = 0; idx < departs.length; idx++) {
+            if (departs[idx].checked) {
                 ckddepart += departs[idx].value + ';';
             }
         }
@@ -264,9 +277,9 @@
         var noticedepart = $("#noticedepart").val();
         var departs = $(".ckdepart");
         var ckddepart = noticedepart.split(';');
-        for(var idx=0;idx < departs.length;idx++) {
-            if($.inArray(departs[idx].value,ckddepart)!=-1){
-                departs[idx].checked="checked";
+        for (var idx = 0; idx < departs.length; idx++) {
+            if ($.inArray(departs[idx].value, ckddepart) != -1) {
+                departs[idx].checked = "checked";
             }
         }
     })
@@ -378,63 +391,59 @@
         return cookieDic;
     }
     function controldisplay() {
-	
-		if($("#approve").val() == "false"){
-			return;
-		}
+
+        if ($("#approve").val() == "false") {
+            return;
+        }
         var cookie = getcookie();
         switch (cookie["person"]) {
             case "1":
                 var mgrelement = document.getElementById("manager");
                 if (isIE()) {
                     if (mgrelement.innerText == "") {
-						$("#cjbtn")[0].style.display = "";
+                        $("#cjbtn")[0].style.display = "";
                         removeReadOnly(getpart("cj"));
                     } else {
                         if (getpart("cj2")[1].value == "") {
-							$("#cjbtn2")[0].style.display = "";
+                            $("#cjbtn2")[0].style.display = "";
                             removeReadOnly(getpart("cj2"));
                         }
                     }
                 } else {
                     if (mgrelement.innerHTML == "" && mgrelement.value == "") {
-							$("#cjbtn")[0].style.display = "";
+                        $("#cjbtn")[0].style.display = "";
                         removeReadOnly(getpart("cj"));
                     } else {
                         if (getpart("cj2")[1].value == "") {
-							$("#cjbtn2")[0].style.display = "";
+                            $("#cjbtn2")[0].style.display = "";
                             removeReadOnly(getpart("cj2"));
                         }
                     }
                 }
                 break;
-            case "2":				
-                if($("#nextperson").val() == 20 && $("#workshopmgr").val().replace(" ","") === "")
-                {
-					removeReadOnly(getpart("cjzr"));
+            case "2":
+                if ($("#nextperson").val() == 20 && $("#workshopmgr").val().replace(" ", "") === "") {
+                    removeReadOnly(getpart("cjzr"));
                     $("#cjzrbtn")[0].style.display = "";
                 }
                 break;
-            case "3":			
-                if($("#nextperson").val() == 30 && $("#techdepart").val().replace(" ","") === "")
-                {
-					$("#pfstarttime").val($("#sqstarttime").val());
-					$("#pfendtime").val($("#sqendtime").val());
-					removeReadOnly(getpart("jsk"));	
+            case "3":
+                if ($("#nextperson").val() == 30) {
+                    $("#pfstarttime").val($("#sqstarttime").val());
+                    $("#pfendtime").val($("#sqendtime").val());
+                    removeReadOnly(getpart("jsk"));
                     $("#jskbtn")[0].style.display = "";
                 }
                 break;
             case "4":
-                if($("#nextperson").val() == 40 && $("#securedepart").val().replace(" ","") === "")
-                {
-					removeReadOnly(getpart("aqk"));
+                if ($("#nextperson").val() == 40 && $("#securedepart").val().replace(" ", "") === "") {
+                    removeReadOnly(getpart("aqk"));
                     $("#aqkbtn")[0].style.display = "";
                 }
                 break;
             case "5":
-                if($("#nextperson").val() == 50 && $("#manager").val().replace(" ","") === "")
-                {
-					removeReadOnly(getpart("zgdz"));
+                if ($("#nextperson").val() == 50 && $("#manager").val().replace(" ", "") === "") {
+                    removeReadOnly(getpart("zgdz"));
                     $("#zgdzbtn")[0].style.display = "";
                 }
                 break;

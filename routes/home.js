@@ -12,7 +12,6 @@ var userServiceForSqlServer = require('../services/userServiceForSqlServer');
 
 var workshopList = [];
 
-
 router.get('/', isLogin, function (req, res, next) {
     res.locals.popup = false;
 

@@ -9,9 +9,21 @@ var getFormatTime = require('../others/util').getFormatTime;
 var getNormalTime = require('../others/util').getNormalTime;
 var app3Service = require('../services/app3Service');
 var confService = require('../services/confService');
+var operationLogService = require('../services/operationLogService');
+
+var addOperationLog = function (userId, name, person, loginIp, operationDesc) {
+    var log = {};
+    log.userId = userId;
+    log.name = name;
+    log.person = person;
+    log.loginIp = loginIp;
+    log.operationTime = getTime();
+    log.operationDesc = operationDesc;
+    operationLogService.createLog(log);
+};
 
 router.get('/create', isLogin, function (req, res, next) {
-    res.locals.popup = true;
+    res.locals.popup = false;
 
     var workshop = req.session.workshop;
 
@@ -41,7 +53,7 @@ router.get('/create', isLogin, function (req, res, next) {
 });
 
 router.get('/', isLogin, function (req, res, next) {
-    res.locals.popup = true;
+    res.locals.popup = false;
 
     var person = req.session.person;
     var query = {};
@@ -89,10 +101,12 @@ router.get('/', isLogin, function (req, res, next) {
 });
 
 router.post('/', isLogin, function (req, res, next) {
-    res.locals.popup = true;
+    res.locals.popup = false;
 
     var person = req.session.person;
     var nextperson = req.session.nextperson;
+
+    var loginIp = req.headers['x-real-ip'] || req.connection.remoteAddress;
 
     var app3 = {};
 
@@ -105,7 +119,7 @@ router.post('/', isLogin, function (req, res, next) {
             confService.getApplyCount().then((counts) => {
                 if (typeof counts === 'undefined' || counts.length == 0) {
                     req.flash('error', 'ApplyCount未存储');
-                    return res.redirect('/app3');
+                    return res.redirect('home');
                 } else {
                     var date = getDate();
                     var count = counts[0].applycount + 1;
@@ -132,10 +146,11 @@ router.post('/', isLogin, function (req, res, next) {
 
                     app3Service.createApp3(app3).then((result) => {
                         req.flash('success', '提交成功');
+                        addOperationLog(req.session.userId, req.session.userName, req.session.person, loginIp, '三级审批表：新建表格');
                         return res.redirect('home');
                     }).catch((error) => {
                         req.flash('error', '提交失败');
-                        return res.redirect('/app3');
+                        return res.redirect('home');
                     });
                 }
             });
@@ -143,7 +158,7 @@ router.post('/', isLogin, function (req, res, next) {
         else if (workshop != actualworkshop) {
             // only the exact workshop manager can check the application
             req.flash('error', '无权查看其他车间');
-            return res.redirect('/app3');
+            return res.redirect('home');
         } else if (nextperson == '20') {
             // update the application before workshop manager check
             app3.telephone = req.body.telephone;
@@ -162,15 +177,16 @@ router.post('/', isLogin, function (req, res, next) {
 
             app3Service.updateApp3(app3).then((result) => {
                 req.flash('success', '更新成功');
-                return res.redirect('/app3');
+                addOperationLog(req.session.userId, req.session.userName, req.session.person, loginIp, '三级审批表：更新表格');
+                return res.redirect('home');
             }).catch((error) => {
                 req.flash('error', '提交失败');
-                return res.redirect('/app3');
+                return res.redirect('home');
             });
         } else if (nextperson == '29') {
             // can not update the application because the workshop manager has refused it
             req.flash('error', '车间主任不同意');
-            return res.redirect('/app3');
+            return res.redirect('home');
         } else if (nextperson == '60') {
             // finish the result
             app3.result = req.body.result;
@@ -179,19 +195,20 @@ router.post('/', isLogin, function (req, res, next) {
 
             app3Service.updateResult(app3).then((result) => {
                 req.flash('success', '销点完成');
-                return res.redirect('/app3');
+                addOperationLog(req.session.userId, req.session.userName, req.session.person, loginIp, '三级审批表：销点');
+                return res.redirect('home');
             }).catch((error) => {
                 req.flash('error', '提交失败');
-                return res.redirect('/app3');
+                return res.redirect('home');
             });
         } else if (nextperson == '70') {
             // the application is closed
             req.flash('error', '填写完毕 不能更新');
-            return res.redirect('/app3');
+            return res.redirect('home');
         } else {
             // no other state for nextperson
             req.flash('error', '表格状态错误');
-            return res.redirect('/app3');
+            return res.redirect('home');
         }
     }
     else if (person == '2') {
@@ -201,14 +218,14 @@ router.post('/', isLogin, function (req, res, next) {
         if (workshop != actualworkshop) {
             // only the exact workshop manager can check the application
             req.flash('error', '无权查看其他车间');
-            return res.redirect('/app3');
+            return res.redirect('home');
         }
         else if (nextperson == '20') {
             // update the application before result
             confService.getApproveCount().then((counts) => {
                 if (typeof counts === 'undefined' || counts.length == 0) {
                     req.flash('error', 'ApproveCount未存储');
-                    return res.redirect('/app3');
+                    return res.redirect('home');
                 } else {
                     var date = getDate();
                     var count = counts[0].approvecount + 1;
@@ -229,30 +246,31 @@ router.post('/', isLogin, function (req, res, next) {
 
                     app3Service.updateWorkshopMgr(app3).then((result) => {
                         req.flash('success', '审批完成');
-                        return res.redirect('/app3');
+                        addOperationLog(req.session.userId, req.session.userName, req.session.person, loginIp, '三级审批表：车间审批');
+                        return res.redirect('home');
                     }).catch((error) => {
                         req.flash('error', '提交失败');
-                        return res.redirect('/app3');
+                        return res.redirect('home');
                     });
                 }
             });
         } else if (nextperson == '29') {
             // can not update
             req.flash('error', '您已不同意该表格');
-            return res.redirect('/app3');
+            return res.redirect('home');
         } else if (nextperson == '60' || nextperson == '70') {
             // can not update
             req.flash('error', '审批结束 不能更新');
-            return res.redirect('/app3');
+            return res.redirect('home');
         } else {
             // no other state for nextperson
             req.flash('error', '表格状态错误');
-            return res.redirect('/app3');
+            return res.redirect('home');
         }
     } else {
         // person wrong
         req.flash('error', '账号角色错误');
-        return res.redirect('/app3');
+        return res.redirect('home');
     }
 });
 

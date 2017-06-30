@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>登录日志记录</title>
+    <title>操作日志记录</title>
     <style>
         body {
             margin: auto;
@@ -45,7 +45,7 @@
     <table>
         <thead>
         <tr>
-            <form action="/root/loginLog/query" method="get">
+            <form action="/root/operationLog/query" method="get">
                 <th colspan="2">起始时间:<input name="starttime" class="time" type="text"/></th>
                 <th colspan="2">截止时间:<input name="endtime" class="time" type="text"/></th>
                 <th colspan="2"><input type="submit"/></th>
@@ -54,22 +54,21 @@
         <tr>
             <th>编号</th>
             <th>名称</th>
-            <th>所属部门</th>
-            <th>区段</th>
+            <th>操作描述</th>
             <th>登录IP</th>
             <th>登录时间</th>
         </tr>
         </thead>
         <tbody>
-        <% for (var i = 0;i < loginLogs.length;i++){ %>
+        <% for (var i = 0;i < operationLogs.length;i++){ %>
         <tr style="<%= (i % 2 == 0 ? "background-color:#7ea9ba" : "") %>">
-            <td><%= loginLogs[i].userId %></td>
-            <td><%= loginLogs[i].name %></td>
-            <td><%= loginLogs[i].workshop %></td>
-            <td><%= loginLogs[i].section %></td>
-            <td><%= loginLogs[i].loginIp %></td>
-            <td><%= loginLogs[i].loginTime %></td>
-            <% } %>
+            <td><%= operationLogs[i].userId %></td>
+            <td><%= operationLogs[i].name %></td>
+            <td><%= operationLogs[i].operationDesc %></td>
+            <td><%= operationLogs[i].loginIp %></td>
+            <td><%= operationLogs[i].operationTime %></td>
+        </tr>
+        <% } %>
         </tbody>
     </table>
 </div>

@@ -1,19 +1,18 @@
-var LoginLog = require('../models/loginLog');
+var OperationLog = require('../models/operationLog');
 
 module.exports = {
     createLog: function createLog(log) {
-        return LoginLog.create({
+        return OperationLog.create({
             userId: log.userId,
             name: log.name,
             person: log.person,
-            department: log.department,
-            section: log.section,
             loginIp: log.loginIp,
-            loginTime: log.loginTime,
+            operationTime: log.operationTime,
+            operationDesc: log.operationDesc
         });
     },
     findLogs: function findLogs(query, order) {
-        return LoginLog.findAll({
+        return OperationLog.findAll({
             where: query,
             order: order
         });

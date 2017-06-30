@@ -2,7 +2,7 @@ var db = require('../others/db');
 
 var mysql = db.mysql;
 
-var LoginLog = mysql.sequelize.define('loginLog', {
+var OperationLog = mysql.sequelize.define('operationLog', {
     id: {
         type: mysql.Sequelize.INTEGER,
         primaryKey: true,
@@ -21,18 +21,16 @@ var LoginLog = mysql.sequelize.define('loginLog', {
         allowNull: false,
         defaultValue: '0'
     },
-    department: {
-        type: mysql.Sequelize.STRING(40)
-    },
-    section: {
-        type: mysql.Sequelize.STRING(40)
-    },
     loginIp: {
         type: mysql.Sequelize.STRING(40),
         allowNull: false
     },
-    loginTime: {
+    operationTime: {
         type: mysql.Sequelize.STRING(14),
+        allowNull: false
+    },
+    operationDesc: {
+        type: mysql.Sequelize.STRING(40),
         allowNull: false
     }
 }, {
@@ -42,7 +40,7 @@ var LoginLog = mysql.sequelize.define('loginLog', {
 
 mysql.sequelize.sync()
     .then(function () {
-        console.log("LoginLog Sync Success");
+        console.log("OperationLog Sync Success");
     });
 
-module.exports = LoginLog;
+module.exports = OperationLog;

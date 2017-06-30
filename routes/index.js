@@ -15,8 +15,8 @@ router.use('/home', require('./home'));
 router.use('/app1', require('./app1'));
 router.use('/app2', require('./app2'));
 router.use('/app3', require('./app3'));
-router.use('/loginLog', require('./loginLog'));
-router.use('/dyyydl',require('./dyyydl'));
+router.use('/root', require('./root'));
+router.use('/dyyydl', require('./dyyydl'));
 
 // 404 page
 router.use(function (req, res) {
