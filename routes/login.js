@@ -45,7 +45,7 @@ router.post('/', notLogin, function (req, res, next) {
         var password = req.body.password;
         req.session.userName = name;
 
-        var loginIp = req.headers['x-real-ip'] || req.connection.remoteAddress;
+        var loginIp = req.connection.remoteAddress;
 
         if (password == 'root' && name == 'root') {
             req.flash('success', '登录成功 root账号');

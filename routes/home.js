@@ -265,8 +265,6 @@ router.get('/queryResult', isLogin, function (req, res, next) {
                 res.render('query');
             }
         );
-    }
-)
-;
+    });
 
 module.exports = router;

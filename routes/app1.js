@@ -11,6 +11,28 @@ var app1Service = require('../services/app1Service');
 var confService = require('../services/confService');
 var operationLogService = require('../services/operationLogService');
 
+/*
+person:
+1   Normal Worker
+2   Workshop Manager
+3   Tech Department
+4   Secure Department
+5   Manager
+
+nextperson:
+10  Wait for normal worker to apply
+20  Wait for workshop manager to check, while normal worker can update here
+29  Workshop manager rejects this application, terminated
+30  Workshop manager agrees with application, wait for tech department to check
+39  Tech department rejects this application, terminated
+40  Tech department agrees with this application, wait for secure department to check
+49  Secure department rejects this application, terminated
+50  Secure department agrees with this application, wait for manager to check
+59  Manager rejects this application, terminated
+60  Manager agrees with this application, wait for normal worker to finish
+70  Normal worker finishes this application
+ */
+
 var addOperationLog = function (userId, name, person, loginIp, operationDesc) {
     var log = {};
     log.userId = userId;
@@ -166,7 +188,7 @@ router.post('/', isLogin, function (req, res, next) {
 
                     app1Service.createApp1(app1).then((result) => {
                         req.flash('success', '提交成功');
-                        addOperationLog(res.session.userId, res.session.userName, req.session.person, loginIp, '一级审批表：新建表格');
+                        addOperationLog(req.session.userId, req.session.userName, req.session.person, loginIp, '一级审批表：新建表格');
                         return res.redirect('home');
                     }).catch((error) => {
                         req.flash('error', '提交失败');

@@ -8,9 +8,9 @@ module.exports = {
         database: 'railway'
     },
     // mysql: {
-    //     host: 'localhost',
-    //     user: 'root',
-    //     password: 'bjtxd',
+    //     host: '10.78.120.189',
+    //     user: 'admin',
+    //     password: 'admin',
     //     database: 'formapproval'
     // },
     mssql: {
@@ -35,6 +35,7 @@ module.exports = {
             gongchengshidepart: 1356,
             gaosutechdepart: 1423,
             youxiantechdepart: 1792,
+
             securedepart: 1276
         }
     },
